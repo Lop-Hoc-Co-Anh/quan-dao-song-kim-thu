@@ -130,6 +130,7 @@ img.camp.fire { animation: fireflick .5s ease-in-out infinite alternate; transfo
 .step em { font: 800 15px/1 var(--body); font-style: normal; color: var(--teal); }
 .row { display: flex; gap: 14px; justify-content: flex-end; align-items: center; }
 #ovLesson .row { gap: 10px; } #ovLesson .row .btn { font-size: 19px; padding: 11px 14px 13px; white-space: nowrap; } #ovLesson .row .note { font-size: 14px; } #ovLesson .row .btn.go { font-size: 23px; padding: 13px 22px 15px; }
+#ovLesson { overflow: auto; } #ovLesson .card { grid-template-columns: minmax(0, 1fr); max-height: calc(100% - 24px); overflow: auto; } #ovLesson .row { flex-wrap: wrap; } #ovLesson .row .note { flex: 1 0 100%; order: 9; margin: 0; text-align: right; } /* khung tiết học không tràn màn hình */
 .note { margin-right: auto; font: 700 18px/1.3 var(--body); color: var(--soft); }
 .album { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .af { display: grid; justify-items: center; gap: 6px; }
@@ -381,7 +382,7 @@ function setPose(kind, dir = 1) {
   else { s('anh', `hinh/co_anh_${kind === 'reo' ? 'reo' : kind === 'chi' ? 'chi_duong' : 'vay_tay'}.webp`, 1); s('ben', `hinh/ben_${kind === 'reo' ? 'reo' : 'three_quarter'}.webp`, 1); s('mia', `hinh/mia_${kind === 'reo' ? 'reo' : 'three_quarter'}.webp`, 1); $('pipW').src = kind === 'reo' ? 'hinh/pip_reo.webp' : 'hinh/pip_bay.webp'; }
 }
 const unitOf = i => PPCT ? PPCT[i].unit : '';
-const wordsOf = i => PPCT ? PPCT[i].tu.split(/[;,]/).map(w => w.trim()).filter(Boolean) : [];
+const wordsOf = i => PPCT ? PPCT[i].tu.split(/[;,/+]/).map(w => w.trim()).filter(Boolean) : [];
 // ---- mỗi tiết một trò: tiết đầu unit là trò đặc trưng của unit, các tiết sau xoay vòng các trò khác ----
 const POOL = ['goi_do_choi', 'leo_nui', 'ruong_bi_mat', 'ban_thu_tron', 'go_cua', 'tha_phao', 'ghep_van_cau', 'dua_thuyen'];
 const GNAME = { goi_do_choi: 'Gọi ra hang', leo_nui: 'Leo núi tuyết', ruong_bi_mat: 'Rương bí mật', ban_thu_tron: 'Bạn nào trốn đâu', go_cua: 'Gõ cửa', tha_phao: 'Bóng bay đón bạn', ghep_van_cau: 'Ghép ván cầu', dua_thuyen: 'Đua thuyền', lam_theo_ben: 'Làm theo Ben' };
