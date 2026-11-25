@@ -22,7 +22,7 @@
   function say(t, my, rate = .88) {
     if (my !== run) return Promise.resolve(false);
     if (window.GiongCo && GiongCo.has(t)) return GiongCo.play(t).then(() => my === run);
-    return new Promise(res => { if (!window.speechSynthesis) return setTimeout(() => res(my === run), 900); speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; const v = speechSynthesis.getVoices().find(x => /^en/i.test(x.lang)); if (v) u.voice = v; u.rate = rate; u.pitch = 1.15; let d = 0; const f = () => { if (!d) { d = 1; res(my === run); } }; u.onend = f; u.onerror = f; setTimeout(f, 3500); speechSynthesis.speak(u); });
+    return new Promise(res => { if (!window.speechSynthesis) return setTimeout(() => res(my === run), 900); speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; const v = speechSynthesis.getVoices().find(x => /^en/i.test(x.lang)); if (v) u.voice = v; u.rate = rate; u.pitch = 1.15; let d = 0; const f = () => { if (!d) { d = 1; res(my === run); } }; u.onend = f; u.onerror = f; setTimeout(f, 3500 * (window.AmSongKim ? AmSongKim.he() : 1)); speechSynthesis.speak(u); });
   }
   function drum(my) {
     if (!AC) return; let n = 0; const beats = ov.querySelectorAll('.beats i');

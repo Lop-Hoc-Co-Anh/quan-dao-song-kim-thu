@@ -20,7 +20,7 @@
   <div id="scene"></div>
   <div class="say" id="say" hidden></div>
   <div class="hud"><div class="chip">${esc(G.title)} <small id="hudSub">· ${esc(G.unit)}</small></div><div class="spacer"></div>
-    <div class="chip"><img src="${G.icon}" alt=""><b id="prog">0 / 0</b><small>${esc(G.progressLabel || '')}</small></div></div>
+    <span id="chamSlot"></span><div class="chip"><img src="${G.icon}" alt=""><b id="prog">0 / 0</b><small>${esc(G.progressLabel || '')}</small></div></div>
   <div class="stt" id="stt" hidden></div>
   <div class="hint" id="hint" hidden></div>
   <div class="turn" id="turn" hidden><small>Lượt của</small><span id="turnName"></span></div>
@@ -76,6 +76,7 @@
   <div class="ov" id="ovBye" hidden><div class="panel done"><h1><small>Đã tắt trò chơi</small>Hẹn gặp lại!</h1><p>Nếu cửa sổ chưa tự đóng, bấm <b>Alt + F4</b> hoặc nút <b>X</b> ở góc trên bên phải để đóng.</p></div></div>
   <canvas class="fx" id="fx" width="1600" height="900"></canvas>
 </div>`);
+    if (window.AmSongKim) { const cb = AmSongKim.nut($('chamSlot'), 'chip'); cb.style.border = '0'; cb.style.cursor = 'pointer'; cb.style.fontFamily = 'inherit'; cb.style.fontSize = '20px'; }
     if (TIET) $('hudSub').textContent = `· Tiết ${TIET} · ${QS.get('unit') || G.unit}`;
     if (G.cardPos) { $('card').style.left = G.cardPos.x + 'px'; $('card').style.top = G.cardPos.y + 'px'; }
     if (G.micPos) { $('micRow').style.left = G.micPos.x + 'px'; $('micRow').style.top = G.micPos.y + 'px'; }
@@ -139,7 +140,7 @@
       pose(id, img) { const e = $('s_' + id); if (e) e.src = img; },
       say(t, x, y) { const s = $('say'); if (!t) { s.hidden = true; return; } s.hidden = false; s.textContent = t; if (x != null) { s.style.left = x + 'px'; s.style.top = y + 'px'; } },
       speak(text, rate = .85) { if (cfg.speak && window.GiongCo && GiongCo.has(text)) { try { speechSynthesis.cancel(); } catch (e) {} return GiongCo.play(text).then(() => {}); } // giọng cô đã ghi
-        return new Promise(res => { if (!cfg.speak || !('speechSynthesis' in window) || !hasEnVoice()) return res(); speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.voice = VOICE; u.rate = rate; u.pitch = 1.1; let d = false; const f = () => { if (!d) { d = true; res(); } }; u.onend = f; u.onerror = f; setTimeout(f, Math.min(4500, 1500 + text.length * 110)); speechSynthesis.speak(u); }); },
+        return new Promise(res => { if (!cfg.speak || !('speechSynthesis' in window) || !hasEnVoice()) return res(); speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.voice = VOICE; u.rate = rate; u.pitch = 1.1; let d = false; const f = () => { if (!d) { d = true; res(); } }; u.onend = f; u.onerror = f; setTimeout(f, Math.min(4500, 1500 + text.length * 110) * (window.AmSongKim ? AmSongKim.he() : 1)); speechSynthesis.speak(u); }); },
       wait: ms => new Promise(r => setTimeout(r, ms)),
       sparkle, confetti, progress() { const [a, b] = G.progress ? G.progress(api) : [results.filter(r => r.ok).length, kids.length]; $('prog').textContent = `${a} / ${b}`; },
       showCard(W) { $('cardImg').src = W.img; $('cardImg').alt = W.w; $('cardWord').textContent = W.w; const c = $('card'); c.hidden = false; c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); sfx.pop(); },

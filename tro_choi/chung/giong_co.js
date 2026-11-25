@@ -24,7 +24,8 @@
       if (!blob || my !== tok) return res(false);
       const url = URL.createObjectURL(blob), a = audio = new Audio(url); let done = false;
       const fin = ok => { if (done) return; done = true; if (finCur === fin) finCur = null; if (audio === a) audio = null; URL.revokeObjectURL(url); res(ok); };
-      finCur = fin; a.onended = () => fin(true); a.onerror = () => fin(false); setTimeout(() => fin(true), maxMs);
+      const slow = window.AmSongKim && AmSongKim.cham(); if (slow) { a.preservesPitch = a.webkitPreservesPitch = true; a.playbackRate = .75; }
+      finCur = fin; a.onended = () => fin(true); a.onerror = () => fin(false); setTimeout(() => fin(true), maxMs * (slow ? 1.4 : 1));
       a.play().catch(() => fin(false));
     })).catch(() => false);
   }

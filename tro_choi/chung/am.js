@@ -11,6 +11,8 @@
   const ep = () => { try { return localStorage.getItem('songkim_giong') || 'auto'; } catch (e) { return 'auto'; } };
   const nativeEn = () => { try { return !!NS && NS.getVoices().some(v => /^en/i.test(v.lang)); } catch (e) { return false; } };
   const fileMode = () => { const m = ep(); return m === 'file' ? true : m === 'may' ? !NS : (!NS || APPLE || !nativeEn()); };
+  // đọc chậm cho bé nghe kịp: localStorage 'songkim_cham' = '1'
+  const cham = () => { try { return localStorage.getItem('songkim_cham') === '1'; } catch (e) { return false; } };
   const split = t => (String(t).match(/[^,.!?;:–]+[,.!?;:–]*/g) || []).map(x => x.trim()).filter(x => /[a-z]/i.test(x));
   const slug = t => t.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
   let IDX = null; const idxP = fetch(BASE + 'index.json').then(r => r.json()).then(a => (IDX = new Set(a))).catch(() => (IDX = new Set()));
@@ -47,14 +49,14 @@
     for (let i = 0; i < keys.length; i++) {
       if (my !== tok) return; if (keys[i + 1]) load(keys[i + 1]);
       const b = await load(keys[i]); if (my !== tok) return; if (!b) continue;
-      await new Promise(res => { const a = ctx(); const s = src = a.createBufferSource(); s.buffer = b; const g = a.createGain(); g.gain.value = u.volume == null ? 1 : u.volume; s.connect(g).connect(a.destination); s.onended = res; s.start(); setTimeout(res, b.duration * 1000 + 400); });
-      if (my !== tok) return; await new Promise(r => setTimeout(r, 90));
+      await new Promise(res => { const a = ctx(); const s = src = a.createBufferSource(); s.buffer = b; const sl = u._slow ? .8 : 1; s.playbackRate.value = sl; const g = a.createGain(); g.gain.value = u.volume == null ? 1 : u.volume; s.connect(g).connect(a.destination); s.onended = res; s.start(); setTimeout(res, b.duration * 1000 / sl + 400); });
+      if (my !== tok) return; await new Promise(r => setTimeout(r, u._slow ? 380 : 90));
     }
     if (my !== tok) return; src = null; cur = null; speaking = false; u._fire('end');
   }
   const FAKE_VOICE = { name: 'Song Kim (giọng làm sẵn)', lang: 'en-US', localService: true, default: false, voiceURI: 'songkim' };
   const SS = {
-    speak(u) { if (!(u instanceof U)) { const x = new U(u && u.text); Object.assign(x, u || {}); u = x; } const vi = u.lang && !/^en/i.test(u.lang); if (!vi && fileMode()) fileSpeak(u); else { stopFile(); nativeSpeak(u); } },
+    speak(u) { if (!(u instanceof U)) { const x = new U(u && u.text); Object.assign(x, u || {}); u = x; } const vi = u.lang && !/^en/i.test(u.lang); if (!vi && (u._forceSlow || cham()) && !u._slow) { u._slow = true; u.rate = Math.max(.5, (u.rate || 1) * .62); } if (!vi && fileMode()) fileSpeak(u); else { stopFile(); nativeSpeak(u); } },
     cancel() { stopFile(); if (NS) NS.cancel(); },
     pause() { if (NS) NS.pause(); }, resume() { if (NS) NS.resume(); },
     getVoices() { const v = NS ? NS.getVoices() : []; return fileMode() ? [FAKE_VOICE].concat(v) : v; },
@@ -66,5 +68,11 @@
   try { Object.defineProperty(window, 'SpeechSynthesisUtterance', { value: U, configurable: true, writable: true }); } catch (e) { window.SpeechSynthesisUtterance = U; }
   // máy không có giọng nào: báo cho trang biết đã có giọng làm sẵn
   idxP.then(() => { if (fileMode() && typeof SS._ovc === 'function') { try { SS._ovc(); } catch (e) {} } });
-  window.AmSongKim = { fileMode, split, slug, base: BASE };
+  // nút bật/tắt đọc chậm (trang nào cần thì gọi AmSongKim.nut(chỗ đặt, lớp css))
+  const setCham = v => { try { localStorage.setItem('songkim_cham', v ? '1' : '0'); } catch (e) {} document.querySelectorAll('[data-am-cham]').forEach(ve); };
+  const ve = b => { const on = cham(); b.textContent = on ? '🐢 Đọc chậm: BẬT' : '🐢 Đọc chậm: tắt'; b.setAttribute('aria-pressed', on); b.style.background = on ? '#FFE08A' : ''; };
+  function nut(where, cls) { const b = document.createElement('button'); b.type = 'button'; b.dataset.amCham = '1'; if (cls) b.className = cls; b.title = 'Đọc tiếng Anh chậm lại cho các bạn nhỏ nghe kịp'; ve(b); b.onclick = e => { e.stopPropagation(); setCham(!cham()); }; if (where) where.appendChild(b); return b; }
+  // đọc chậm một lần (dù chế độ đang tắt)
+  function docCham(t) { try { SS.cancel(); const u = new U(t); u.lang = 'en-US'; u.rate = .85; u._forceSlow = true; SS.speak(u); } catch (e) {} }
+  window.AmSongKim = { fileMode, split, slug, base: BASE, cham, setCham, nut, docCham, he: () => cham() ? 1.8 : 1 };
 })();
