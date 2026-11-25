@@ -54,7 +54,7 @@
 </head>
 <body>
 <div id="wrap"><div class="s" id="s"></div></div>
-<div id="bar"><button id="bThe" title="In thẻ của tiết này, 2 thẻ một trang A4">🖨 In thẻ</button><button id="bPhieu" title="In phiếu ôn tập: khoanh tròn, nối">🖨 In phiếu</button><button id="bFull" title="Toàn màn hình (F)">⛶</button><button id="bVe" title="Về đảo (Esc)">⟵ Về đảo</button></div>
+<div id="bar"><button id="bThe" title="In thẻ của tiết này, 2 thẻ một trang A4">🖨 In thẻ</button><button id="bPhieu" title="In phiếu ôn tập: khoanh tròn, nối">🖨 In phiếu</button><span id="chamSlot"></span><button id="bFull" title="Toàn màn hình (F)">⛶</button><button id="bVe" title="Về đảo (Esc)">⟵ Về đảo</button></div>
 <div id="nav"><button id="bLui" title="Trang trước (←)">‹</button><button id="bToi" title="Trang sau (→)">›</button></div>
 <div id="dem"></div>
 <div id="in"></div>
@@ -118,8 +118,9 @@
     <div class="bub" style="position:absolute;left:1000px;right:50px;top:250px;font-size:${q.length > 16 ? 50 : 62}px;text-align:center;color:#1F5F8B">${esc(q)}</div>
     <div class="bub" style="position:absolute;left:1000px;right:50px;top:440px;font-size:${a.length > 18 ? 50 : 62}px;text-align:center;color:#C2410C;background:#FFF4D8">${esc(a)}</div>
     <img src="${CH('pip_noi')}" style="position:absolute;left:1480px;top:640px;height:320px">
+    <button class="play" data-cham="${esc(x.w)}" style="left:1240px;top:690px;transform:none;font-size:44px;padding:16px 36px;background:#3E8E2F;box-shadow:0 10px 0 #24611A">🐢 Đọc chậm</button>
     <div style="position:absolute;right:40px;top:40px;display:flex;gap:6px;background:rgba(255,255,255,.75);padding:8px 16px;border-radius:40px">${W.map((y, j) => `<img src="${TK[0]}" style="height:60px;${j > i ? 'opacity:.22;filter:grayscale(1)' : ''}">`).join('')}</div>
-    <div class="note" style="right:auto;font-size:24px">Bấm vào thẻ để nghe đọc mẫu. Cả lớp đọc 3 lần, rồi tổ – nhóm – cá nhân.</div>`; }));
+    <div class="note" style="right:auto;font-size:24px">Bấm vào thẻ để nghe đọc mẫu, nút 🐢 để nghe thật chậm. Cả lớp đọc 3 lần, rồi tổ – nhóm – cá nhân.</div>`; }));
   // 6. trò chơi cả lớp
   const missing = (vong, an) => T.push(() => `${deco}<div class="t" style="font-size:86px">What's missing?</div>${hang(hH, an)}
     <div class="note">${an == null ? `Vòng ${vong}: cả lớp đọc to các thẻ, rồi nhắm mắt lại… một thẻ sắp trốn!` : `Vòng ${vong}: thẻ nào trốn rồi? Cả lớp nói to tên nó!`}</div>`);
@@ -173,6 +174,7 @@
     $('s').querySelectorAll('[data-hat]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const h = b.dataset.hat;
       if (h === 'hello') Chant.song('Hello song', HELLO); else if (h === 'bye') Chant.song('Goodbye song', BYE);
       else Chant.play(W, `${chuDe} chant`, w => qa(w)[1], { max: 8 }); });
+    $('s').querySelectorAll('[data-cham]').forEach(b => b.onclick = ev => { ev.stopPropagation(); window.AmSongKim ? AmSongKim.docCham(b.dataset.cham) : doc(b.dataset.cham); });
     $('s').querySelectorAll('[data-tro]').forEach(b => b.onclick = ev => { ev.stopPropagation(); location.href = tro; });
   }
   function fit() { const z = Math.min(innerWidth / 1920, innerHeight / 1080); const s = $('s'); s.style.transform = `scale(${z})`; s.style.left = (innerWidth - 1920 * z) / 2 + 'px'; s.style.top = (innerHeight - 1080 * z) / 2 + 'px'; }
@@ -207,6 +209,7 @@
       <div>${R.map(j => `<div><span class="dot"></span><img src="${esc(W[j].img)}"></div>`).join('')}</div></div></div>`);
   }
   function in_(h) { $('in').innerHTML = h; const imgs = [...$('in').querySelectorAll('img')]; Promise.all(imgs.map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; }))).then(() => setTimeout(() => print(), 150)); }
+  if (window.AmSongKim) AmSongKim.nut($('chamSlot'));
   $('bThe').onclick = inThe; $('bPhieu').onclick = inPhieu;
   if (!W.length) T.splice(1, 0, () => `${deco}<div class="t">Chưa có từ cho tiết này</div><div class="note">Mở trang này từ đảo (nút "Bài chiếu" trong bảng tiết học).</div>`);
   show(+Q.get('trang') - 1 || 0);
