@@ -59,9 +59,9 @@
   const truyen = {
     "daosongkim3d": {
       "Welcome": {
-        "ten": "Truyện: Ben và Mia đến bến thuyền",
-        "tu": "circle, square, triangle, pink, black, white, blue",
-        "ke": "Ben và Mia chèo thuyền tới bến Đảo Song Kim. Pip bay ra đón: *Hello, Ben! Hello, Mia!* Trên mặt nước có những chiếc phao, mỗi phao buộc một quả bóng. Quả bóng thứ nhất tròn xoe. *What shape is it? It's a circle!* Quả thứ hai có bốn cạnh bằng nhau. *It's a square!* Quả thứ ba có ba góc nhọn. *It's a triangle!* Gió thổi vù vù, bóng bay lên đủ màu: *pink, black, white, blue!* Pip đếm: *one, two, three, four, five, six!* Cả lớp mình cùng nói với Pip nhé: *circle, square, triangle!*"
+        "ten": "Truyện: Những người bạn mới",
+        "tu": "Amanda, George, Alfie, Kelly, teacher",
+        "ke": "Ben và Mia chèo thuyền tới bến Đảo Song Kim. Trên bến có mấy bạn đang vẫy tay chào. Bạn gấu trúc mặc váy đỏ: *Who's this? It's Amanda!* Bạn hà mã mặc yếm xanh: *Who's this? It's George!* Bạn ếch đeo kính tròn: *It's Alfie!* Bạn bạch tuộc màu hồng: *It's Kelly!* Còn đây là cô giáo của các bạn: *It's my teacher!* Cả nhóm cùng chào: *Hello! Hello!* Cả lớp mình chào các bạn mới nhé: *Hello, Amanda! Hello, George! Hello, Alfie! Hello, Kelly!*"
       },
       "Unit 1 Home": {
         "ten": "Truyện: Mèo con tìm nhà",
@@ -85,13 +85,13 @@
       },
       "Unit 5 Animals": {
         "ten": "Truyện: Sư tử con chơi trốn tìm",
-        "tu": "elephant, monkey, snake, mouse, fish, lion",
-        "ke": "Trong Rừng nhiệt đới, sư tử con rủ các bạn chơi trốn tìm. Bụi cây rung rinh, thò ra một cái vòi dài. *What animal is this? It's an elephant!* Trên cành cây có tiếng khẹc khẹc. *It's a monkey!* Dưới bãi cỏ có tiếng xì xì, bò ngoằn ngoèo. *It's a snake!* Trong hốc cây có tiếng chít chít nho nhỏ. *It's a mouse!* Dưới suối, cái đuôi quẫy quẫy. *It's a fish!* Rồi có tiếng gầm thật to: *Roar!* Ai đây ta? *It's a lion!* À, là sư tử con đó! Cả lớp mình cùng gọi tên các bạn thú nhé: *elephant, monkey, snake, mouse, fish, lion!*"
+        "tu": "elephant, lion, monkey, snake, fast, slow",
+        "ke": "Trong Rừng nhiệt đới, sư tử con rủ các bạn chơi trốn tìm. Bụi cây rung rinh, thò ra một cái vòi dài. *What animal is this? It's an elephant!* Trên cành cây có tiếng khẹc khẹc. *It's a monkey!* Dưới bãi cỏ có tiếng xì xì, bò ngoằn ngoèo. *It's a snake!* Rồi có tiếng gầm thật to: *Roar!* Ai đây ta? *It's a lion!* À, là sư tử con đó! Một chú ruồi bay vù vù: *It's fast!* Một bạn ốc sên bò chầm chậm: *It's slow!* Cả lớp mình cùng nói nhé: *elephant, lion, monkey, snake! Fast! Slow!*"
       },
       "Unit 6 Food": {
         "ten": "Truyện: Khỉ con đói bụng",
-        "tu": "cake, water, sandwiches, apple, banana, orange, pear",
-        "ke": "Bên kia suối, khỉ con ôm bụng: *I'm hungry!* Đói quá! Rồi khỉ con lè lưỡi: *I'm thirsty!* Khát quá! Pip mang giỏ đồ ăn bay qua suối. Pip mở giỏ ra. *What's this? It's a cake!* Có cả bánh mì kẹp: *Sandwiches!* Và một chai nước mát: *It's water!* Trong Vườn trái cây còn có *an apple, a banana, an orange* và *a pear*. Khỉ con ăn no, uống nước, cười hì hì: *Thank you, Pip!* Cả lớp mình cùng nói nhé: *cake, water, apple, banana, orange, pear!*"
+        "tu": "cake, sandwiches, water, juice, hungry, thirsty",
+        "ke": "Bên kia suối, khỉ con ôm bụng: *I'm hungry!* Đói quá! Rồi khỉ con lè lưỡi: *I'm thirsty!* Khát quá! Pip mang giỏ đồ ăn bay qua suối. Pip mở giỏ ra. *What's this? It's cake!* Có cả bánh mì kẹp: *Sandwiches!* Còn có nước mát: *It's water!* Và nước cam: *It's juice!* Khỉ con ăn no, uống đã, cười hì hì: *Thank you, Pip!* Cả lớp mình cùng nói nhé: *cake, sandwiches, water, juice!*"
       },
       "Festivals": {
         "ten": "Truyện: Chim xanh đi hội hoá trang",

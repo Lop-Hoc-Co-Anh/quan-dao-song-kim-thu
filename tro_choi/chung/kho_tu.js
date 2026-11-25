@@ -139,3 +139,14 @@ window.KHO_TU = [
 {"w":"bike","img":"../ghep_van_cau/hinh/xe_dap.webp","alt":["bikes","bite","bake","like"],"g":"","q":"","vn":""},
 {"w":"plane","img":"../ghep_van_cau/hinh/may_bay.webp","alt":["planes","plain","play","plan"],"g":"","q":"","vn":""},
 {"w":"boat","img":"../ghep_van_cau/hinh/thuyen.webp","alt":["boats","both","vote","boot"],"g":"","q":"","vn":""}];
+
+
+
+
+// <SACH3> Đảo Song Kim dạy theo sách Amanda 3: dùng hình thẻ sách (sinh bởi _cong_cu_bai_day/dao_theo_sach.py)
+window.KHO_SACH3 = {"amanda": "../hinh/sach_amanda.webp", "george": "../hinh/sach_george.webp", "alfie": "../hinh/sach_alfie.webp", "teacher": "../hinh/sach_teacher.webp", "kelly": "../hinh/sach_kelly.webp", "bathroom": "../hinh/sach_bathroom.webp", "bedroom": "../hinh/sach_bedroom.webp", "kitchen": "../hinh/sach_kitchen.webp", "living room": "../hinh/sach_living_room.webp", "seven": "../hinh/sach_seven.webp", "eight": "../hinh/sach_eight.webp", "nine": "../hinh/sach_nine.webp", "ten": "../hinh/sach_ten.webp", "long": "../hinh/sach_long.webp", "short": "../hinh/sach_short.webp", "fingers": "../hinh/sach_fingers.webp", "feet": "../hinh/sach_feet.webp", "hair": "../hinh/sach_hair.webp", "teeth": "../hinh/sach_teeth.webp", "boots": "../hinh/sach_boots.webp", "scarf": "../hinh/sach_scarf.webp", "shorts": "../hinh/sach_shorts.webp", "skirt": "../hinh/sach_skirt.webp", "socks": "../hinh/sach_socks.webp", "t-shirt": "../hinh/sach_t-shirt.webp", "on": "../hinh/sach_on.webp", "in": "../hinh/sach_in.webp", "under": "../hinh/sach_under.webp", "elephant": "../hinh/sach_elephant.webp", "lion": "../hinh/sach_lion.webp", "monkey": "../hinh/sach_monkey.webp", "snake": "../hinh/sach_snake.webp", "fast": "../hinh/sach_fast.webp", "slow": "../hinh/sach_slow.webp", "cake": "../hinh/sach_cake.webp", "sandwiches": "../hinh/sach_sandwiches.webp", "water": "../hinh/sach_water.webp", "juice": "../hinh/sach_juice.webp", "hungry": "../hinh/sach_hungry.webp", "thirsty": "../hinh/sach_thirsty.webp", "seesaw": "../hinh/sach_seesaw.webp", "slide": "../hinh/sach_slide.webp", "springer": "../hinh/sach_springer.webp", "swing": "../hinh/sach_swing.webp", "up": "../hinh/sach_up.webp", "down": "../hinh/sach_down.webp"};
+(function () { const q = new URLSearchParams(location.search).get('dao'); if (q && q !== 'dao_3d') return; if (/dao_hat_mam|dao_cau_vong/.test(location.pathname)) return;
+  const S = window.KHO_SACH3, K = window.KHO_TU; K.forEach(W => { const i = S[W.w.toLowerCase()]; if (i) W.img = i; });
+  Object.keys(S).forEach(w => { if (!K.some(W => W.w.toLowerCase() === w)) K.push({ w: w === 't-shirt' ? 'T-shirt' : w, img: S[w], alt: [], g: '', q: '', vn: '' }); });
+})();
+// </SACH3>

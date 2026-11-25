@@ -3,7 +3,7 @@
 (function () {
   const L = s => new Set(s.split(','));
   const FAM = L('mummy,daddy,mum,dad,mother,father,brother,sister,granny,grandad,grandma,grandpa,grandmother,grandfather,baby,family,uncle,aunt,cousin');
-  const PEOPLE = L('amanda,george,alfie,ben,mia,teacher,santa,santa claus,witch');
+  const PEOPLE = L('amanda,george,alfie,kelly,ben,mia,teacher,santa,santa claus,witch');
   const COL = L('red,yellow,blue,green,orange,brown,purple,pink,black,white,grey,gray');
   const NUM = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
   const PAIR = { big: 'big or little', little: 'big or little', long: 'long or short', short: 'long or short', fast: 'fast or slow', slow: 'fast or slow' };
@@ -18,6 +18,7 @@
   function of(word, unit) {
     const w = String(word || '').trim(), k = w.toLowerCase(); if (!k || NOT.has(k)) return null;
     if (k === 'three years old') return { q: 'How old are you?', a: "I'm three years old." };
+    if (k === 'in' || k === 'on' || k === 'under') return { q: "Where's Alfie?", a: k.charAt(0).toUpperCase() + k.slice(1) + ' the bed.' };
     if (k === 'up' || k === 'down') return { q: 'Up or down?', a: (k === 'up' ? 'Up' : 'Down') + '!' };
     if (k === 'clap') return { q: 'Can you clap?', a: 'Yes, I can clap!' };
     const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
