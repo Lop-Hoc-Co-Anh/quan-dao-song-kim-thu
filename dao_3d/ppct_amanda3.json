@@ -3,18 +3,18 @@
   "tuan": "1",
   "buoi": "1",
   "unit": "Welcome",
-  "nd": "Hình dạng, màu sắc, số 1–6",
-  "tu": "circle, square, triangle; pink, black, white, blue; 1–6",
-  "cau": "What shape is it? / What colour is it?",
+  "nd": "Chào bạn mới: Amanda, George, Alfie, Kelly",
+  "tu": "Amanda, George, Alfie, teacher, Kelly",
+  "cau": "Who's this? – It's …",
   "hd": "Hello/Bye-bye; shape game"
  },
  {
   "tuan": "1",
   "buoi": "2",
   "unit": "Welcome",
-  "nd": "Ôn tập – thực hành hình dạng, màu sắc, số 1–6",
-  "tu": "circle, square, triangle; pink, black, white, blue; 1–6",
-  "cau": "What shape is it? / What colour is it?",
+  "nd": "Ôn tập – thực hành chào bạn mới",
+  "tu": "Amanda, George, Alfie, teacher, Kelly",
+  "cau": "Who's this? – It's …",
   "hd": "Hello/Bye-bye; shape game; pair/group practice"
  },
  {
@@ -22,8 +22,8 @@
   "buoi": "1",
   "unit": "Unit 1 Home",
   "nd": "Các phòng trong nhà",
-  "tu": "bedroom, kitchen, bathroom, living room",
-  "cau": "What room is this? – It’s a …",
+  "tu": "bathroom, bedroom, kitchen, living room",
+  "cau": "What room is this? – It's …",
   "hd": "My House song"
  },
  {
@@ -31,8 +31,8 @@
   "buoi": "2",
   "unit": "Unit 1 Home",
   "nd": "Ôn tập – thực hành các phòng trong nhà",
-  "tu": "bedroom, kitchen, bathroom, living room",
-  "cau": "What room is this? – It’s a …",
+  "tu": "bathroom, bedroom, kitchen, living room",
+  "cau": "What room is this? – It's …",
   "hd": "My House song; pair/group practice"
  },
  {
@@ -148,8 +148,8 @@
   "buoi": "1",
   "unit": "Unit 3 Body",
   "nd": "Bộ phận cơ thể",
-  "tu": "hair, teeth, fingers, feet, long, short",
-  "cau": "What’s this? – This is my … / Is it long or short?",
+  "tu": "long, short, fingers, feet, hair, teeth",
+  "cau": "Is it long or short? – It's …",
   "hd": "Action song"
  },
  {
@@ -157,8 +157,8 @@
   "buoi": "2",
   "unit": "Unit 3 Body",
   "nd": "Ôn tập – thực hành bộ phận cơ thể",
-  "tu": "hair, teeth, fingers, feet, long, short",
-  "cau": "What’s this? – This is my … / Is it long or short?",
+  "tu": "long, short, fingers, feet, hair, teeth",
+  "cau": "Is it long or short? – It's …",
   "hd": "Action song; pair/group practice"
  },
  {
@@ -221,7 +221,7 @@
   "unit": "Unit 4 Clothes",
   "nd": "Quần áo",
   "tu": "boots, scarf, shorts, skirt, socks, T-shirt",
-  "cau": "What is it? – It’s a …",
+  "cau": "What are they? – They're …",
   "hd": "Dress-up"
  },
  {
@@ -230,7 +230,7 @@
   "unit": "Unit 4 Clothes",
   "nd": "Ôn tập – thực hành quần áo",
   "tu": "boots, scarf, shorts, skirt, socks, T-shirt",
-  "cau": "What is it? – It’s a …",
+  "cau": "What are they? – They're …",
   "hd": "Dress-up; pair/group practice"
  },
  {
@@ -292,8 +292,8 @@
   "buoi": "1",
   "unit": "Unit 5 Animals",
   "nd": "Động vật",
-  "tu": "elephant, snake, lion, monkey, dog, pig, fish, mouse",
-  "cau": "What animal is this?",
+  "tu": "elephant, lion, monkey, snake, fast, slow",
+  "cau": "What animal is this? – It's …",
   "hd": "Animal song"
  },
  {
@@ -301,8 +301,8 @@
   "buoi": "2",
   "unit": "Unit 5 Animals",
   "nd": "Ôn tập – thực hành động vật",
-  "tu": "elephant, snake, lion, monkey, dog, pig, fish, mouse",
-  "cau": "What animal is this?",
+  "tu": "elephant, lion, monkey, snake, fast, slow",
+  "cau": "What animal is this? – It's …",
   "hd": "Animal song; pair/group practice"
  },
  {
@@ -364,8 +364,8 @@
   "buoi": "1",
   "unit": "Unit 6 Food",
   "nd": "Đồ ăn, thức uống",
-  "tu": "fruit, water, cake, sandwiches",
-  "cau": "What’s this? – It’s …",
+  "tu": "cake, sandwiches, water, juice, hungry, thirsty",
+  "cau": "What's this? – It's …",
   "hd": "Food and Drink song"
  },
  {
@@ -373,8 +373,8 @@
   "buoi": "2",
   "unit": "Unit 6 Food",
   "nd": "Ôn tập – thực hành đồ ăn, thức uống",
-  "tu": "fruit, water, cake, sandwiches",
-  "cau": "What’s this? – It’s …",
+  "tu": "cake, sandwiches, water, juice, hungry, thirsty",
+  "cau": "What's this? – It's …",
   "hd": "Food and Drink song; pair/group practice"
  },
  {
