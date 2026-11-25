@@ -61,6 +61,7 @@
 <script src="../chung/kho_tu.js"></script>
 <script src="../chung/cau_mau.js"></script>
 <script src="../chung/giong_co.js"></script>
+<script src="../chung/loi_ke.js"></script>
 <script src="../chung/chant.js"></script>
 <script>
 (function () {
@@ -101,6 +102,14 @@
     ${ban_img ? `<img src="${esc(ban_img)}" style="position:absolute;left:${Math.min(1650, bx * 1920 + 170)}px;top:${Math.min(800, by * 1080 + 10)}px;height:240px">` : ''}
     <div style="position:absolute;right:30px;top:30px;width:780px;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
       <img src="${CH('pip_noi')}" style="height:230px"><div class="bub" style="font-size:42px;line-height:1.35;color:#1F5F8B">${esc(ke || "Let's go!")}</div></div>`);
+  // 2b. truyện Pip kể bằng giọng cô (nếu unit này có truyện)
+  const STORE = { dao_hat_mam: 'daohatmam', dao_cau_vong: 'daocauvong' }[DAO] || 'daosongkim3d';
+  const TR = window.LOI_KE && LOI_KE.truyenOf && LOI_KE.truyenOf(STORE, unit);
+  if (TR) T.push(() => `${deco}<div class="t" style="font-size:80px">Pip kể chuyện</div><div class="sub" style="top:150px;font-size:40px">${esc(TR.ten.replace(/^Truyện:\s*/, ''))}</div>
+    <img src="${CH('pip_noi')}" style="position:absolute;left:40px;top:250px;height:330px">${ban_img ? `<img src="${esc(ban_img)}" style="position:absolute;left:60px;top:600px;height:300px">` : ''}
+    <div class="bub" style="position:absolute;left:400px;right:50px;top:230px;bottom:150px;font-size:33px;line-height:1.5;font-weight:400;overflow:hidden">${esc(TR.ke).replace(/((?:What's this\?|It's a [a-z]+!|Thank you, Pip!|(?:ball|car|train|doll|teddy)[,!]))/gi, '<b style="color:#C2410C">$1</b>')}</div>
+    <button class="play" data-truyen="${esc(TR.ma)}" style="top:950px;font-size:40px;padding:14px 40px">🔊 Nghe Pip kể (giọng cô)</button>
+    <div class="note" style="right:auto;left:40px;bottom:30px;width:330px;font-size:22px">Chữ đỏ là tiếng Anh: cả lớp nói theo.</div>`);
   // 3. hát chào
   T.push(() => `${deco}<div class="t">♪ Hello song ♪</div>
     <img src="${CH('pip_reo')}" style="position:absolute;left:260px;top:330px;height:330px"><img src="${CH('co_anh_vay_tay')}" style="position:absolute;left:760px;top:250px;height:600px"><img src="${CH('ben_reo')}" style="position:absolute;right:420px;bottom:60px;height:360px"><img src="${CH('mia_reo')}" style="position:absolute;right:160px;bottom:60px;height:360px">
@@ -175,6 +184,9 @@
       if (h === 'hello') Chant.song('Hello song', HELLO); else if (h === 'bye') Chant.song('Goodbye song', BYE);
       else Chant.play(W, `${chuDe} chant`, w => qa(w)[1], { max: 8 }); });
     $('s').querySelectorAll('[data-cham]').forEach(b => b.onclick = ev => { ev.stopPropagation(); window.AmSongKim ? AmSongKim.docCham(b.dataset.cham) : doc(b.dataset.cham); });
+    $('s').querySelectorAll('[data-truyen]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const m = b.dataset.truyen;
+      if (window.GiongCo && GiongCo.has(m)) { try { speechSynthesis.cancel(); } catch (e) {} b.textContent = '⏹ Đang kể… (bấm để dừng)'; if (b._on) { GiongCo.stop(); return; } b._on = 1; GiongCo.play(m, 120000).then(() => { b._on = 0; b.textContent = '🔊 Nghe Pip kể (giọng cô)'; }); }
+      else b.textContent = 'Cô chưa ghi – cô đọc trên màn hình'; });
     $('s').querySelectorAll('[data-tro]').forEach(b => b.onclick = ev => { ev.stopPropagation(); location.href = tro; });
   }
   function fit() { const z = Math.min(innerWidth / 1920, innerHeight / 1080); const s = $('s'); s.style.transform = `scale(${z})`; s.style.left = (innerWidth - 1920 * z) / 2 + 'px'; s.style.top = (innerHeight - 1080 * z) / 2 + 'px'; }
