@@ -49,7 +49,9 @@ html, body { margin: 0; background: #DCE7EE; color: var(--ink); font-family: 'Nu
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const WEB = 'https://lop-hoc-co-anh.github.io/quan-dao-song-kim/nghe/index.html'; // trang nghe trên mạng cho điện thoại ba mẹ
+// trang nghe cho điện thoại ba mẹ: cùng trang web đang mở (link thử in thẻ thì mã QR về link thử); mở trên máy thì về link chính
+const WEB = location.protocol === 'https:' ? new URL('../nghe/index.html', location.href).href : 'https://lop-hoc-co-anh.github.io/quan-dao-song-kim/nghe/index.html';
+const DAO_DIR = { daohatmam: 'dao_hat_mam', daocauvong: 'dao_cau_vong', daosongkim3d: 'dao_3d' };
 const DAOS = [
   { key: 'daohatmam', name: 'Đảo Hạt Mầm', book: 'Amanda and Friends 1', ppct: '../dao_hat_mam/ppct_amanda1.json' },
   { key: 'daocauvong', name: 'Đảo Cầu Vồng', book: 'Amanda and Friends 2', ppct: '../dao_cau_vong/ppct_amanda2.json' },
@@ -62,13 +64,13 @@ let D = DAOS.find(d => d.key === localStorage.getItem('quandao_dang_o')) || DAOS
 $('selDao').innerHTML = DAOS.map(d => `<option value="${d.key}">${d.name}</option>`).join(''); $('selDao').value = D.key;
 try { const a = JSON.parse(localStorage.getItem('songkim_aicuoi') || '{}'); $('inLop').value = a.lop || ''; } catch (e) {}
 const kids = () => { const k = (localStorage.getItem('trochoi_names') || '').split('\n').map(s => s.replace(/\*+\s*$/, '').trim()).filter(Boolean); return k.length ? k : ['']; };
-function load() { fetch(D.ppct).then(r => r.json()).then(p => { PPCT = p; const us = [...new Set(p.map(r => r.unit))].filter(u => !/review|assessment|consolidation/i.test(u)); $('selUnit').innerHTML = us.map(u => `<option>${esc(u)}</option>`).join('');
+function load() { KHO_DAO(DAO_DIR[D.key]); fetch(D.ppct).then(r => r.json()).then(p => { PPCT = p; const us = [...new Set(p.map(r => r.unit))].filter(u => !/review|assessment|consolidation/i.test(u)); $('selUnit').innerHTML = us.map(u => `<option>${esc(u)}</option>`).join('');
   const st = JSON.parse(localStorage.getItem(D.key) || 'null'), cu = st && PPCT[st.cur] ? PPCT[st.cur].unit : us[0]; if (us.includes(cu)) $('selUnit').value = cu; draw(); }); }
 function draw() {
   const u = $('selUnit').value, seen = new Set(), ws = [];
-  PPCT.filter(r => r.unit === u).forEach(r => String(r.tu).split(/[;,]/).forEach(w => { const K = inKho(w.trim().toLowerCase()); if (K && !seen.has(K.w) && ws.length < 6 && CauMau.of(K.w, u)) { seen.add(K.w); ws.push(K); } }));
+  PPCT.filter(r => r.unit === u).forEach(r => String(r.tu).split(/[;,/+]/).forEach(w => { const K = inKho(w.trim().toLowerCase()); if (K && !seen.has(K.w) && ws.length < 6 && CauMau.of(K.w, u)) { seen.add(K.w); ws.push(K); } }));
   const q = CauMau.question(ws.map(W => W.w), u), S = ws.map(W => CauMau.of(W.w, u)).find(x => x && x.q === q), cau = S ? `${S.q} – ${S.a}` : '';
-  const url = `${WEB}?u=${encodeURIComponent(u)}&w=${encodeURIComponent(ws.map(W => W.w).join(','))}`;
+  const url = `${WEB}?u=${encodeURIComponent(u)}&w=${encodeURIComponent(ws.map(W => W.w).join(','))}&dao=${DAO_DIR[D.key]}`;
   const card = n => `<div class="card"><div class="top"><h2>${n ? esc(n) + ' học tiếng Anh' : 'Bé học tiếng Anh'}<small>${esc(D.book)} · ${esc(u)}${$('inLop').value ? ' · ' + esc($('inLop').value) : ''}</small></h2><div><div class="qr"></div><div class="qrnote">Quét để nghe</div></div></div>
     <div class="ws">${ws.map(W => `<div><img src="${imgOf(W)}" alt=""><b>${esc(W.w)}</b></div>`).join('')}</div>
     ${cau ? `<div class="cau">Mẫu câu: ${esc(cau)}</div>` : ''}
