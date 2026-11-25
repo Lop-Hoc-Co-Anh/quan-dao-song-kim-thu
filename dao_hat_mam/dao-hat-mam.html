@@ -228,7 +228,7 @@ body.app .tv { width: min(100vw, 177.78vh); border-radius: 0; box-shadow: none; 
           <div class="row">
             <span class="note">Mỗi từ học xong là một tấm ván lắp vào cầu. Trò chơi bên trong sẽ bàn tiếp.</span>
             <button class="btn" id="lClose">Đóng <kbd>Esc</kbd></button>
-            <button class="btn" id="lKe" title="Pip kể chuyện bằng giọng cô đã ghi">🔊 Pip kể</button><button class="btn" id="lSimon" title="Trò vận động: Pip says, cả lớp đứng lên làm theo">Vận động: Pip says</button><button class="btn" id="lWarm" title="Trò nghe hiểu khởi động: Pip hỏi, cả lớp chỉ hình">Khởi động: nghe – chạm</button><button class="btn" id="lChieu" title="Bài chiếu của tiết này theo cách dạy của cô Anh: hát chào, thẻ to, trò cả lớp, chant; in thẻ và phiếu">📽 Bài chiếu</button><button class="btn go" id="lStart">Xuất phát!</button>
+            <span id="lCham"></span><button class="btn" id="lKe" title="Pip kể chuyện bằng giọng cô đã ghi">🔊 Pip kể</button><button class="btn" id="lSimon" title="Trò vận động: Pip says, cả lớp đứng lên làm theo">Vận động: Pip says</button><button class="btn" id="lWarm" title="Trò nghe hiểu khởi động: Pip hỏi, cả lớp chỉ hình">Khởi động: nghe – chạm</button><button class="btn" id="lChieu" title="Bài chiếu của tiết này theo cách dạy của cô Anh: hát chào, thẻ to, trò cả lớp, chant; in thẻ và phiếu">📽 Bài chiếu</button><button class="btn go" id="lStart">Xuất phát!</button>
           </div>
         </div>
       </div>
@@ -771,6 +771,7 @@ $('lWarm').onclick = () => { // trò nghe hiểu khởi động (không chấm �
   if (!PPCT) return; save(); const dao = { daohatmam: 'dao_hat_mam', daocauvong: 'dao_cau_vong' }[STORE_KEY] || 'dao_3d';
   location.href = `../tro_choi/nghe_cham/index.html?dao=${dao}&unit=${encodeURIComponent(unitOf(cur))}&tu=${encodeURIComponent(gameWords(cur).join(','))}`;
 };
+if (window.AmSongKim) AmSongKim.nut($('lCham'), 'btn');
 $('lChieu').onclick = () => { // bài chiếu của tiết (tro_choi/tiet_hoc): thẻ to, trò cả lớp, chant, in thẻ, in phiếu
   if (!PPCT) return; const r = PPCT[cur], p = placeOf(cur), m = $('map'), dao = { daohatmam: 'dao_hat_mam', daocauvong: 'dao_cau_vong' }[STORE_KEY] || 'dao_3d';
   const W0 = 1600, H0 = W0 * (m.naturalHeight || 941) / (m.naturalWidth || 1672), gn = gameOf(cur), q = new URLSearchParams({
