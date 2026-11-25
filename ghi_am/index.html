@@ -76,6 +76,7 @@ const DAOS = [
   { key: 'daocauvong', name: 'Đảo Cầu Vồng', ppct: '../dao_cau_vong/ppct_amanda2.json' },
   { key: 'daosongkim3d', name: 'Đảo Song Kim', ppct: '../dao_3d/ppct_amanda3.json' },
 ];
+const DAO_DIR = { daohatmam: 'dao_hat_mam', daocauvong: 'dao_cau_vong', daosongkim3d: 'dao_3d' };
 const BASE = new URL('../tro_choi/goi_do_choi/', location.href); // ảnh trong kho từ tính từ thư mục một trò
 const imgOf = W => /^data:/.test(W.img) ? W.img : new URL(W.img, BASE).href;
 const inKho = w => KHO_TU.find(W => [w, w.replace(/s$/, ''), w.split(' ')[0]].includes(W.w.toLowerCase()));
@@ -108,7 +109,7 @@ function draw() {
   document.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { GiongCo.del(b.dataset.del).then(() => { msg('Đã xoá giọng của "' + b.dataset.del + '".'); draw(); }); });
 }
 function pickList() {
-  const d = DAOS.find(x => x.key === $('selDao').value);
+  const d = DAOS.find(x => x.key === $('selDao').value); KHO_DAO(DAO_DIR[d.key] || 'all');
   if (d.key === 'all') { $('selUnit').hidden = true; $('selUnit').innerHTML = ''; list = KHO_TU.slice(); $('hWords').textContent = `Từ vựng (${list.length} từ có hình)`; draw(); return; }
   fetch(d.ppct).then(r => r.json()).then(p => {
     PPCT = p; const units = [...new Set(p.map(r => r.unit))]; $('selUnit').hidden = false;
@@ -118,7 +119,7 @@ function pickList() {
 }
 function showUnit() {
   const u = $('selUnit').value, seen = new Set(); list = [];
-  PPCT.filter(r => r.unit === u).forEach(r => String(r.tu).split(/[;,]/).map(x => x.trim().toLowerCase()).forEach(w => { const K = w && inKho(w); if (K && !seen.has(K.w)) { seen.add(K.w); list.push(K); } }));
+  PPCT.filter(r => r.unit === u).forEach(r => String(r.tu).split(/[;,/+]/).map(x => x.trim().toLowerCase()).forEach(w => { const K = w && inKho(w); if (K && !seen.has(K.w)) { seen.add(K.w); list.push(K); } }));
   $('hWords').textContent = `Từ vựng ${u} (${list.length} từ có hình)`; draw();
 }
 // ghi âm: tự dừng sau 2,5 giây
