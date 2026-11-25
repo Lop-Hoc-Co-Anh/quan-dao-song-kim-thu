@@ -80,8 +80,8 @@ TroChoi.run({
   onStart(api) { onShelf = []; api.$('shelfBox').innerHTML = ''; api.$('toyLayer').innerHTML = ''; },
   progress(api) { return [onShelf.length, api.kids.length]; },
   async onTurn(api, ctx) {
-    const h1 = SIZE[ctx.word.w] || 200, x0 = 730, y0 = 330, x1 = 800, y1 = 660;
-    api.$('toyLayer').innerHTML = `<div class="shadow" id="tsh"></div><img class="toy" id="toy" src="${ctx.word.img}" alt="" style="left:${x0}px;top:${y0}px;height:40px;filter:blur(10px) brightness(.55) saturate(.7)"><div class="eyes" id="eyes"><i></i><i></i></div>`;
+    const h1 = Math.round((SIZE[ctx.word.w] || 200) * 1.7), x0 = 730, y0 = 330, x1 = 800, y1 = 660;
+    api.$('toyLayer').innerHTML = `<div class="shadow" id="tsh"></div><img class="toy" id="toy" src="${ctx.word.img}" alt="" style="left:${x0}px;top:${y0}px;height:40px;filter:blur(4px) brightness(.7) saturate(.8)"><div class="eyes" id="eyes"><i></i><i></i></div>`;
     toy = { el: api.$('toy'), sh: api.$('tsh'), eyes: api.$('eyes'), x: x1, y: y1, h: h1 };
     api.pose('anh', C('co_anh_lang_nghe')); api.pose('pip', C('pip_hoi'));
     api.say(`Suỵt! ${ctx.kid} ơi, có tiếng lạch cạch trong hang…`, 30, 250);
@@ -96,12 +96,12 @@ TroChoi.run({
     });
     if (roll) toy.el.style.transform = 'translate(-50%, -100%)';
     api.sfx.thunk();
-    api.say('Ai trốn trong hang đây? Cả lớp đoán xem! Đoán xong cô bấm Hiện hình.', 30, 250);
+    api.say('Ai trốn trong hang đây? Cả lớp đoán xem! Đoán xong cô chạm vào hình.', 30, 250);
     await api.speak((window.CauMau && CauMau.of(ctx.word.w) ? CauMau.of(ctx.word.w).q : "What's this?"), .9); await api.wait(1800);
   },
   async onReveal(api, ctx) { // cô bấm Hiện hình: bật đèn, đồ chơi rõ dần
     api.say('Đèn sáng rồi! Các bạn đoán có đúng không nào?', 30, 250); api.sfx.boing && api.sfx.boing();
-    await api.tween(800, (k, e) => { toy.el.style.filter = `blur(${10 * (1 - e)}px) brightness(${.55 + .45 * e}) saturate(${.7 + .3 * e}) drop-shadow(0 0 ${30 * e}px rgba(255,230,140,${.8 * (1 - k)}))`; });
+    await api.tween(800, (k, e) => { toy.el.style.filter = `blur(${4 * (1 - e)}px) brightness(${.7 + .3 * e}) saturate(${.8 + .2 * e}) drop-shadow(0 0 ${30 * e}px rgba(255,230,140,${.8 * (1 - k)}))`; });
     toy.el.style.filter = 'none'; if (toy.eyes) toy.eyes.style.opacity = 0;
   },
   async onCorrect(api, ctx, praise) {
