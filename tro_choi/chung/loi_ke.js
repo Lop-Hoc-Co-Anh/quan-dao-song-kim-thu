@@ -55,16 +55,23 @@
       'Consolidation': 'Đây là chuyến thuyền cuối cùng rồi! Các bạn nói to từng từ, hai thuyền sẽ cập bến hải đăng, mình gom những viên đá sáng cuối cùng!',
     } },
   };
+  // truyện ngắn Pip kể (có vài từ tiếng Anh): cô ghi một lần ở trang Giọng cô, Bài chiếu phát lại. Khoá: mã đảo + unit
+  const truyen = {
+    daosongkim3d: { 'Unit 2 Toys': { ten: 'Truyện: Gấu tìm đồ chơi', tu: 'ball, car, train, doll, teddy', ke: "Sáng nay, Pip bay ngang Hang đồ chơi thì nghe tiếng khóc hu hu. Ai vậy ta? À, là bạn Gấu! Gấu buồn lắm, vì đồ chơi của Gấu trốn hết vào hang rồi. Pip ghé mắt nhìn vào hang tối. Có một cái bóng tròn tròn, nảy tưng tưng. What's this? It's a ball! Ball! Rồi một cái bóng chạy vèo vèo, bíp bíp. What's this? It's a car! Car! Nghe kìa: xình xịch, xình xịch! It's a train! Train! Còn hai bạn trốn sau cùng: một bạn tóc dài mặc váy hồng, và một bạn lông mềm mềm. It's a doll! It's a teddy! Gấu vui quá, ôm teddy thật chặt. Gấu nói: Thank you, Pip! Bây giờ cả lớp mình cùng gọi tên đồ chơi với Gấu nhé: ball, car, train, doll, teddy!" } },
+  };
   // mã lưu giọng cô (chỉ chữ thường không dấu, vì giong_co.js bỏ các ký tự khác)
   const slug = s => String(s).toLowerCase().normalize('NFD').replace(/[^a-z]+/g, ' ').trim();
   const maTro = g => 'pipke tro ' + slug(g);
   const maDao = (store, unit) => 'pipke ' + slug(store) + ' ' + slug(unit);
+  const maTruyen = (store, unit) => 'pipke truyen ' + slug(store) + ' ' + slug(unit);
+  const truyenOf = (store, unit) => { const t = truyen[store] && truyen[store][unit]; return t ? Object.assign({ ma: maTruyen(store, unit) }, t) : null; };
   // danh sách đầy đủ để ghi âm / in kịch bản: [{ma, nhom, ten, ke}]
   function list(store) {
     const out = [];
     Object.entries(dao).forEach(([k, d]) => { if (store && store !== 'all' && store !== k) return; Object.entries(d.ke).forEach(([u, t]) => out.push({ ma: maDao(k, u), nhom: d.ten, ten: u, ke: t })); });
+    Object.entries(truyen).forEach(([k, d]) => { if (store && store !== 'all' && store !== k) return; Object.entries(d).forEach(([u, t]) => out.push({ ma: maTruyen(k, u), nhom: 'Truyện Pip kể · ' + ((dao[k] && dao[k].ten) || k) + ' · ' + u, ten: t.ten, ke: t.ke, dai: true })); });
     Object.entries(tro).forEach(([g, d]) => out.push({ ma: maTro(g), nhom: 'Trò chơi (dùng chung cả ba đảo)', ten: d.ten, ke: d.ke }));
     return out;
   }
-  window.LOI_KE = { tro, dao, maTro, maDao, list };
+  window.LOI_KE = { tro, dao, truyen, maTro, maDao, maTruyen, truyenOf, list };
 })();
