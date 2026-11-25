@@ -63,6 +63,7 @@
 <script src="../chung/giong_co.js"></script>
 <script src="../chung/loi_ke.js"></script>
 <script src="../chung/truyen_sach.js"></script>
+<script src="../chung/cau_sach2.js"></script>
 <script src="../chung/chant.js"></script>
 <script>
 (function () {
@@ -78,7 +79,7 @@
   // từ của tiết: lấy hình trong kho từ chung
   const find = w => (window.KHO_TU || []).find(W => [w, w.replace(/s$/, ''), w.split(' ')[0]].includes(W.w.toLowerCase()));
   const W = [...new Set((Q.get('tu') || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean))].map(w => ({ w, img: (find(w) || {}).img })).filter(x => x.img).slice(0, 8);
-  const qa = w => { const sb = DAO === 'dao_3d' && window.CAU_SACH3 && CAU_SACH3[w.toLowerCase()]; if (sb) return sb; const c = window.CauMau && CauMau.of(w); if (c) return [c.q, c.a]; return [cau.split('–')[0].split('/')[0].trim() || "What's this?", w.charAt(0).toUpperCase() + w.slice(1) + '!']; };
+  const qa = w => { const CS = DAO === 'dao_3d' ? window.CAU_SACH3 : DAO === 'dao_cau_vong' ? window.CAU_SACH2 : null, sb = CS && CS[w.toLowerCase()]; if (sb) return sb; const c = window.CauMau && CauMau.of(w); if (c) return [c.q, c.a]; return [cau.split('–')[0].split('/')[0].trim() || "What's this?", w.charAt(0).toUpperCase() + w.slice(1) + '!']; };
   const loai = Q.get('loai') || (/ôn tập|review|assessment|consolidation/i.test(nd + ' ' + unit) ? 'on' : /story|truyện/i.test(nd + ' ' + hd) ? 'ke' : 'moi');
   const TS = DAO === 'dao_3d' && window.TRUYEN_SACH && TRUYEN_SACH[unit]; let truyenDau = -1; // truyện trong sách (Đảo Song Kim)
   const TEN_LOAI = { moi: 'New words', on: 'Review', ke: 'Story time' }[loai];
