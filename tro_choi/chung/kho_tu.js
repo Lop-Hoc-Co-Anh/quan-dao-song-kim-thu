@@ -159,3 +159,11 @@ window.KHO_SACH2 = {"amanda": "../hinh/sach_amanda.webp", "george": "../hinh/sac
   Object.keys(S).forEach(w => { if (!K.some(W => W.w.toLowerCase() === w)) K.push({ w, img: S[w], alt: [], g: '', q: '', vn: '' }); });
 })();
 // </SACH2>
+
+// <SACH1> Đảo Hạt Mầm: từ theo giáo án Amanda 1, hình cùng bộ Amanda and Friends – sinh bởi _cong_cu_bai_day/dao_theo_sach1.py
+window.KHO_SACH1 = {"amanda": "../hinh/sach_amanda.webp", "george": "../hinh/sach_george.webp", "alfie": "../hinh/sach_alfie.webp", "teacher": "../hinh/sach_teacher.webp", "bag": "../hinh/sach1_bag.webp", "book": "../hinh/sach1_book.webp", "crayon": "../hinh/sach1_crayon.webp", "pencil": "../hinh/sach1_pencil.webp", "red": "../hinh/sach1_red.webp", "yellow": "../hinh/sach1_yellow.webp", "daddy": "../hinh/sach1_daddy.webp", "mummy": "../hinh/sach1_mummy.webp", "brother": "../hinh/sach1_brother.webp", "sister": "../hinh/sach1_sister.webp", "ball": "../hinh/sach1_ball.webp", "car": "../hinh/sach1_car.webp", "doll": "../hinh/sach1_doll.webp", "teddy": "../hinh/sach1_teddy.webp", "blue": "../hinh/sach1_blue.webp", "green": "../hinh/sach1_green.webp", "ear": "../hinh/sach1_ear.webp", "eye": "../hinh/sach1_eye.webp", "mouth": "../hinh/sach1_mouth.webp", "nose": "../hinh/sach1_nose.webp", "one": "../hinh/sach1_one.webp", "two": "../hinh/sach1_two.webp", "circle": "../hinh/sach1_circle.webp", "cat": "../hinh/sach1_cat.webp", "dog": "../hinh/sach1_dog.webp", "fish": "../hinh/sach1_fish.webp", "mouse": "../hinh/sach1_mouse.webp", "apple": "../hinh/sach1_apple.webp", "banana": "../hinh/sach1_banana.webp", "orange": "../hinh/sach1_orange.webp", "pear": "../hinh/sach1_pear.webp", "three": "../hinh/sach1_three.webp"};
+(function () { const q = new URLSearchParams(location.search).get('dao'); if (q !== 'dao_hat_mam' && !/dao_hat_mam/.test(location.pathname)) return;
+  const S = window.KHO_SACH1, K = window.KHO_TU; K.forEach(W => { const i = S[W.w.toLowerCase()]; if (i) W.img = i; });
+  Object.keys(S).forEach(w => { if (!K.some(W => W.w.toLowerCase() === w)) K.push({ w, img: S[w], alt: [], g: '', q: '', vn: '' }); });
+})();
+// </SACH1>
