@@ -219,7 +219,7 @@
       if (shy) $('shy').innerHTML = `Bạn chọn cách nào cũng được: nói to, nói cùng bạn, hay chỉ vào hình!`; $('turn').hidden = false; $('micRow').hidden = false; $('micBtn').classList.remove('ok', 'no');
       if (G.guessFirst) { api.hideCard(); heard('ĐOÁN XEM', 'Cả lớp đoán xem nào…'); }
       const me = cur; if (G.onTurn) await G.onTurn(api, cur); if (cur !== me || state !== 'intro') return;
-      if (G.guessFirst) { state = 'doan'; $('micRow').hidden = true; $('hienHinh').hidden = false; heard('ĐOÁN XEM', 'Cả lớp đoán xong, cô bấm Hiện hình.'); return; } // chờ cô cho hiện hình
+      if (G.guessFirst) { state = 'doan'; heard('ĐOÁN XEM', 'Đoán xong, cô bấm Enter hoặc chạm vào hình để hiện.'); return; } // chờ cô cho hiện hình
       state = 'turn'; model();
     }
     async function reveal() { // cô bấm Hiện hình: hình rõ ra, hiện thẻ chữ, đọc mẫu
@@ -312,7 +312,7 @@
     $('bAgain').onclick = start; $('bNext').onclick = () => FROM_ISLAND ? goIsland('xong') : openSetup();
     $('bQuit1').onclick = $('kQuit').onclick = quit;
     $('micBtn').onclick = () => listen(); $('kListen').onclick = () => listen(); $('kRepeat').onclick = () => { if (state === 'turn') { stopListen(); model(); } };
-    $('hienHinh').onclick = reveal;
+    $('hienHinh').onclick = reveal; $('scene').addEventListener('click', () => { if (state === 'doan') reveal(); }); // chạm vào hình để hiện
     $('kOk').onclick = () => state === 'doan' ? reveal() : correct(); $('kSkip').onclick = skip; $('kSetup').onclick = openSetup;
     $('kPeek').onclick = () => { peek = !peek; showPeek(); };
     $('kFull').onclick = () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); else document.exitFullscreen(); };
