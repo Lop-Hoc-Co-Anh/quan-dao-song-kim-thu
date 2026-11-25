@@ -211,7 +211,7 @@
     async function nextTurn() {
       stopListen(); askPh = false;
       if (turnIdx >= kids.length) return finish();
-      const W = words[turnIdx % words.length]; cur = { kid: kids[turnIdx], word: W, i: turnIdx }; state = 'intro';
+      const W = words[turnIdx % words.length]; cur = { kid: kids[turnIdx], word: W, i: turnIdx }; state = 'intro'; daHien = false;
       goiMark(members[turnIdx]);
       const pair = pairOn() ? `${nextName[turnIdx]} hỏi · ${kids[turnIdx]} đáp` : '';
       $('turnName').textContent = pair || cur.kid; window.Vui && Vui.luot(turnIdx);
@@ -223,7 +223,7 @@
       state = 'turn'; model();
     }
     async function reveal() { // cô bấm Hiện hình: hình rõ ra, hiện thẻ chữ, đọc mẫu
-      if (state !== 'doan') return; const me = cur; $('hienHinh').hidden = true; state = 'intro';
+      if (state !== 'doan') return; const me = cur; $('hienHinh').hidden = true; state = 'intro'; daHien = true;
       if (G.onReveal) await G.onReveal(api, cur); if (cur !== me || state !== 'intro') return;
       $('micRow').hidden = false; state = 'turn'; model();
     }
@@ -246,7 +246,10 @@
       await Promise.race([step(), skipP]); chorusSkip = null; box.hidden = true; hush();
     }
     function hush() { try { speechSynthesis.cancel(); } catch (e) {} window.GiongCo && GiongCo.stop(); }
+    let daHien = false; // trò đoán hình: chưa cho hiện hình thì Enter / Space chưa tính, tránh bỏ qua bước đoán
+    const choDoan = () => G.guessFirst && state === 'intro' && !daHien;
     async function correct() {
+      if (choDoan()) return;
       if (state === 'turn' && askPh) return answerTurn(); // Enter lúc bạn đang hỏi: sang lượt bạn đáp
       if (state !== 'turn' && state !== 'intro') return; state = 'anim'; stopListen(); const my = runId;
       $('micBtn').classList.remove('no'); $('micBtn').classList.add('ok'); heard('ĐÚNG RỒI!', cur.word.w);
@@ -330,7 +333,7 @@
       if (state === 'doan') { if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); reveal(); } else if (e.key === 's' || e.key === 'S') { $('hienHinh').hidden = true; state = 'intro'; skip(); } return; }
       if (state !== 'turn' && state !== 'intro') return;
       if (e.key === 'Enter' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); correct(); }
-      else if (e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); if (state === 'intro') { state = 'turn'; model(); } else listen(); }
+      else if (e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); if (choDoan()) return; if (state === 'intro') { state = 'turn'; model(); } else listen(); }
       else if (e.key === 'r' || e.key === 'R' || e.key === 'ArrowUp') { if (state === 'turn') { stopListen(); model(); } }
       else if (e.key === 's' || e.key === 'S') skip();
     });
