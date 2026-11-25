@@ -143,9 +143,9 @@
     },
     "daocauvong": {
       "Welcome": {
-        "ten": "Truyện: Những quả bóng cầu vồng",
-        "tu": "Amanda, George, Alfie, red, yellow, blue, green, orange",
-        "ke": "Phao trôi vào bến Đảo Cầu Vồng, ai đứng trên phao kìa? *Who's this? It's Amanda!* *It's George!* Và *Alfie* nữa! Các bạn mang theo bóng bay đủ màu. *What colour is it? It's red!* Rồi *yellow, blue, green* và *orange!* Pip đếm bóng: *one, two, three!* Bóng bay lên thành một chiếc cầu vồng thật đẹp. Cả lớp mình cùng nói nhé: *red, yellow, blue, green, orange!*"
+        "ten": "Truyện: Những người bạn ở bến cầu vồng",
+        "tu": "Amanda, George, Alfie, Kelly, teacher, red, yellow, blue",
+        "ke": "Phao trôi vào bến Đảo Cầu Vồng, ai đứng trên phao kìa? Bạn gấu trúc: *Who is this? It's Amanda!* Bạn hà mã: *It's George!* Bạn ếch đeo kính: *It's Alfie!* Bạn bạch tuộc hồng: *It's Kelly!* Và cô giáo nữa: *It's my teacher!* Các bạn mang bóng bay đủ màu: *red, yellow, blue, green, orange!* Pip đếm: *one, two, three!* Cả lớp mình chào các bạn nhé: *Hello, Amanda! Hello, George! Hello, Alfie! Hello, Kelly!*"
       },
       "Unit 1 School": {
         "ten": "Truyện: Cú mèo con tìm đồ",
@@ -159,18 +159,18 @@
       },
       "Unit 3 Body": {
         "ten": "Truyện: Chim cánh cụt qua cầu",
-        "tu": "head, shoulders, arms, hands, legs, feet",
-        "ke": "Chim cánh cụt con đứng bên kia cầu treo. Pip nói: làm theo Ben, cầu sẽ hiện ra! Ben chạm đầu: *head!* Chạm vai: *shoulders!* Giơ hai tay: *arms!* Vỗ bàn tay: *hands!* Đá đá chân: *legs!* Dậm dậm bàn chân: *feet!* Chim cánh cụt lạch bạch qua cầu. Cả lớp mình đứng lên làm theo nhé: *head, shoulders, arms, hands, legs, feet!*"
+        "tu": "head, arms, hands, legs, ears, eyes, mouth, nose",
+        "ke": "Chim cánh cụt con đứng bên kia cầu treo. Pip nói: làm theo Ben, cầu sẽ hiện ra! Ben chạm đầu: *This is my head!* Giơ hai tay: *They're my arms!* Vỗ bàn tay: *They're my hands!* Đá đá chân: *They're my legs!* Ben chỉ tai: *ears!* Chỉ mắt: *eyes!* Chỉ miệng: *mouth!* Chỉ mũi: *nose!* Chim cánh cụt lạch bạch qua cầu. Cả lớp mình đứng lên làm theo nhé: *head, arms, hands, legs, ears, eyes, mouth, nose!*"
       },
       "Unit 4 Clothes": {
         "ten": "Truyện: Hồng hạc con lạnh run",
-        "tu": "T-shirt, trousers, skirt, dress, shoes",
-        "ke": "Trên núi tuyết, hồng hạc con lạnh run, quần áo bị băng phủ kín. Pip gõ gõ, băng vỡ ra: rắc, rắc! *What is it? It's a T-shirt!* Rắc, rắc! *Trousers!* Rắc, rắc! *It's a skirt!* Rắc, rắc! *It's a dress!* Còn có đôi giày nữa: *Shoes!* Hồng hạc con mặc ấm rồi, cảm ơn Pip. Cả lớp mình cùng nói nhé: *T-shirt, trousers, skirt, dress, shoes!*"
+        "tu": "coat, dress, hat, jumper, shoes, trousers, cold, hot",
+        "ke": "Ở Phố quần áo, hồng hạc con lạnh run: *I'm cold!* Quần áo bị băng phủ kín. Pip gõ gõ, băng vỡ ra: rắc, rắc! *What is it? It's a coat!* Rắc, rắc! *It's a jumper!* Rắc, rắc! *It's a hat!* Rắc, rắc! *It's a dress!* Còn có *shoes* và *trousers* nữa. Hồng hạc con mặc vào, ấm quá: *I'm hot!* hi hi! Cả lớp mình cùng nói nhé: *coat, dress, hat, jumper, shoes, trousers!*"
       },
       "Unit 5 Animals": {
         "ten": "Truyện: Hươu cao cổ chơi trốn tìm",
-        "tu": "elephant, lion, monkey, snake, dog, cat",
-        "ke": "Hươu cao cổ con cổ dài, nhìn thấy hết các bạn đang trốn. Bụi cây có cái vòi dài: *What animal is this? It's an elephant!* Tiếng gầm: *It's a lion!* Tiếng khẹc khẹc trên cây: *It's a monkey!* Tiếng xì xì dưới cỏ: *It's a snake!* Tiếng gâu gâu: *It's a dog!* Tiếng meo meo: *It's a cat!* Tìm được hết rồi! Cả lớp mình cùng nói nhé: *elephant, lion, monkey, snake, dog, cat!*"
+        "tu": "cat, dog, fish, mouse, cow, horse, pig, sheep",
+        "ke": "Trên Đồng cỏ, hươu cao cổ con cổ dài nhìn thấy hết các bạn đang trốn. Meo meo: *What animal is this? It's a cat!* Gâu gâu: *It's a dog!* Dưới ao quẫy đuôi: *It's a fish!* Chít chít: *It's a mouse!* Ụm bò: *It's a cow!* Hí hí: *It's a horse!* Ụt ịt: *It's a pig!* Be be: *It's a sheep!* Tìm được hết rồi! Cả lớp mình cùng nói nhé: *cat, dog, fish, mouse, cow, horse, pig, sheep!*"
       },
       "Unit 6 Transport": {
         "ten": "Truyện: Cáo con tới sân bay",
