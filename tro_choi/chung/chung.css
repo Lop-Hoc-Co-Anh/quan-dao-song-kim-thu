@@ -101,3 +101,9 @@ button:focus-visible, .wpick:focus-within { outline: 4px solid #2E6FD8; outline-
 #ovSetup .opts { margin-top: 10px; gap: 6px 18px; font-size: 17px; }
 #ovSetup .row { margin-top: 12px; flex: 0 0 auto; }
 #ovSetup .big { padding: 12px 30px 15px; }
+
+/* nút cô bấm cho hiện hình sau khi cả lớp đoán */
+.hienHinh { position: absolute; left: 800px; top: 245px; transform: translateX(-50%); z-index: 6; border: 0; border-radius: 28px; background: #2E8FD8; color: #fff; font: 800 44px/1.1 'Baloo 2', Arial, sans-serif; padding: 18px 46px 16px; box-shadow: 0 9px 0 #1F5F8B; cursor: pointer; animation: hhPulse 1.4s ease-in-out infinite; }
+.hienHinh small { display: block; font: 700 18px 'Nunito', Arial, sans-serif; opacity: .9; margin-top: 4px; }
+.hienHinh:active { transform: translateX(-50%) translateY(6px); box-shadow: 0 3px 0 #1F5F8B; }
+@keyframes hhPulse { 50% { transform: translateX(-50%) scale(1.05); } }

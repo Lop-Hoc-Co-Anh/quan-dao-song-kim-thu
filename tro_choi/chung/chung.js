@@ -31,6 +31,7 @@
     <button class="micBtn" id="micBtn" title="Nghe bé đọc (phím cách)"><svg viewBox="0 0 24 24"><rect x="8.5" y="2.5" width="7" height="12" rx="3.5" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3.5M8.5 21.5h7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button>
     <div class="heard" id="heard"><b id="heardLbl">MÁY ĐANG NGHE</b><span id="heardTxt">…</span></div>
   </div>
+  <button class="hienHinh" id="hienHinh" hidden>👀 Hiện hình<small>Cả lớp đoán xong, cô bấm (Enter)</small></button>
   <div class="keys" id="keys" hidden>
     <button class="k" id="kRepeat">Đọc mẫu lại<kbd>R</kbd></button>
     <button class="k" id="kListen">Nghe lại<kbd>Space</kbd></button>
@@ -218,7 +219,13 @@
       if (shy) $('shy').innerHTML = `Bạn chọn cách nào cũng được: nói to, nói cùng bạn, hay chỉ vào hình!`; $('turn').hidden = false; $('micRow').hidden = false; $('micBtn').classList.remove('ok', 'no');
       if (G.guessFirst) { api.hideCard(); heard('ĐOÁN XEM', 'Cả lớp đoán xem nào…'); }
       const me = cur; if (G.onTurn) await G.onTurn(api, cur); if (cur !== me || state !== 'intro') return;
+      if (G.guessFirst) { state = 'doan'; $('micRow').hidden = true; $('hienHinh').hidden = false; heard('ĐOÁN XEM', 'Cả lớp đoán xong, cô bấm Hiện hình.'); return; } // chờ cô cho hiện hình
       state = 'turn'; model();
+    }
+    async function reveal() { // cô bấm Hiện hình: hình rõ ra, hiện thẻ chữ, đọc mẫu
+      if (state !== 'doan') return; const me = cur; $('hienHinh').hidden = true; state = 'intro';
+      if (G.onReveal) await G.onReveal(api, cur); if (cur !== me || state !== 'intro') return;
+      $('micRow').hidden = false; state = 'turn'; model();
     }
     let chorusSkip = null, runId = 0, invited = false;
     const LAN = QS.get('dao') === 'dao_hat_mam' ? 1 : 2; // số lần cả lớp đọc lại
@@ -249,12 +256,13 @@
       await api.wait(500); await chorus(cur.word, my); if (my !== runId || (state !== 'anim' && state !== 'chorus')) return; turnIdx++; nextTurn();
     }
     async function skip() {
+      if (state === 'doan') { $('hienHinh').hidden = true; state = 'intro'; }
       if (state !== 'turn' && state !== 'intro') return; stopListen(); askPh = false; state = 'anim'; const my = runId;
       results[turnIdx] = { kid: cur.kid, word: cur.word, ok: false };
       if (G.onSkip) await G.onSkip(api, cur); if (my !== runId || state !== 'anim') return; api.progress(); await chorus(cur.word, my); if (my !== runId || (state !== 'anim' && state !== 'chorus')) return; turnIdx++; nextTurn();
     }
     async function finish() {
-      const my0 = runId; state = 'finish'; ['turn', 'card', 'micRow', 'shy', 'chorus'].forEach(i => $(i).hidden = true); stopListen();
+      const my0 = runId; state = 'finish'; ['turn', 'card', 'micRow', 'shy', 'chorus', 'hienHinh'].forEach(i => $(i).hidden = true); stopListen();
       try { const K = 'songkim_vinhdanh', v = JSON.parse(localStorage.getItem(K) || '{}'); kids.forEach((k, i) => (members[i] || [k]).forEach(n => { const r = v[n] || (v[n] = { dung: 0, luot: 0 }); r.luot++; if (results[i] && results[i].ok) r.dung++; })); localStorage.setItem(K, JSON.stringify(v)); } catch (e) {} // ghi cho bảng vinh danh
       sfx.fanfare(); api.speak("Hooray! Well done, everyone!", .95);
       if (G.onFinish) await G.onFinish(api); if (my0 !== runId || state !== 'finish') return;
@@ -288,7 +296,7 @@
       if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
       fetch('/quit', { method: 'POST' }).catch(() => {}); setTimeout(() => { try { window.close(); } catch (e) {} }, 400);
     }
-    function openSetup() { window.Vui && Vui.an(); stopListen(); hush(); runId++; state = 'setup'; $('chorus').hidden = true; buildSetup(); $('ovDone').hidden = true; $('ovSetup').hidden = false; $('bStart').focus(); }
+    function openSetup() { $('hienHinh').hidden = true; window.Vui && Vui.an(); stopListen(); hush(); runId++; state = 'setup'; $('chorus').hidden = true; buildSetup(); $('ovDone').hidden = true; $('ovSetup').hidden = false; $('bStart').focus(); }
     function buildSetup() {
       $('names').value = names;
       $('wordPick').innerHTML = G.words.map(W => `<label class="wpick ${cfg.words.includes(W.w) ? 'on' : ''}"><input type="checkbox" value="${W.w}" ${cfg.words.includes(W.w) ? 'checked' : ''}><img src="${W.img}" alt=""><span>${W.w}</span></label>`).join('');
@@ -304,7 +312,8 @@
     $('bAgain').onclick = start; $('bNext').onclick = () => FROM_ISLAND ? goIsland('xong') : openSetup();
     $('bQuit1').onclick = $('kQuit').onclick = quit;
     $('micBtn').onclick = () => listen(); $('kListen').onclick = () => listen(); $('kRepeat').onclick = () => { if (state === 'turn') { stopListen(); model(); } };
-    $('kOk').onclick = correct; $('kSkip').onclick = skip; $('kSetup').onclick = openSetup;
+    $('hienHinh').onclick = reveal;
+    $('kOk').onclick = () => state === 'doan' ? reveal() : correct(); $('kSkip').onclick = skip; $('kSetup').onclick = openSetup;
     $('kPeek').onclick = () => { peek = !peek; showPeek(); };
     $('kFull').onclick = () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); else document.exitFullscreen(); };
     document.addEventListener('keydown', e => {
@@ -318,6 +327,7 @@
       if (state === 'chorus' && e.key === 'Escape') { chorusSkip && chorusSkip(); return openSetup(); }
       if (state === 'chorus') { if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') { e.preventDefault(); chorusSkip && chorusSkip(); } return; }
       if (e.key === 'Escape') return openSetup();
+      if (state === 'doan') { if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); reveal(); } else if (e.key === 's' || e.key === 'S') { $('hienHinh').hidden = true; state = 'intro'; skip(); } return; }
       if (state !== 'turn' && state !== 'intro') return;
       if (e.key === 'Enter' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); correct(); }
       else if (e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); if (state === 'intro') { state = 'turn'; model(); } else listen(); }
