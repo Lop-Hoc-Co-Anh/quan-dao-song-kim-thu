@@ -56,7 +56,7 @@ h2 { font: 800 24px 'Baloo 2'; margin: 20px 0 8px; }
     Giọng cô lưu trong máy tính này, trên trình duyệt này; đổi máy thì bấm <b>Sao lưu giọng</b> rồi <b>Nhập giọng</b> ở máy mới. Từ nào chưa ghi thì trò chơi dùng giọng máy.</p>
   <div class="msg" id="msg"></div>
   <h2 id="hKe">Lời Pip kể chuyện</h2>
-  <p class="note">Cô đọc như đang kể cho các bé nghe, đọc xong bấm <b>Dừng</b> (tối đa 45 giây). Khi cô mở bảng tiết học trên đảo, Pip sẽ kể bằng giọng cô. Đoạn chưa ghi thì Pip im lặng, cô tự kể như trước.</p>
+  <p class="note">Cô đọc như đang kể cho các bé nghe, đọc xong bấm <b>Dừng</b> (tối đa 45 giây; truyện Pip kể tối đa 90 giây). Khi cô mở bảng tiết học trên đảo, Pip sẽ kể bằng giọng cô. Đoạn chưa ghi thì Pip im lặng, cô tự kể như trước.</p>
   <div class="ke" id="ke"></div>
   <h2>Câu thường dùng trong trò chơi</h2>
   <div class="grid" id="phrases"></div>
@@ -94,12 +94,12 @@ function draw() {
   $('phrases').innerHTML = PHRASES.filter(t => !q || t.toLowerCase().includes(q)).map((t, i) => card(t, '', 'p' + i)).join('');
   const KE = LOI_KE.list($('selDao').value).filter(K => !q || (K.ke + ' ' + K.ten).toLowerCase().includes(q));
   $('ke').innerHTML = KE.map((K, i) => { const done = GiongCo.has(K.ma); return `<div class="kc ${done ? 'done' : ''}"><h4>${esc(K.ten)}<small>${esc(K.nhom)}</small></h4>
-    <div class="bt"><button class="rec" data-krec="${esc(K.ma)}">Ghi</button><button data-kplay="${esc(K.ma)}" ${done ? '' : 'disabled'}>Nghe</button><button data-kdel="${esc(K.ma)}" ${done ? '' : 'disabled'}>Xoá</button></div>
+    <div class="bt"><button class="rec" data-krec="${esc(K.ma)}" data-max="${K.dai ? 90000 : 45000}">Ghi</button><button data-kplay="${esc(K.ma)}" ${done ? '' : 'disabled'}>Nghe</button><button data-kdel="${esc(K.ma)}" ${done ? '' : 'disabled'}>Xoá</button></div>
     <p>${esc(K.ke)}</p><span class="st">${done ? '✓ đã có giọng cô' : 'chưa ghi'}</span></div>`; }).join('');
   const kGot = LOI_KE.list($('selDao').value).filter(K => GiongCo.has(K.ma)).length; $('hKe').textContent = `Lời Pip kể chuyện (đã ghi ${kGot} / ${LOI_KE.list($('selDao').value).length})`;
-  document.querySelectorAll('[data-krec]').forEach(b => b.onclick = () => record(b.dataset.krec, b, 45000));
+  document.querySelectorAll('[data-krec]').forEach(b => b.onclick = () => record(b.dataset.krec, b, +b.dataset.max || 45000));
   document.querySelectorAll('[data-kdel]').forEach(b => b.onclick = () => GiongCo.del(b.dataset.kdel).then(() => { msg('Đã xoá lời kể này.'); draw(); }));
-  document.querySelectorAll('[data-kplay]').forEach(b => b.onclick = () => GiongCo.play(b.dataset.kplay, 60000));
+  document.querySelectorAll('[data-kplay]').forEach(b => b.onclick = () => GiongCo.play(b.dataset.kplay, 120000));
   $('words').innerHTML = list.filter(W => !q || W.w.toLowerCase().includes(q)).map((W, i) => card(W.w, imgOf(W), 'w' + i)).join('');
   const all = PHRASES.length + list.length, got = PHRASES.filter(t => GiongCo.has(t)).length + list.filter(W => GiongCo.has(W.w)).length;
   $('count').textContent = `Đã ghi ${got} / ${all}`;
