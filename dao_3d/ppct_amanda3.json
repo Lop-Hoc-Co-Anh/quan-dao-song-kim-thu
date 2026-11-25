@@ -1,1 +1,632 @@
-[{"tuan": "1", "buoi": "1", "unit": "Welcome", "nd": "Hình dạng, màu sắc, số 1–6", "tu": "circle, square, triangle; pink, black, white, blue; 1–6", "cau": "What shape is it? / What colour is it?", "hd": "Hello/Bye-bye; shape game"}, {"tuan": "1", "buoi": "2", "unit": "Welcome", "nd": "Ôn tập – thực hành hình dạng, màu sắc, số 1–6", "tu": "circle, square, triangle; pink, black, white, blue; 1–6", "cau": "What shape is it? / What colour is it?", "hd": "Hello/Bye-bye; shape game; pair/group practice"}, {"tuan": "2", "buoi": "1", "unit": "Unit 1 Home", "nd": "Các phòng trong nhà", "tu": "bedroom, kitchen, bathroom, living room", "cau": "What room is this? – It’s a …", "hd": "My House song"}, {"tuan": "2", "buoi": "2", "unit": "Unit 1 Home", "nd": "Ôn tập – thực hành các phòng trong nhà", "tu": "bedroom, kitchen, bathroom, living room", "cau": "What room is this? – It’s a …", "hd": "My House song; pair/group practice"}, {"tuan": "3", "buoi": "1", "unit": "Unit 1 Home", "nd": "Số 7–10 và màu sắc", "tu": "seven, eight, nine, ten; colours", "cau": "What colour is number 10?", "hd": "Number songs; counting"}, {"tuan": "3", "buoi": "2", "unit": "Unit 1 Home", "nd": "Ôn tập – thực hành số 7–10 và màu sắc", "tu": "seven, eight, nine, ten; colours", "cau": "What colour is number 10?", "hd": "Number songs; counting; pair/group practice"}, {"tuan": "4", "buoi": "1", "unit": "Unit 1 Home", "nd": "Ôn Unit 1", "tu": "Rooms + numbers 7–10", "cau": "Where’s Alfie? – In the …", "hd": "Story; review"}, {"tuan": "4", "buoi": "2", "unit": "Unit 1 Home", "nd": "Ôn tập – thực hành ôn unit 1", "tu": "Rooms + numbers 7–10", "cau": "Where’s Alfie? – In the …", "hd": "Story; review; pair/group practice"}, {"tuan": "5", "buoi": "1", "unit": "Unit 2 Toys", "nd": "Đồ chơi", "tu": "car, ball, doll, teddy, train", "cau": "What’s this? – It’s a …", "hd": "Toy game"}, {"tuan": "5", "buoi": "2", "unit": "Unit 2 Toys", "nd": "Ôn tập – thực hành đồ chơi", "tu": "car, ball, doll, teddy, train", "cau": "What’s this? – It’s a …", "hd": "Toy game; pair/group practice"}, {"tuan": "6", "buoi": "1", "unit": "Unit 2 Toys", "nd": "Màu sắc và đồ chơi", "tu": "toy vocabulary + colours", "cau": "What colour is it?", "hd": "Matching; coloring"}, {"tuan": "6", "buoi": "2", "unit": "Unit 2 Toys", "nd": "Ôn tập – thực hành màu sắc và đồ chơi", "tu": "toy vocabulary + colours", "cau": "What colour is it?", "hd": "Matching; coloring; pair/group practice"}, {"tuan": "7", "buoi": "1", "unit": "Unit 2 Toys", "nd": "Số lượng và đặc điểm", "tu": "numbers; big/little; long/short", "cau": "How many? / Is it long or short?", "hd": "Sorting"}, {"tuan": "7", "buoi": "2", "unit": "Unit 2 Toys", "nd": "Ôn tập – thực hành số lượng và đặc điểm", "tu": "numbers; big/little; long/short", "cau": "How many? / Is it long or short?", "hd": "Sorting; pair/group practice"}, {"tuan": "8", "buoi": "1", "unit": "Review", "nd": "Ôn Units 1–2", "tu": "Home + Toys", "cau": "What room/toy? / How many?", "hd": "Review stations"}, {"tuan": "8", "buoi": "2", "unit": "Review", "nd": "Ôn tập – thực hành ôn units 1–2", "tu": "Home + Toys", "cau": "What room/toy? / How many?", "hd": "Review stations; pair/group practice"}, {"tuan": "9", "buoi": "1", "unit": "Unit 3 Body", "nd": "Bộ phận cơ thể", "tu": "head, arm, hand, finger, leg, foot", "cau": "What is this? / How many fingers?", "hd": "Action song"}, {"tuan": "9", "buoi": "2", "unit": "Unit 3 Body", "nd": "Ôn tập – thực hành bộ phận cơ thể", "tu": "head, arm, hand, finger, leg, foot", "cau": "What is this? / How many fingers?", "hd": "Action song; pair/group practice"}, {"tuan": "10", "buoi": "1", "unit": "Unit 3 Body", "nd": "Dài – ngắn", "tu": "long, short; body parts", "cau": "Is it long or short?", "hd": "Compare and move"}, {"tuan": "10", "buoi": "2", "unit": "Unit 3 Body", "nd": "Ôn tập – thực hành dài – ngắn", "tu": "long, short; body parts", "cau": "Is it long or short?", "hd": "Compare and move; pair/group practice"}, {"tuan": "11", "buoi": "1", "unit": "Unit 3 Body", "nd": "Ôn và story", "tu": "Body vocabulary", "cau": "How many …?", "hd": "Story; TPR"}, {"tuan": "11", "buoi": "2", "unit": "Unit 3 Body", "nd": "Ôn tập – thực hành ôn và story", "tu": "Body vocabulary", "cau": "How many …?", "hd": "Story; TPR; pair/group practice"}, {"tuan": "12", "buoi": "1", "unit": "Unit 3 Body", "nd": "Củng cố Unit 3", "tu": "Body + adjectives", "cau": "What is this?", "hd": "Review"}, {"tuan": "12", "buoi": "2", "unit": "Unit 3 Body", "nd": "Ôn tập – thực hành củng cố unit 3", "tu": "Body + adjectives", "cau": "What is this?", "hd": "Review; pair/group practice"}, {"tuan": "13", "buoi": "1", "unit": "Unit 4 Clothes", "nd": "Quần áo", "tu": "boots, scarf, shorts, skirt, socks, T-shirt", "cau": "What is it? – It’s a …", "hd": "Dress-up"}, {"tuan": "13", "buoi": "2", "unit": "Unit 4 Clothes", "nd": "Ôn tập – thực hành quần áo", "tu": "boots, scarf, shorts, skirt, socks, T-shirt", "cau": "What is it? – It’s a …", "hd": "Dress-up; pair/group practice"}, {"tuan": "14", "buoi": "1", "unit": "Unit 4 Clothes", "nd": "Màu sắc quần áo", "tu": "clothes + colours", "cau": "What colour is the …?", "hd": "Color game"}, {"tuan": "14", "buoi": "2", "unit": "Unit 4 Clothes", "nd": "Ôn tập – thực hành màu sắc quần áo", "tu": "clothes + colours", "cau": "What colour is the …?", "hd": "Color game; pair/group practice"}, {"tuan": "15", "buoi": "1", "unit": "Unit 4 Clothes", "nd": "Vị trí", "tu": "in, on, under; clothes", "cau": "Where is …? – It’s …", "hd": "Position game"}, {"tuan": "15", "buoi": "2", "unit": "Unit 4 Clothes", "nd": "Ôn tập – thực hành vị trí", "tu": "in, on, under; clothes", "cau": "Where is …? – It’s …", "hd": "Position game; pair/group practice"}, {"tuan": "16", "buoi": "1", "unit": "Review", "nd": "Ôn Units 3–4", "tu": "Body + Clothes", "cau": "What/Where/How many?", "hd": "Review"}, {"tuan": "16", "buoi": "2", "unit": "Review", "nd": "Ôn tập – thực hành ôn units 3–4", "tu": "Body + Clothes", "cau": "What/Where/How many?", "hd": "Review; pair/group practice"}, {"tuan": "17", "buoi": "1", "unit": "Unit 5 Animals", "nd": "Động vật", "tu": "elephant, snake, lion, monkey, dog, pig, fish, mouse", "cau": "What animal is this?", "hd": "Animal song"}, {"tuan": "17", "buoi": "2", "unit": "Unit 5 Animals", "nd": "Ôn tập – thực hành động vật", "tu": "elephant, snake, lion, monkey, dog, pig, fish, mouse", "cau": "What animal is this?", "hd": "Animal song; pair/group practice"}, {"tuan": "18", "buoi": "1", "unit": "Unit 5 Animals", "nd": "Nhanh – chậm", "tu": "fast, slow, snail, fly", "cau": "Is it fast or slow?", "hd": "Movement game"}, {"tuan": "18", "buoi": "2", "unit": "Unit 5 Animals", "nd": "Ôn tập – thực hành nhanh – chậm", "tu": "fast, slow, snail, fly", "cau": "Is it fast or slow?", "hd": "Movement game; pair/group practice"}, {"tuan": "19", "buoi": "1", "unit": "Unit 5 Animals", "nd": "To – nhỏ và cảm xúc", "tu": "big, little, happy, sad", "cau": "Is it big/little?", "hd": "Sorting; mime"}, {"tuan": "19", "buoi": "2", "unit": "Unit 5 Animals", "nd": "Ôn tập – thực hành to – nhỏ và cảm xúc", "tu": "big, little, happy, sad", "cau": "Is it big/little?", "hd": "Sorting; mime; pair/group practice"}, {"tuan": "20", "buoi": "1", "unit": "Unit 5 Animals", "nd": "Ôn Unit 5", "tu": "Animals + adjectives", "cau": "What animal is this?", "hd": "Story; review"}, {"tuan": "20", "buoi": "2", "unit": "Unit 5 Animals", "nd": "Ôn tập – thực hành ôn unit 5", "tu": "Animals + adjectives", "cau": "What animal is this?", "hd": "Story; review; pair/group practice"}, {"tuan": "21", "buoi": "1", "unit": "Unit 6 Food", "nd": "Đồ ăn, thức uống", "tu": "fruit, water, cake, sandwiches", "cau": "What’s this? – It’s …", "hd": "Food and Drink song"}, {"tuan": "21", "buoi": "2", "unit": "Unit 6 Food", "nd": "Ôn tập – thực hành đồ ăn, thức uống", "tu": "fruit, water, cake, sandwiches", "cau": "What’s this? – It’s …", "hd": "Food and Drink song; pair/group practice"}, {"tuan": "22", "buoi": "1", "unit": "Unit 6 Food", "nd": "Trái cây", "tu": "apple, banana, orange, pear", "cau": "What’s this?", "hd": "Fruit game"}, {"tuan": "22", "buoi": "2", "unit": "Unit 6 Food", "nd": "Ôn tập – thực hành trái cây", "tu": "apple, banana, orange, pear", "cau": "What’s this?", "hd": "Fruit game; pair/group practice"}, {"tuan": "23", "buoi": "1", "unit": "Unit 6 Food", "nd": "Đói – khát", "tu": "hungry, thirsty", "cau": "I’m hungry. / I’m thirsty.", "hd": "Hungry and Thirsty song"}, {"tuan": "23", "buoi": "2", "unit": "Unit 6 Food", "nd": "Ôn tập – thực hành đói – khát", "tu": "hungry, thirsty", "cau": "I’m hungry. / I’m thirsty.", "hd": "Hungry and Thirsty song; pair/group practice"}, {"tuan": "24", "buoi": "1", "unit": "Unit 6 Food", "nd": "Ôn Unit 6", "tu": "food + hungry/thirsty", "cau": "Are you hungry or thirsty?", "hd": "Role-play"}, {"tuan": "24", "buoi": "2", "unit": "Unit 6 Food", "nd": "Ôn tập – thực hành ôn unit 6", "tu": "food + hungry/thirsty", "cau": "Are you hungry or thirsty?", "hd": "Role-play; pair/group practice"}, {"tuan": "25", "buoi": "1", "unit": "Unit 6 Food", "nd": "Story và sở thích", "tu": "eat, drink; food", "cau": "What’s Amanda eating?", "hd": "Story; mime"}, {"tuan": "25", "buoi": "2", "unit": "Unit 6 Food", "nd": "Ôn tập – thực hành story và sở thích", "tu": "eat, drink; food", "cau": "What’s Amanda eating?", "hd": "Story; mime; pair/group practice"}, {"tuan": "26", "buoi": "1", "unit": "Unit 6 Food", "nd": "Ôn mở rộng", "tu": "food/drink + feelings", "cau": "What’s this? / Is it to eat or drink?", "hd": "Sorting game"}, {"tuan": "26", "buoi": "2", "unit": "Unit 6 Food", "nd": "Ôn tập – thực hành ôn mở rộng", "tu": "food/drink + feelings", "cau": "What’s this? / Is it to eat or drink?", "hd": "Sorting game; pair/group practice"}, {"tuan": "27", "buoi": "1", "unit": "Festivals", "nd": "Halloween", "tu": "ghost, pumpkin, bat, cat, monster, spider, witch, costume", "cau": "Who is this? / What is it?", "hd": "Halloween chant"}, {"tuan": "27", "buoi": "2", "unit": "Festivals", "nd": "Ôn tập – thực hành halloween", "tu": "ghost, pumpkin, bat, cat, monster, spider, witch, costume", "cau": "Who is this? / What is it?", "hd": "Halloween chant; pair/group practice"}, {"tuan": "28", "buoi": "1", "unit": "Festivals", "nd": "Christmas", "tu": "reindeer, sleigh, presents, Santa, star, tree", "cau": "Merry Christmas. / Is this …?", "hd": "Christmas song/craft"}, {"tuan": "28", "buoi": "2", "unit": "Festivals", "nd": "Ôn tập – thực hành christmas", "tu": "reindeer, sleigh, presents, Santa, star, tree", "cau": "Merry Christmas. / Is this …?", "hd": "Christmas song/craft; pair/group practice"}, {"tuan": "29", "buoi": "1", "unit": "Review", "nd": "Ôn Units 1–2", "tu": "Home + Toys", "cau": "Mixed questions", "hd": "Games"}, {"tuan": "29", "buoi": "2", "unit": "Review", "nd": "Ôn tập – thực hành ôn units 1–2", "tu": "Home + Toys", "cau": "Mixed questions", "hd": "Games; pair/group practice"}, {"tuan": "30", "buoi": "1", "unit": "Review", "nd": "Ôn Units 3–4", "tu": "Body + Clothes", "cau": "What/Where/How many?", "hd": "Games"}, {"tuan": "30", "buoi": "2", "unit": "Review", "nd": "Ôn tập – thực hành ôn units 3–4", "tu": "Body + Clothes", "cau": "What/Where/How many?", "hd": "Games; pair/group practice"}, {"tuan": "31", "buoi": "1", "unit": "Review", "nd": "Ôn Units 5–6", "tu": "Animals + Food", "cau": "What animal/food?", "hd": "Games"}, {"tuan": "31", "buoi": "2", "unit": "Review", "nd": "Ôn tập – thực hành ôn units 5–6", "tu": "Animals + Food", "cau": "What animal/food?", "hd": "Games; pair/group practice"}, {"tuan": "32", "buoi": "1", "unit": "Assessment", "nd": "Đánh giá học kỳ I/giữa khóa", "tu": "Units 1–3", "cau": "Nghe – nói – nhận biết", "hd": "Individual observation"}, {"tuan": "32", "buoi": "2", "unit": "Assessment", "nd": "Ôn tập – thực hành đánh giá học kỳ i/giữa khóa", "tu": "Units 1–3", "cau": "Nghe – nói – nhận biết", "hd": "Individual observation; pair/group practice"}, {"tuan": "33", "buoi": "1", "unit": "Assessment", "nd": "Đánh giá học kỳ II", "tu": "Units 4–6", "cau": "Nghe – nói – nhận biết", "hd": "Individual observation"}, {"tuan": "33", "buoi": "2", "unit": "Assessment", "nd": "Ôn tập – thực hành đánh giá học kỳ ii", "tu": "Units 4–6", "cau": "Nghe – nói – nhận biết", "hd": "Individual observation; pair/group practice"}, {"tuan": "34", "buoi": "1", "unit": "Consolidation", "nd": "Ôn tổng hợp", "tu": "All key vocabulary", "cau": "Mixed questions", "hd": "Speaking stations"}, {"tuan": "34", "buoi": "2", "unit": "Consolidation", "nd": "Ôn tập – thực hành ôn tổng hợp", "tu": "All key vocabulary", "cau": "Mixed questions", "hd": "Speaking stations; pair/group practice"}, {"tuan": "35", "buoi": "1", "unit": "Consolidation", "nd": "Tổng kết cuối khóa", "tu": "All key language", "cau": "Phản xạ giao tiếp phù hợp lứa tuổi", "hd": "Portfolio; celebration"}, {"tuan": "35", "buoi": "2", "unit": "Consolidation", "nd": "Ôn tập – thực hành tổng kết cuối khóa", "tu": "All key language", "cau": "Phản xạ giao tiếp phù hợp lứa tuổi", "hd": "Portfolio; celebration; pair/group practice"}]
+[
+ {
+  "tuan": "1",
+  "buoi": "1",
+  "unit": "Welcome",
+  "nd": "Hình dạng, màu sắc, số 1–6",
+  "tu": "circle, square, triangle; pink, black, white, blue; 1–6",
+  "cau": "What shape is it? / What colour is it?",
+  "hd": "Hello/Bye-bye; shape game"
+ },
+ {
+  "tuan": "1",
+  "buoi": "2",
+  "unit": "Welcome",
+  "nd": "Ôn tập – thực hành hình dạng, màu sắc, số 1–6",
+  "tu": "circle, square, triangle; pink, black, white, blue; 1–6",
+  "cau": "What shape is it? / What colour is it?",
+  "hd": "Hello/Bye-bye; shape game; pair/group practice"
+ },
+ {
+  "tuan": "2",
+  "buoi": "1",
+  "unit": "Unit 1 Home",
+  "nd": "Các phòng trong nhà",
+  "tu": "bedroom, kitchen, bathroom, living room",
+  "cau": "What room is this? – It’s a …",
+  "hd": "My House song"
+ },
+ {
+  "tuan": "2",
+  "buoi": "2",
+  "unit": "Unit 1 Home",
+  "nd": "Ôn tập – thực hành các phòng trong nhà",
+  "tu": "bedroom, kitchen, bathroom, living room",
+  "cau": "What room is this? – It’s a …",
+  "hd": "My House song; pair/group practice"
+ },
+ {
+  "tuan": "3",
+  "buoi": "1",
+  "unit": "Unit 1 Home",
+  "nd": "Số 7–10 và màu sắc",
+  "tu": "seven, eight, nine, ten; colours",
+  "cau": "What colour is number 10?",
+  "hd": "Number songs; counting"
+ },
+ {
+  "tuan": "3",
+  "buoi": "2",
+  "unit": "Unit 1 Home",
+  "nd": "Ôn tập – thực hành số 7–10 và màu sắc",
+  "tu": "seven, eight, nine, ten; colours",
+  "cau": "What colour is number 10?",
+  "hd": "Number songs; counting; pair/group practice"
+ },
+ {
+  "tuan": "4",
+  "buoi": "1",
+  "unit": "Unit 1 Home",
+  "nd": "Ôn Unit 1",
+  "tu": "Rooms + numbers 7–10",
+  "cau": "Where’s Alfie? – In the …",
+  "hd": "Story; review"
+ },
+ {
+  "tuan": "4",
+  "buoi": "2",
+  "unit": "Unit 1 Home",
+  "nd": "Ôn tập – thực hành ôn unit 1",
+  "tu": "Rooms + numbers 7–10",
+  "cau": "Where’s Alfie? – In the …",
+  "hd": "Story; review; pair/group practice"
+ },
+ {
+  "tuan": "5",
+  "buoi": "1",
+  "unit": "Unit 2 Toys",
+  "nd": "Đồ chơi",
+  "tu": "seesaw, slide, springer, swing, up, down",
+  "cau": "What’s this? – It’s a … / Up or down?",
+  "hd": "Toy game"
+ },
+ {
+  "tuan": "5",
+  "buoi": "2",
+  "unit": "Unit 2 Toys",
+  "nd": "Ôn tập – thực hành đồ chơi",
+  "tu": "seesaw, slide, springer, swing, up, down",
+  "cau": "What’s this? – It’s a … / Up or down?",
+  "hd": "Toy game; pair/group practice"
+ },
+ {
+  "tuan": "6",
+  "buoi": "1",
+  "unit": "Unit 2 Toys",
+  "nd": "Màu sắc và đồ chơi",
+  "tu": "toy vocabulary + colours",
+  "cau": "What colour is it?",
+  "hd": "Matching; coloring"
+ },
+ {
+  "tuan": "6",
+  "buoi": "2",
+  "unit": "Unit 2 Toys",
+  "nd": "Ôn tập – thực hành màu sắc và đồ chơi",
+  "tu": "toy vocabulary + colours",
+  "cau": "What colour is it?",
+  "hd": "Matching; coloring; pair/group practice"
+ },
+ {
+  "tuan": "7",
+  "buoi": "1",
+  "unit": "Unit 2 Toys",
+  "nd": "Số lượng và đặc điểm",
+  "tu": "numbers; big/little; long/short",
+  "cau": "How many? / Is it long or short?",
+  "hd": "Sorting"
+ },
+ {
+  "tuan": "7",
+  "buoi": "2",
+  "unit": "Unit 2 Toys",
+  "nd": "Ôn tập – thực hành số lượng và đặc điểm",
+  "tu": "numbers; big/little; long/short",
+  "cau": "How many? / Is it long or short?",
+  "hd": "Sorting; pair/group practice"
+ },
+ {
+  "tuan": "8",
+  "buoi": "1",
+  "unit": "Review",
+  "nd": "Ôn Units 1–2",
+  "tu": "Home + Toys",
+  "cau": "What room/toy? / How many?",
+  "hd": "Review stations"
+ },
+ {
+  "tuan": "8",
+  "buoi": "2",
+  "unit": "Review",
+  "nd": "Ôn tập – thực hành ôn units 1–2",
+  "tu": "Home + Toys",
+  "cau": "What room/toy? / How many?",
+  "hd": "Review stations; pair/group practice"
+ },
+ {
+  "tuan": "9",
+  "buoi": "1",
+  "unit": "Unit 3 Body",
+  "nd": "Bộ phận cơ thể",
+  "tu": "hair, teeth, fingers, feet, long, short",
+  "cau": "What’s this? – This is my … / Is it long or short?",
+  "hd": "Action song"
+ },
+ {
+  "tuan": "9",
+  "buoi": "2",
+  "unit": "Unit 3 Body",
+  "nd": "Ôn tập – thực hành bộ phận cơ thể",
+  "tu": "hair, teeth, fingers, feet, long, short",
+  "cau": "What’s this? – This is my … / Is it long or short?",
+  "hd": "Action song; pair/group practice"
+ },
+ {
+  "tuan": "10",
+  "buoi": "1",
+  "unit": "Unit 3 Body",
+  "nd": "Dài – ngắn",
+  "tu": "long, short; body parts",
+  "cau": "Is it long or short?",
+  "hd": "Compare and move"
+ },
+ {
+  "tuan": "10",
+  "buoi": "2",
+  "unit": "Unit 3 Body",
+  "nd": "Ôn tập – thực hành dài – ngắn",
+  "tu": "long, short; body parts",
+  "cau": "Is it long or short?",
+  "hd": "Compare and move; pair/group practice"
+ },
+ {
+  "tuan": "11",
+  "buoi": "1",
+  "unit": "Unit 3 Body",
+  "nd": "Ôn và story",
+  "tu": "Body vocabulary",
+  "cau": "How many …?",
+  "hd": "Story; TPR"
+ },
+ {
+  "tuan": "11",
+  "buoi": "2",
+  "unit": "Unit 3 Body",
+  "nd": "Ôn tập – thực hành ôn và story",
+  "tu": "Body vocabulary",
+  "cau": "How many …?",
+  "hd": "Story; TPR; pair/group practice"
+ },
+ {
+  "tuan": "12",
+  "buoi": "1",
+  "unit": "Unit 3 Body",
+  "nd": "Củng cố Unit 3",
+  "tu": "Body + adjectives",
+  "cau": "What is this?",
+  "hd": "Review"
+ },
+ {
+  "tuan": "12",
+  "buoi": "2",
+  "unit": "Unit 3 Body",
+  "nd": "Ôn tập – thực hành củng cố unit 3",
+  "tu": "Body + adjectives",
+  "cau": "What is this?",
+  "hd": "Review; pair/group practice"
+ },
+ {
+  "tuan": "13",
+  "buoi": "1",
+  "unit": "Unit 4 Clothes",
+  "nd": "Quần áo",
+  "tu": "boots, scarf, shorts, skirt, socks, T-shirt",
+  "cau": "What is it? – It’s a …",
+  "hd": "Dress-up"
+ },
+ {
+  "tuan": "13",
+  "buoi": "2",
+  "unit": "Unit 4 Clothes",
+  "nd": "Ôn tập – thực hành quần áo",
+  "tu": "boots, scarf, shorts, skirt, socks, T-shirt",
+  "cau": "What is it? – It’s a …",
+  "hd": "Dress-up; pair/group practice"
+ },
+ {
+  "tuan": "14",
+  "buoi": "1",
+  "unit": "Unit 4 Clothes",
+  "nd": "Màu sắc quần áo",
+  "tu": "clothes + colours",
+  "cau": "What colour is the …?",
+  "hd": "Color game"
+ },
+ {
+  "tuan": "14",
+  "buoi": "2",
+  "unit": "Unit 4 Clothes",
+  "nd": "Ôn tập – thực hành màu sắc quần áo",
+  "tu": "clothes + colours",
+  "cau": "What colour is the …?",
+  "hd": "Color game; pair/group practice"
+ },
+ {
+  "tuan": "15",
+  "buoi": "1",
+  "unit": "Unit 4 Clothes",
+  "nd": "Vị trí",
+  "tu": "in, on, under; clothes",
+  "cau": "Where is …? – It’s …",
+  "hd": "Position game"
+ },
+ {
+  "tuan": "15",
+  "buoi": "2",
+  "unit": "Unit 4 Clothes",
+  "nd": "Ôn tập – thực hành vị trí",
+  "tu": "in, on, under; clothes",
+  "cau": "Where is …? – It’s …",
+  "hd": "Position game; pair/group practice"
+ },
+ {
+  "tuan": "16",
+  "buoi": "1",
+  "unit": "Review",
+  "nd": "Ôn Units 3–4",
+  "tu": "Body + Clothes",
+  "cau": "What/Where/How many?",
+  "hd": "Review"
+ },
+ {
+  "tuan": "16",
+  "buoi": "2",
+  "unit": "Review",
+  "nd": "Ôn tập – thực hành ôn units 3–4",
+  "tu": "Body + Clothes",
+  "cau": "What/Where/How many?",
+  "hd": "Review; pair/group practice"
+ },
+ {
+  "tuan": "17",
+  "buoi": "1",
+  "unit": "Unit 5 Animals",
+  "nd": "Động vật",
+  "tu": "elephant, snake, lion, monkey, dog, pig, fish, mouse",
+  "cau": "What animal is this?",
+  "hd": "Animal song"
+ },
+ {
+  "tuan": "17",
+  "buoi": "2",
+  "unit": "Unit 5 Animals",
+  "nd": "Ôn tập – thực hành động vật",
+  "tu": "elephant, snake, lion, monkey, dog, pig, fish, mouse",
+  "cau": "What animal is this?",
+  "hd": "Animal song; pair/group practice"
+ },
+ {
+  "tuan": "18",
+  "buoi": "1",
+  "unit": "Unit 5 Animals",
+  "nd": "Nhanh – chậm",
+  "tu": "fast, slow, snail, fly",
+  "cau": "Is it fast or slow?",
+  "hd": "Movement game"
+ },
+ {
+  "tuan": "18",
+  "buoi": "2",
+  "unit": "Unit 5 Animals",
+  "nd": "Ôn tập – thực hành nhanh – chậm",
+  "tu": "fast, slow, snail, fly",
+  "cau": "Is it fast or slow?",
+  "hd": "Movement game; pair/group practice"
+ },
+ {
+  "tuan": "19",
+  "buoi": "1",
+  "unit": "Unit 5 Animals",
+  "nd": "To – nhỏ và cảm xúc",
+  "tu": "big, little, happy, sad",
+  "cau": "Is it big/little?",
+  "hd": "Sorting; mime"
+ },
+ {
+  "tuan": "19",
+  "buoi": "2",
+  "unit": "Unit 5 Animals",
+  "nd": "Ôn tập – thực hành to – nhỏ và cảm xúc",
+  "tu": "big, little, happy, sad",
+  "cau": "Is it big/little?",
+  "hd": "Sorting; mime; pair/group practice"
+ },
+ {
+  "tuan": "20",
+  "buoi": "1",
+  "unit": "Unit 5 Animals",
+  "nd": "Ôn Unit 5",
+  "tu": "Animals + adjectives",
+  "cau": "What animal is this?",
+  "hd": "Story; review"
+ },
+ {
+  "tuan": "20",
+  "buoi": "2",
+  "unit": "Unit 5 Animals",
+  "nd": "Ôn tập – thực hành ôn unit 5",
+  "tu": "Animals + adjectives",
+  "cau": "What animal is this?",
+  "hd": "Story; review; pair/group practice"
+ },
+ {
+  "tuan": "21",
+  "buoi": "1",
+  "unit": "Unit 6 Food",
+  "nd": "Đồ ăn, thức uống",
+  "tu": "fruit, water, cake, sandwiches",
+  "cau": "What’s this? – It’s …",
+  "hd": "Food and Drink song"
+ },
+ {
+  "tuan": "21",
+  "buoi": "2",
+  "unit": "Unit 6 Food",
+  "nd": "Ôn tập – thực hành đồ ăn, thức uống",
+  "tu": "fruit, water, cake, sandwiches",
+  "cau": "What’s this? – It’s …",
+  "hd": "Food and Drink song; pair/group practice"
+ },
+ {
+  "tuan": "22",
+  "buoi": "1",
+  "unit": "Unit 6 Food",
+  "nd": "Trái cây",
+  "tu": "apple, banana, orange, pear",
+  "cau": "What’s this?",
+  "hd": "Fruit game"
+ },
+ {
+  "tuan": "22",
+  "buoi": "2",
+  "unit": "Unit 6 Food",
+  "nd": "Ôn tập – thực hành trái cây",
+  "tu": "apple, banana, orange, pear",
+  "cau": "What’s this?",
+  "hd": "Fruit game; pair/group practice"
+ },
+ {
+  "tuan": "23",
+  "buoi": "1",
+  "unit": "Unit 6 Food",
+  "nd": "Đói – khát",
+  "tu": "hungry, thirsty",
+  "cau": "I’m hungry. / I’m thirsty.",
+  "hd": "Hungry and Thirsty song"
+ },
+ {
+  "tuan": "23",
+  "buoi": "2",
+  "unit": "Unit 6 Food",
+  "nd": "Ôn tập – thực hành đói – khát",
+  "tu": "hungry, thirsty",
+  "cau": "I’m hungry. / I’m thirsty.",
+  "hd": "Hungry and Thirsty song; pair/group practice"
+ },
+ {
+  "tuan": "24",
+  "buoi": "1",
+  "unit": "Unit 6 Food",
+  "nd": "Ôn Unit 6",
+  "tu": "food + hungry/thirsty",
+  "cau": "Are you hungry or thirsty?",
+  "hd": "Role-play"
+ },
+ {
+  "tuan": "24",
+  "buoi": "2",
+  "unit": "Unit 6 Food",
+  "nd": "Ôn tập – thực hành ôn unit 6",
+  "tu": "food + hungry/thirsty",
+  "cau": "Are you hungry or thirsty?",
+  "hd": "Role-play; pair/group practice"
+ },
+ {
+  "tuan": "25",
+  "buoi": "1",
+  "unit": "Unit 6 Food",
+  "nd": "Story và sở thích",
+  "tu": "eat, drink; food",
+  "cau": "What’s Amanda eating?",
+  "hd": "Story; mime"
+ },
+ {
+  "tuan": "25",
+  "buoi": "2",
+  "unit": "Unit 6 Food",
+  "nd": "Ôn tập – thực hành story và sở thích",
+  "tu": "eat, drink; food",
+  "cau": "What’s Amanda eating?",
+  "hd": "Story; mime; pair/group practice"
+ },
+ {
+  "tuan": "26",
+  "buoi": "1",
+  "unit": "Unit 6 Food",
+  "nd": "Ôn mở rộng",
+  "tu": "food/drink + feelings",
+  "cau": "What’s this? / Is it to eat or drink?",
+  "hd": "Sorting game"
+ },
+ {
+  "tuan": "26",
+  "buoi": "2",
+  "unit": "Unit 6 Food",
+  "nd": "Ôn tập – thực hành ôn mở rộng",
+  "tu": "food/drink + feelings",
+  "cau": "What’s this? / Is it to eat or drink?",
+  "hd": "Sorting game; pair/group practice"
+ },
+ {
+  "tuan": "27",
+  "buoi": "1",
+  "unit": "Festivals",
+  "nd": "Halloween",
+  "tu": "ghost, pumpkin, bat, cat, monster, spider, witch, costume",
+  "cau": "Who is this? / What is it?",
+  "hd": "Halloween chant"
+ },
+ {
+  "tuan": "27",
+  "buoi": "2",
+  "unit": "Festivals",
+  "nd": "Ôn tập – thực hành halloween",
+  "tu": "ghost, pumpkin, bat, cat, monster, spider, witch, costume",
+  "cau": "Who is this? / What is it?",
+  "hd": "Halloween chant; pair/group practice"
+ },
+ {
+  "tuan": "28",
+  "buoi": "1",
+  "unit": "Festivals",
+  "nd": "Christmas",
+  "tu": "reindeer, sleigh, presents, Santa, star, tree",
+  "cau": "Merry Christmas. / Is this …?",
+  "hd": "Christmas song/craft"
+ },
+ {
+  "tuan": "28",
+  "buoi": "2",
+  "unit": "Festivals",
+  "nd": "Ôn tập – thực hành christmas",
+  "tu": "reindeer, sleigh, presents, Santa, star, tree",
+  "cau": "Merry Christmas. / Is this …?",
+  "hd": "Christmas song/craft; pair/group practice"
+ },
+ {
+  "tuan": "29",
+  "buoi": "1",
+  "unit": "Review",
+  "nd": "Ôn Units 1–2",
+  "tu": "Home + Toys",
+  "cau": "Mixed questions",
+  "hd": "Games"
+ },
+ {
+  "tuan": "29",
+  "buoi": "2",
+  "unit": "Review",
+  "nd": "Ôn tập – thực hành ôn units 1–2",
+  "tu": "Home + Toys",
+  "cau": "Mixed questions",
+  "hd": "Games; pair/group practice"
+ },
+ {
+  "tuan": "30",
+  "buoi": "1",
+  "unit": "Review",
+  "nd": "Ôn Units 3–4",
+  "tu": "Body + Clothes",
+  "cau": "What/Where/How many?",
+  "hd": "Games"
+ },
+ {
+  "tuan": "30",
+  "buoi": "2",
+  "unit": "Review",
+  "nd": "Ôn tập – thực hành ôn units 3–4",
+  "tu": "Body + Clothes",
+  "cau": "What/Where/How many?",
+  "hd": "Games; pair/group practice"
+ },
+ {
+  "tuan": "31",
+  "buoi": "1",
+  "unit": "Review",
+  "nd": "Ôn Units 5–6",
+  "tu": "Animals + Food",
+  "cau": "What animal/food?",
+  "hd": "Games"
+ },
+ {
+  "tuan": "31",
+  "buoi": "2",
+  "unit": "Review",
+  "nd": "Ôn tập – thực hành ôn units 5–6",
+  "tu": "Animals + Food",
+  "cau": "What animal/food?",
+  "hd": "Games; pair/group practice"
+ },
+ {
+  "tuan": "32",
+  "buoi": "1",
+  "unit": "Assessment",
+  "nd": "Đánh giá học kỳ I/giữa khóa",
+  "tu": "Units 1–3",
+  "cau": "Nghe – nói – nhận biết",
+  "hd": "Individual observation"
+ },
+ {
+  "tuan": "32",
+  "buoi": "2",
+  "unit": "Assessment",
+  "nd": "Ôn tập – thực hành đánh giá học kỳ i/giữa khóa",
+  "tu": "Units 1–3",
+  "cau": "Nghe – nói – nhận biết",
+  "hd": "Individual observation; pair/group practice"
+ },
+ {
+  "tuan": "33",
+  "buoi": "1",
+  "unit": "Assessment",
+  "nd": "Đánh giá học kỳ II",
+  "tu": "Units 4–6",
+  "cau": "Nghe – nói – nhận biết",
+  "hd": "Individual observation"
+ },
+ {
+  "tuan": "33",
+  "buoi": "2",
+  "unit": "Assessment",
+  "nd": "Ôn tập – thực hành đánh giá học kỳ ii",
+  "tu": "Units 4–6",
+  "cau": "Nghe – nói – nhận biết",
+  "hd": "Individual observation; pair/group practice"
+ },
+ {
+  "tuan": "34",
+  "buoi": "1",
+  "unit": "Consolidation",
+  "nd": "Ôn tổng hợp",
+  "tu": "All key vocabulary",
+  "cau": "Mixed questions",
+  "hd": "Speaking stations"
+ },
+ {
+  "tuan": "34",
+  "buoi": "2",
+  "unit": "Consolidation",
+  "nd": "Ôn tập – thực hành ôn tổng hợp",
+  "tu": "All key vocabulary",
+  "cau": "Mixed questions",
+  "hd": "Speaking stations; pair/group practice"
+ },
+ {
+  "tuan": "35",
+  "buoi": "1",
+  "unit": "Consolidation",
+  "nd": "Tổng kết cuối khóa",
+  "tu": "All key language",
+  "cau": "Phản xạ giao tiếp phù hợp lứa tuổi",
+  "hd": "Portfolio; celebration"
+ },
+ {
+  "tuan": "35",
+  "buoi": "2",
+  "unit": "Consolidation",
+  "nd": "Ôn tập – thực hành tổng kết cuối khóa",
+  "tu": "All key language",
+  "cau": "Phản xạ giao tiếp phù hợp lứa tuổi",
+  "hd": "Portfolio; celebration; pair/group practice"
+ }
+]
