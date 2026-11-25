@@ -61,7 +61,7 @@ const WORDS = [
 if (window.LE_HOI_VIET) WORDS.push(...LE_HOI_VIET); // Trung thu, Tết
 const TILE = ['#E0483E', '#2E9A4E', '#F3B728', '#5B5FD6', '#E05B8C', '#14998F', '#F08A24', '#7C4DBF', '#3AA0E0'];
 const WALL = { x0: 270, x1: 1330, rows: [128, 300], h: 92 };
-let hung = [], prize = null, peel = null;
+let hung = [], prize = null, peel = null, turnTok = 0;
 
 function wallSlot(n, total) { const per = Math.max(5, Math.min(10, Math.ceil(total / 2))), row = Math.floor(n / per), x = WALL.x0 + (WALL.x1 - WALL.x0) * ((n % per) + .5) / per; return { x, y: WALL.rows[Math.min(1, row)] + (row > 1 ? 60 : 0), h: Math.min(WALL.h, (WALL.x1 - WALL.x0) / per * .9) }; }
 
@@ -86,7 +86,7 @@ TroChoi.run({
     const chest = api.$('chest'), beam = api.$('beam');
     chest.src = H('ruong_dong'); api.pose('anh', C('co_anh_chi_duong')); api.pose('pip', C('pip_hoi'));
     api.say(`${ctx.kid} ơi, rương đang rung kìa!`, 300, 420);
-    chest.classList.remove('shake'); void chest.offsetWidth; chest.classList.add('shake'); api.sfx.rustle(); await api.wait(1100);
+    chest.classList.remove('shake'); void chest.offsetWidth; chest.classList.add('shake'); api.sfx.rustle(); const tk = ++turnTok; await api.wait(1100); if (tk !== turnTok) return; // lượt đã bị bỏ qua
     chest.src = H('ruong_trong'); api.sfx.pop();
     // món đồ bay lên, phủ giấy gói 9 ô
     const order = [...Array(9).keys()].sort(() => Math.random() - .5);
@@ -103,6 +103,7 @@ TroChoi.run({
     api.pose('anh', C('co_anh_khen')); api.pose('pip', C('pip_reo')); api.pose('ben', C('ben_reo'));
     api.say(`${praise} ${ctx.kid} đoán đúng rồi!`, 300, 420);
     api.hideCard();
+    if (!prize || !prize.isConnected) return;
     const tiles = prize.querySelectorAll('.tiles i'); (peel || []).forEach((t, i) => setTimeout(() => tiles[t].classList.add('off'), i * 60));
     await api.wait(500); api.sparkle(800, 540, 40); api.sfx.boing();
     const n = hung.length, s = wallSlot(n, api.kids.length), x0 = 800, y0 = 540;
@@ -114,6 +115,7 @@ TroChoi.run({
     api.$('prizeLayer').innerHTML = ''; api.$('chest').src = H('ruong_dong'); api.pose('ben', C('ben_three_quarter'));
   },
   async onSkip(api) {
+    turnTok++;
     if (prize && prize.isConnected) await api.tween(500, (k, e) => { prize.style.top = 540 + 160 * e + 'px'; prize.style.opacity = 1 - e; api.$('beam').style.opacity = 1 - e; });
     api.$('prizeLayer').innerHTML = ''; api.$('chest').src = H('ruong_dong');
   },
