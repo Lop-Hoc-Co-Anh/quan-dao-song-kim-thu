@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiết học – Quần đảo Song Kim</title>
+<script src="../chung/am.js"></script>
+<link rel="icon" href="data:,">
+<style>
+/* Bài chiếu của một tiết, theo cách dạy của cô Anh: hát chào – từ mới bằng thẻ to – trò chơi cả lớp – chant – khen – chào.
+   Mở từ đảo (nút "Bài chiếu"), đọc tham số tiết trên địa chỉ. Trang 1920x1080 thu theo màn hình. */
+*{box-sizing:border-box} html,body{margin:0;height:100%;background:#0E2A44;overflow:hidden;font-family:'Comic Sans MS','Baloo 2',Arial,sans-serif;color:#3B2A1A}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.s{width:1920px;height:1080px;position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;background:linear-gradient(180deg,#9FDFFF 0%,#D9F4FF 62%,#9BDB6A 62%,#7CC653 100%)}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.9}
+.t{position:absolute;left:0;right:0;top:40px;text-align:center;font-weight:700;font-size:88px;color:#fff;text-shadow:0 6px 0 #E8743B,0 10px 18px rgba(0,0,0,.18)}
+.sub{position:absolute;left:0;right:0;top:165px;text-align:center;font-size:44px;font-weight:700;color:#1F5F8B}
+.bub{background:#fff;border-radius:40px;padding:22px 40px;font-weight:700;box-shadow:0 10px 0 rgba(0,0,0,.12)}
+.note{position:absolute;left:40px;right:40px;bottom:24px;font:700 28px Arial;color:#2D5016;background:rgba(255,255,255,.88);padding:10px 20px;border-radius:14px}
+.the{background:#fff;border-radius:30px;border:10px solid #FFD36B;box-shadow:0 14px 28px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;justify-content:space-between;overflow:hidden}
+.the img{flex:1;min-height:0;max-width:92%;object-fit:contain;margin-top:4%}
+.the b{display:block;width:100%;text-align:center;background:#FFF4D8;color:#543520;font-weight:700;border-top:4px dashed #F0C987}
+.hole{border-radius:30px;background:#FFF4D8;border:10px dashed #E8743B;display:flex;align-items:center;justify-content:center;color:#E8743B;font-weight:700}
+.play{position:absolute;left:50%;transform:translateX(-50%);border:0;border-radius:60px;background:#E8743B;color:#fff;font:700 52px 'Comic Sans MS',Arial;padding:22px 60px;box-shadow:0 10px 0 #B4521F;cursor:pointer}
+.play:active{transform:translateX(-50%) translateY(6px);box-shadow:0 4px 0 #B4521F}
+.so{position:absolute;left:40px;top:40px;width:110px;height:110px;border-radius:50%;background:#E8743B;color:#fff;font-size:64px;font-weight:700;display:flex;align-items:center;justify-content:center}
+#bar{position:fixed;right:10px;top:10px;display:flex;gap:8px;z-index:20;opacity:.35;transition:opacity .2s}
+#bar:hover{opacity:1}
+#bar button{border:0;border-radius:12px;background:#fff;color:#1F5F8B;font:700 16px Arial;padding:8px 12px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+#dem{position:fixed;left:12px;bottom:10px;color:#fff;font:700 15px Arial;opacity:.6;z-index:20}
+#nav{position:fixed;bottom:10px;right:12px;display:flex;gap:8px;z-index:20;opacity:.5}
+#nav button{border:0;border-radius:50%;width:54px;height:54px;font-size:28px;background:#fff;cursor:pointer}
+#in{display:none}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff;overflow:visible;height:auto}
+  #wrap,#bar,#dem,#nav{display:none!important}
+  #in{display:block}
+  .p{width:210mm;height:297mm;page-break-after:always;position:relative;overflow:hidden;padding:12mm 14mm}
+  .pc{display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:8mm}
+  .pt{width:182mm;height:128mm;border:3px solid #F2B84B;border-radius:8mm;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+  .pt img{flex:1;min-height:0;max-width:90%;object-fit:contain;margin-top:5mm}
+  .pt b{display:block;width:100%;text-align:center;font-size:58px;background:#FFF4D8;color:#543520;border-top:2px dashed #E3B76A;padding:2mm 0}
+  .cut{width:196mm;border-top:2px dashed #aaa;text-align:center;font:11px Arial;color:#888}
+  h1{margin:0;font-size:28px;text-align:center;color:#C2410C} .name{font:18px Arial;margin:6px 0 8px}
+  .row{display:flex;align-items:center;gap:6mm;margin:3mm 0;padding:3mm;border:2px dashed #E3C9A8;border-radius:5mm}
+  .row .w{width:38mm;font-size:32px;font-weight:700;text-align:center}
+  .row img,.mt img{width:36mm;height:30mm;object-fit:contain;border:2px solid #ddd;border-radius:4mm}
+  .mt{display:flex;justify-content:space-between;margin-top:6mm}
+  .mt div div{height:36mm;display:flex;align-items:center;gap:5mm}
+  .dot{width:5mm;height:5mm;border-radius:50%;background:#333;display:inline-block}
+}
+</style>
+</head>
+<body>
+<div id="wrap"><div class="s" id="s"></div></div>
+<div id="bar"><button id="bThe" title="In thẻ của tiết này, 2 thẻ một trang A4">🖨 In thẻ</button><button id="bPhieu" title="In phiếu ôn tập: khoanh tròn, nối">🖨 In phiếu</button><button id="bFull" title="Toàn màn hình (F)">⛶</button><button id="bVe" title="Về đảo (Esc)">⟵ Về đảo</button></div>
+<div id="nav"><button id="bLui" title="Trang trước (←)">‹</button><button id="bToi" title="Trang sau (→)">›</button></div>
+<div id="dem"></div>
+<div id="in"></div>
+<script src="../chung/kho_tu.js"></script>
+<script src="../chung/cau_mau.js"></script>
+<script src="../chung/giong_co.js"></script>
+<script src="../chung/chant.js"></script>
+<script>
+(function () {
+  const Q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const DAO = Q.get('dao') || 'dao_3d';
+  const ISLAND = '../../' + ({ dao_hat_mam: 'dao_hat_mam/dao-hat-mam.html', dao_cau_vong: 'dao_cau_vong/dao-cau-vong.html' }[DAO] || 'dao_3d/dao-song-kim-3d.html');
+  const TEN_DAO = { dao_hat_mam: 'Đảo Hạt Mầm', dao_cau_vong: 'Đảo Cầu Vồng' }[DAO] || 'Đảo Song Kim';
+  const TK = { dao_hat_mam: ['../hinh/giot_nuoc.webp', 'một giọt nước tưới Cây Thần'], dao_cau_vong: ['../hinh/manh_mau.webp', 'một mảnh màu ghép vào Cổng Cầu Vồng'] }[DAO] || ['../chung/hinh/da_phat_sang.webp', 'một viên đá phát sáng mang về Trại Song Kim'];
+  const CH = n => '../chung/hinh/' + n + '.webp';
+  const unit = Q.get('unit') || 'Unit', nd = Q.get('nd') || '', cau = Q.get('cau') || '', hd = Q.get('hd') || '', tiet = Q.get('tiet') || '', tuan = Q.get('tuan') || '';
+  const chuDe = unit.replace(/^Unit\s*\d+\s*/i, '') || unit;
+  // từ của tiết: lấy hình trong kho từ chung
+  const find = w => (window.KHO_TU || []).find(W => [w, w.replace(/s$/, ''), w.split(' ')[0]].includes(W.w.toLowerCase()));
+  const W = [...new Set((Q.get('tu') || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean))].map(w => ({ w, img: (find(w) || {}).img })).filter(x => x.img).slice(0, 8);
+  const qa = w => { const c = window.CauMau && CauMau.of(w); if (c) return [c.q, c.a]; return [cau.split('–')[0].split('/')[0].trim() || "What's this?", w.charAt(0).toUpperCase() + w.slice(1) + '!']; };
+  const loai = /ôn tập|review|assessment|consolidation/i.test(nd + ' ' + unit) ? 'on' : /story|truyện/i.test(nd + ' ' + hd) ? 'ke' : 'moi';
+  const TEN_LOAI = { moi: 'New words', on: 'Review', ke: 'Story time' }[loai];
+  const ke = Q.get('ke') || '', noi = Q.get('noi') || '', ban = Q.get('ban') || '', bx = +Q.get('x') || .4, by = +Q.get('y') || .6;
+  const ban_img = Q.get('ban_than') || '', ten_ban = Q.get('ten_ban') || '', tro = Q.get('tro') || '', ten_tro = Q.get('ten_tro') || 'Thử thách trên đảo';
+  const HELLO = [{ t: 'Hello, hello, hello!', img: CH('pip_bay') }, { t: 'How are you?', img: CH('co_anh_vay_tay') }, { t: "I'm fine, thank you!", img: CH('ben_reo') }, { t: 'Hello, Pip! Hello, Ben! Hello, Mia!', img: CH('mia_reo'), wait: 900 }, { t: "Let's play together!", img: CH('pip_reo') }];
+  const BYE = [{ t: 'Goodbye, goodbye!', img: CH('pip_bay') }, { t: 'See you next time!', img: CH('co_anh_vay_tay') }, { t: 'Bye-bye, Pip! Bye-bye, Ben! Bye-bye, Mia!', img: CH('ben_reo'), wait: 900 }, { t: 'Goodbye, everyone!', img: CH('mia_reo') }];
+
+  const deco = `<div class="cloud" style="left:90px;top:70px;width:260px;height:90px"></div><div class="cloud" style="left:1560px;top:110px;width:300px;height:100px"></div>`;
+  const the = (x, h, extra = '') => `<div class="the" data-noi="${esc(x.w)}" style="height:${h}px;width:${Math.round(h * .9)}px;${extra}"><img src="${esc(x.img)}" alt=""><b style="font-size:${Math.round(h * .13)}px;padding:${Math.round(h * .015)}px 0">${esc(x.w)}</b></div>`;
+  const hang = (h, an) => `<div style="position:absolute;left:80px;right:80px;top:230px;bottom:110px;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:34px">${W.map((x, i) => i === an ? `<div class="hole" style="height:${h}px;width:${Math.round(h * .9)}px;font-size:${h * .6}px">?</div>` : the(x, h)).join('')}</div>`;
+  const hH = W.length <= 3 ? 470 : W.length <= 4 ? 400 : W.length <= 6 ? 340 : 290;
+  const T = [];
+  // 1. mở đầu
+  T.push(() => `${deco}<div style="position:absolute;left:0;right:0;top:60px;text-align:center;font:700 40px Arial;color:#1F5F8B">${esc(TEN_DAO)}${tuan ? ` · Tuần ${esc(tuan)}` : ''}${tiet ? ` · Tiết ${esc(tiet)}` : ''}</div>
+    <div class="t" style="top:120px;font-size:120px">${esc(unit)}</div><div class="sub" style="top:290px;font-size:52px">${esc(TEN_LOAI)}${nd ? ' · ' + esc(nd) : ''}</div>
+    <div style="position:absolute;left:340px;right:340px;top:430px;display:flex;justify-content:center;flex-wrap:wrap;gap:22px">${W.map(x => the(x, W.length > 6 ? 200 : 240)).join('')}</div>
+    <img src="${CH('ben_reo')}" style="position:absolute;left:40px;bottom:20px;height:330px"><img src="${CH('mia_reo')}" style="position:absolute;right:40px;bottom:20px;height:330px">`);
+  // 2. trên đảo: Pip kể thử thách hôm nay
+  if (ban) T.push(() => `<img src="${esc(ban)}" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover">
+    <div style="position:absolute;left:${bx * 1920 - 150}px;top:${by * 1080 - 150}px;width:300px;height:300px;border-radius:50%;border:12px solid #FFE14D;box-shadow:0 0 0 8px rgba(255,255,255,.7),0 0 60px #FFE14D"></div>
+    ${noi ? `<div class="bub" style="position:absolute;left:${Math.min(1500, Math.max(20, bx * 1920 - 200))}px;top:${Math.max(20, by * 1080 - 250)}px;font-size:44px;color:#7A3FA0;padding:12px 30px">${esc(noi)}</div>` : ''}
+    ${ban_img ? `<img src="${esc(ban_img)}" style="position:absolute;left:${Math.min(1650, bx * 1920 + 170)}px;top:${Math.min(800, by * 1080 + 10)}px;height:240px">` : ''}
+    <div style="position:absolute;right:30px;top:30px;width:780px;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+      <img src="${CH('pip_noi')}" style="height:230px"><div class="bub" style="font-size:42px;line-height:1.35;color:#1F5F8B">${esc(ke || "Let's go!")}</div></div>`);
+  // 3. hát chào
+  T.push(() => `${deco}<div class="t">♪ Hello song ♪</div>
+    <img src="${CH('pip_reo')}" style="position:absolute;left:260px;top:330px;height:330px"><img src="${CH('co_anh_vay_tay')}" style="position:absolute;left:760px;top:250px;height:600px"><img src="${CH('ben_reo')}" style="position:absolute;right:420px;bottom:60px;height:360px"><img src="${CH('mia_reo')}" style="position:absolute;right:160px;bottom:60px;height:360px">
+    <button class="play" data-hat="hello" style="top:880px">▶ Hát cùng Pip</button>
+    <div class="note" style="right:auto">Cô bấm nút để hát cùng Pip, hoặc mở bài Hello song của cô.</div>`);
+  // 4. từ hôm nay (sơ đồ)
+  T.push(() => { const n = W.length, cx = 960, cy = 600, pos = W.map((x, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * 600, cy + Math.sin(a) * 330]; }), h = n > 6 ? 200 : 230;
+    return `${deco}<div class="t" style="font-size:80px">Today's words</div>
+    <svg style="position:absolute;left:0;top:0" width="1920" height="1080">${pos.map(([x, y]) => `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#3E8E2F" stroke-width="10" stroke-linecap="round"/>`).join('')}</svg>
+    <div style="position:absolute;left:${cx - 230}px;top:${cy - 95}px;width:460px;height:190px;border-radius:95px;background:#8BD34E;border:10px solid #fff;display:flex;align-items:center;justify-content:center;font-size:${chuDe.length > 9 ? 56 : 76}px;font-weight:700;color:#24410F;box-shadow:0 10px 0 rgba(0,0,0,.15);text-align:center">${esc(chuDe)}</div>
+    ${pos.map(([x, y], i) => the(W[i], h, `position:absolute;left:${x - h * .45}px;top:${y - h / 2}px`)).join('')}`; });
+  // 5. mỗi từ một trang thẻ to
+  W.forEach((x, i) => T.push(() => { const [q, a] = qa(x.w);
+    return `${deco}${the(x, 900, 'position:absolute;left:60px;top:90px')}
+    <div class="bub" style="position:absolute;left:1000px;right:50px;top:250px;font-size:${q.length > 16 ? 50 : 62}px;text-align:center;color:#1F5F8B">${esc(q)}</div>
+    <div class="bub" style="position:absolute;left:1000px;right:50px;top:440px;font-size:${a.length > 18 ? 50 : 62}px;text-align:center;color:#C2410C;background:#FFF4D8">${esc(a)}</div>
+    <img src="${CH('pip_noi')}" style="position:absolute;left:1480px;top:640px;height:320px">
+    <div style="position:absolute;right:40px;top:40px;display:flex;gap:6px;background:rgba(255,255,255,.75);padding:8px 16px;border-radius:40px">${W.map((y, j) => `<img src="${TK[0]}" style="height:60px;${j > i ? 'opacity:.22;filter:grayscale(1)' : ''}">`).join('')}</div>
+    <div class="note" style="right:auto;font-size:24px">Bấm vào thẻ để nghe đọc mẫu. Cả lớp đọc 3 lần, rồi tổ – nhóm – cá nhân.</div>`; }));
+  // 6. trò chơi cả lớp
+  const missing = (vong, an) => T.push(() => `${deco}<div class="t" style="font-size:86px">What's missing?</div>${hang(hH, an)}
+    <div class="note">${an == null ? `Vòng ${vong}: cả lớp đọc to các thẻ, rồi nhắm mắt lại… một thẻ sắp trốn!` : `Vòng ${vong}: thẻ nào trốn rồi? Cả lớp nói to tên nó!`}</div>`);
+  const cham = () => T.push(() => `${deco}<div class="t" style="font-size:86px">Look and touch!</div>${hang(hH)}
+    <div class="note">Chia 2 đội. Cô đọc một từ, mỗi đội một bạn chạy lên chạm đúng hình (hoặc đập thẻ trên bảng). Nhanh hơn được 1 sao cho đội.</div>`);
+  if (W.length >= 2) {
+    if (loai === 'moi') { missing(1, null); missing(1, 1 % W.length); missing(2, null); missing(2, W.length - 1); }
+    else if (loai === 'on') { cham(); missing(1, null); missing(1, 2 % W.length); }
+    else {
+      T.push(() => `${deco}<div class="t" style="font-size:86px">Story time</div>
+        <img src="${CH('pip_noi')}" style="position:absolute;left:80px;top:250px;height:400px">
+        <div class="bub" style="position:absolute;left:520px;right:80px;top:260px;font-size:46px;line-height:1.4;color:#1F5F8B">${esc(ke || 'Pip kể chuyện cho cả lớp.')}</div>
+        <div style="position:absolute;left:520px;right:80px;top:640px;display:flex;justify-content:center;gap:24px">${W.map(x => the(x, 300)).join('')}</div>
+        <div class="note">Cô kể theo sách (hoặc bấm nút 🔊 Pip kể trên đảo). Chỉ từng thẻ khi nhân vật nhắc tới, cả lớp nói to tên đồ vật.</div>`);
+      T.push(() => `${deco}<div class="t" style="font-size:86px">Let's act it out!</div>${hang(hH)}
+        <div class="note">Vài bạn lên đóng vai, mỗi bạn cầm một thẻ. Cả lớp hỏi "${esc(qa(W[0].w)[0])}", bạn cầm thẻ trả lời và làm động tác.</div>`);
+      missing(1, null); missing(1, 1 % W.length);
+    }
+  }
+  if (tro) T.push(() => `${deco}<div class="t" style="font-size:86px">${esc(ten_tro)}</div>
+    <img src="${CH('pip_reo')}" style="position:absolute;left:300px;top:300px;height:380px"><img src="${CH('ben_reo')}" style="position:absolute;left:760px;top:260px;height:480px"><img src="${CH('mia_reo')}" style="position:absolute;left:1120px;top:260px;height:480px">
+    <button class="play" data-tro="1" style="top:800px">▶ Vào thử thách trên đảo</button>
+    <div class="note" style="right:auto">Không bắt buộc: lớp nhỏ hoặc hết giờ thì cô bấm sang trang sau.</div>`);
+  // 7. chant
+  T.push(() => `${deco}<div class="t" style="font-size:86px">Let's chant!</div>
+    <div style="position:absolute;left:120px;right:120px;top:210px;display:grid;grid-template-columns:${W.length > 4 ? '1fr 1fr' : '1fr'};gap:22px 50px">
+    ${W.map(x => { const a = qa(x.w)[1].replace(/\.$/, '!'), w = x.w.charAt(0).toUpperCase() + x.w.slice(1); return `<div class="bub" style="display:flex;align-items:center;gap:24px;font-size:${W.length > 6 ? 38 : 44}px;padding:10px 24px"><img src="${esc(x.img)}" style="height:${W.length > 6 ? 90 : 110}px;width:120px;object-fit:contain">${esc(w)}, ${esc(x.w)}! ${esc(a)}</div>`; }).join('')}</div>
+    <button class="play" data-hat="chant" style="top:930px;font-size:40px;padding:14px 40px">▶ Chant cùng Pip</button>`);
+  if (loai === 'on') T.push(() => `${deco}<div class="t" style="font-size:86px">Worksheet time!</div><div style="position:absolute;left:0;right:0;top:300px;text-align:center;font-size:260px">✏️🖍️</div>
+    <div class="note">Cô phát phiếu (nút 🖨 In phiếu ở góc trên): khoanh tròn hình đúng, nối từ với hình.</div>`);
+  // 8. khen thưởng theo đảo
+  T.push(() => `${deco}<div class="t" style="font-size:96px">Well done, everyone!</div>
+    <div class="sub" style="top:175px">Cả lớp nhận ${esc(TK[1])}!</div>
+    <img src="${TK[0]}" style="position:absolute;left:220px;top:360px;height:380px">
+    ${ban_img ? `<img src="${esc(ban_img)}" style="position:absolute;left:780px;top:430px;height:430px">` : ''}
+    <img src="${CH('co_anh_khen')}" style="position:absolute;right:300px;bottom:30px;height:560px"><img src="${CH('pip_reo')}" style="position:absolute;right:80px;top:330px;height:260px">
+    <div class="note">Cô dán một ngôi sao lên bản đồ hành trình của lớp. Về đảo bấm "Tiết tiếp" để cả đoàn đi tiếp.</div>`);
+  // 9. chào
+  T.push(() => `${deco}<div class="t" style="top:150px;font-size:130px">Goodbye!</div><div class="sub" style="top:320px;font-size:60px">See you next time!</div>
+    <img src="${CH('ben_reo')}" style="position:absolute;left:420px;bottom:40px;height:520px"><img src="${CH('mia_reo')}" style="position:absolute;right:420px;bottom:40px;height:520px"><img src="${CH('pip_bay')}" style="position:absolute;left:880px;top:430px;height:260px">
+    <button class="play" data-hat="bye" style="top:920px;font-size:40px;padding:14px 40px">▶ Goodbye song</button>`);
+
+  // ---------- trình chiếu ----------
+  let k = 0;
+  const ve = () => { location.href = ISLAND + '?ve=bai_chieu'; };
+  const doc = w => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .85; speechSynthesis.speak(u); } catch (e) {} };
+  function show(i) {
+    k = Math.max(0, Math.min(T.length - 1, i)); window.Chant && Chant.close();
+    $('s').innerHTML = T[k](); $('dem').textContent = `${k + 1} / ${T.length} · ${unit} · ${TEN_LOAI}`;
+    $('s').querySelectorAll('[data-noi]').forEach(e => e.onclick = ev => { ev.stopPropagation(); doc(e.dataset.noi); });
+    $('s').querySelectorAll('[data-hat]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const h = b.dataset.hat;
+      if (h === 'hello') Chant.song('Hello song', HELLO); else if (h === 'bye') Chant.song('Goodbye song', BYE);
+      else Chant.play(W, `${chuDe} chant`, w => qa(w)[1], { max: 8 }); });
+    $('s').querySelectorAll('[data-tro]').forEach(b => b.onclick = ev => { ev.stopPropagation(); location.href = tro; });
+  }
+  function fit() { const z = Math.min(innerWidth / 1920, innerHeight / 1080); const s = $('s'); s.style.transform = `scale(${z})`; s.style.left = (innerWidth - 1920 * z) / 2 + 'px'; s.style.top = (innerHeight - 1080 * z) / 2 + 'px'; }
+  addEventListener('resize', fit); fit();
+  $('wrap').onclick = e => { if (document.querySelector('.chOv')) return; show(k + (e.clientX > innerWidth / 3 ? 1 : -1)); };
+  $('bLui').onclick = () => show(k - 1); $('bToi').onclick = () => show(k + 1);
+  $('bVe').onclick = ve;
+  const full = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
+  $('bFull').onclick = full;
+  addEventListener('keydown', e => {
+    if (document.querySelector('.chOv')) return;
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); show(k + 1); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); show(k - 1); }
+    else if (e.key === 'Home') show(0); else if (e.key === 'End') show(T.length - 1);
+    else if (e.key === 'f' || e.key === 'F') full();
+    else if (e.key === 'Escape' && !document.fullscreenElement) ve();
+  });
+  // ---------- in thẻ, in phiếu ----------
+  const dau = `<div class="name">Name: ……………………………………  Class: ………</div>`;
+  function inThe() {
+    let h = ''; for (let i = 0; i < W.length; i += 2) h += `<div class="p pc"><div class="pt"><img src="${esc(W[i].img)}"><b>${esc(W[i].w)}</b></div>${W[i + 1] ? `<div class="cut">✂ cắt theo đường này</div><div class="pt"><img src="${esc(W[i + 1].img)}"><b>${esc(W[i + 1].w)}</b></div>` : ''}</div>`;
+    in_(h);
+  }
+  function inPhieu() {
+    const n = W.length, r = (a, s) => a.map((x, i) => [x, Math.sin((i + 1) * 12.9898 + s) * 43758.5453 % 1]).sort((p, q) => p[1] - q[1]).map(p => p[0]);
+    const L = W.slice(0, 6);
+    const rows = L.map((x, i) => { const o = [...Array(n).keys()].filter(j => j !== i); return `<div class="row"><div class="w">${esc(x.w)}</div>${r([i, o[i % o.length], o[(i + 1) % o.length]].filter((v, j, a) => a.indexOf(v) === j), i).map(j => `<img src="${esc(W[j].img)}">`).join('')}</div>`; }).join('');
+    const M = W.slice(0, 5), R = r(M.map((x, i) => i), 7);
+    in_(`<div class="p"><h1>${esc(unit)} – Look and circle</h1>${dau}<div style="font:16px Arial;margin-bottom:4px">Khoanh tròn hình đúng với từ.</div>${rows}</div>
+      <div class="p"><h1>${esc(unit)} – Look and match</h1>${dau}<div style="font:16px Arial">Nối từ với hình đúng.</div><div class="mt">
+      <div>${M.map(x => `<div><span style="font-size:40px;font-weight:700;width:60mm;text-align:right">${esc(x.w)}</span><span class="dot"></span></div>`).join('')}</div>
+      <div>${R.map(j => `<div><span class="dot"></span><img src="${esc(W[j].img)}"></div>`).join('')}</div></div></div>`);
+  }
+  function in_(h) { $('in').innerHTML = h; const imgs = [...$('in').querySelectorAll('img')]; Promise.all(imgs.map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; }))).then(() => setTimeout(() => print(), 150)); }
+  $('bThe').onclick = inThe; $('bPhieu').onclick = inPhieu;
+  if (!W.length) T.splice(1, 0, () => `${deco}<div class="t">Chưa có từ cho tiết này</div><div class="note">Mở trang này từ đảo (nút "Bài chiếu" trong bảng tiết học).</div>`);
+  show(+Q.get('trang') - 1 || 0);
+})();
+</script>
+</body>
+</html>
