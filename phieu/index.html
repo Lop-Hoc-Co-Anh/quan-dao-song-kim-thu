@@ -99,7 +99,7 @@ function loadDao(first) {
     unit = (PPCT[tiet - 1] || PPCT[0]).unit; $('selUnit').value = unit; $('inTiet').value = tiet; draw();
   }).catch(() => { $('info').textContent = 'Không đọc được dữ liệu tiết học. Hãy mở bằng file .bat (không mở thẳng file html).'; });
 }
-function unitWords(u) { const w = []; PPCT.filter(r => r.unit === u).forEach(r => String(r.tu || '').split(/[;,]/).map(x => x.trim()).filter(x => /^[A-Za-z][A-Za-z' -]{0,16}$/.test(x) && x.split(' ').length <= 2 && !/vocabulary|colours|numbers/i.test(x)).forEach(x => { if (!w.includes(x)) w.push(x); })); return w; }
+function unitWords(u) { const w = []; PPCT.filter(r => r.unit === u).forEach(r => String(r.tu || '').split(/[;,/+]/).map(x => x.trim()).filter(x => /^[A-Za-z][A-Za-z' -]{0,16}$/.test(x) && x.split(' ').length <= 2 && !/vocabulary|colours|numbers/i.test(x)).forEach(x => { if (!w.includes(x)) w.push(x); })); return w; }
 function draw() {
   const r = PPCT[tiet - 1] || {}, ks = kids();
   $('hTitle').textContent = `Phiếu ghi nhận · ${D.name}`; $('hSmall').textContent = D.book;
@@ -117,7 +117,7 @@ function draw() {
 }
 // ---- nhận xét định tính cuối unit (không chấm điểm, không so sánh) ----
 // từ có hình của unit (bỏ các ghi chú kiểu "family members", "Toàn bộ Unit 1")
-function cleanWords(u) { const w = []; PPCT.filter(r => r.unit === u).forEach(r => String(r.tu || '').split(/[;,]/).map(x => x.trim().toLowerCase()).forEach(x => { const K = window.KHO_TU && KHO_TU.find(W => [x, x.replace(/s$/, '')].includes(W.w.toLowerCase())); if (K && !w.includes(K.w)) w.push(K.w); })); return w; }
+function cleanWords(u) { const w = []; PPCT.filter(r => r.unit === u).forEach(r => String(r.tu || '').split(/[;,/+]/).map(x => x.trim().toLowerCase()).forEach(x => { const K = window.KHO_TU && KHO_TU.find(W => [x, x.replace(/s$/, '')].includes(W.w.toLowerCase())); if (K && !w.includes(K.w)) w.push(K.w); })); return w; }
 function nhanXet() {
   const ks = kids(), w = cleanWords(unit).slice(0, 6), S = w.map(x => window.CauMau && CauMau.of(x, unit)).find(Boolean);
   const cau = S ? `"${S.q} – ${S.a}"` : '';
