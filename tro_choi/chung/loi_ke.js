@@ -69,14 +69,14 @@
         "ke": "Meo meo! Mèo con bị lạc trong Làng nhà sàn, không tìm thấy mẹ. Pip dẫn mèo con đi gõ cửa: cốc, cốc, cốc! Cửa thứ nhất mở ra, có chiếc giường êm êm. *What room is this? It's a bedroom!* Cửa thứ hai thơm mùi cơm. *It's a kitchen!* Cửa thứ ba có tiếng nước chảy tí tách. *It's a bathroom!* Cửa cuối cùng có ghế sofa, mẹ mèo đang ngồi chờ. *It's a living room!* Mèo con nhảy vào lòng mẹ: *Thank you, Pip!* Cả lớp mình cùng nói nhé: *bedroom, kitchen, bathroom, living room!*"
       },
       "Unit 2 Toys": {
-        "ten": "Truyện: Gấu tìm đồ chơi",
-        "tu": "ball, car, train, doll, teddy",
-        "ke": "Sáng nay, Pip bay ngang Hang đồ chơi thì nghe tiếng khóc hu hu. Ai vậy ta? À, là bạn Gấu! Gấu buồn lắm, vì đồ chơi của Gấu trốn hết vào hang rồi. Pip ghé mắt nhìn vào hang tối. Có một cái bóng tròn tròn, nảy tưng tưng. *What's this? It's a ball! Ball!* Rồi một cái bóng chạy vèo vèo, bíp bíp. *What's this? It's a car! Car!* Nghe kìa: xình xịch, xình xịch! *It's a train! Train!* Còn hai bạn trốn sau cùng: một bạn tóc dài mặc váy hồng, và một bạn lông mềm mềm. *It's a doll! It's a teddy!* Gấu vui quá, ôm teddy thật chặt. Gấu nói: *Thank you, Pip!* Bây giờ cả lớp mình cùng gọi tên đồ chơi với Gấu nhé: *ball, car, train, doll, teddy!*"
+        "ten": "Truyện: Gấu tìm sân chơi",
+        "tu": "seesaw, slide, springer, swing, up, down",
+        "ke": "Sáng nay, Pip bay ngang Hang đồ chơi thì nghe tiếng khóc hu hu. À, là bạn Gấu! Gấu muốn ra sân chơi, mà đồ chơi sân chơi trốn hết vào hang rồi. Pip nhìn vào hang tối. Có một tấm ván dài, bên này lên, bên kia xuống. *What's this? It's a seesaw!* Có một cái cầu trượt cao cao, trượt vèo xuống. *It's a slide!* Có một chú ngựa lò xo nhún nhún. *It's a springer!* Có một cái ghế treo đung đưa, đung đưa. *It's a swing!* Gấu ra sân chơi rồi! Gấu leo lên cầu trượt: *Up, up, up!* Rồi trượt xuống: *Down!* Gấu cười: *Thank you, Pip!* Cả lớp mình cùng nói nhé: *seesaw, slide, springer, swing! Up! Down!*"
       },
       "Unit 3 Body": {
-        "ten": "Truyện: Cún con tập thể dục",
-        "tu": "head, arm, hand, finger, leg, foot",
-        "ke": "Ở Bãi biển thể thao, cún con muốn tập thể dục mà quên hết tên các bộ phận cơ thể. Ben làm mẫu cho cún con xem nhé. Ben gật gật cái đầu: *This is my head! Head!* Ben giơ cánh tay lên cao: *Arm!* Ben vẫy vẫy bàn tay: *Hand!* Ben xoè ngón tay ra đếm: *Finger, finger! How many fingers? Ten!* Ben co một chân lên: *Leg!* Ben dậm dậm bàn chân: *Foot!* Cún con làm theo, vui quá sủa gâu gâu. Cả lớp mình đứng lên làm theo cún con nhé: *head, arm, hand, finger, leg, foot!*"
+        "ten": "Truyện: Cún con đi tắm biển",
+        "tu": "hair, teeth, fingers, feet, long, short",
+        "ke": "Ở Bãi biển thể thao, cún con chơi với Ben và Mia. Mia lắc lắc mái tóc: *This is my hair!* Tóc của Mia dài: *It's long!* Ben xoa đầu: *This is my hair!* Tóc của Ben ngắn: *It's short!* Cún con cười nhe răng: *These are my teeth!* Ben xoè tay ra đếm: *These are my fingers! One, two, three, four, five!* Rồi cả nhóm chạy trên cát, in dấu chân: *These are my feet!* Cún con vui quá sủa gâu gâu. Cả lớp mình cùng chỉ và nói nhé: *hair, teeth, fingers, feet!* Tóc dài là *long*, tóc ngắn là *short!*"
       },
       "Unit 4 Clothes": {
         "ten": "Truyện: Cừu non tìm áo ấm",

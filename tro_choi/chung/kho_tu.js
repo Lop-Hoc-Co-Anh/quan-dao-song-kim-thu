@@ -1,6 +1,16 @@
 // Kho từ chung có hình cho mọi trò chơi (gom từ các trò; đường dẫn ảnh tính từ thư mục một trò bất kỳ).
 // Sinh lại bằng gom_kho khi thêm từ mới vào trò nào đó.
-window.KHO_TU = [{"w":"car","img":"../hinh/xe_o_to.webp","alt":["cars","ka","kar","carl"],"g":"","q":"","vn":""},
+window.KHO_TU = [
+// thẻ sách Amanda 3 (Unit 2 sân chơi, Unit 3 Body) – Đảo Song Kim dạy theo sách
+{"w": "seesaw", "img": "../hinh/sach_seesaw.webp", "alt": ["see saw", "seesaws", "sea saw"], "g": "", "q": "", "vn": ""},
+{"w": "slide", "img": "../hinh/sach_slide.webp", "alt": ["slides", "slight", "side"], "g": "", "q": "", "vn": ""},
+{"w": "springer", "img": "../hinh/sach_springer.webp", "alt": ["spring", "springers", "sprinter"], "g": "", "q": "", "vn": ""},
+{"w": "swing", "img": "../hinh/sach_swing.webp", "alt": ["swings", "sing", "wing"], "g": "", "q": "", "vn": ""},
+{"w": "up", "img": "../hinh/sach_up.webp", "alt": ["app", "op", "cup"], "g": "", "q": "", "vn": ""},
+{"w": "down", "img": "../hinh/sach_down.webp", "alt": ["town", "dawn", "dog"], "g": "", "q": "", "vn": ""},
+{"w": "fingers", "img": "../hinh/sach_fingers.webp", "alt": ["finger", "figures", "fingus"], "g": "", "q": "", "vn": ""},
+{"w": "feet", "img": "../hinh/sach_feet.webp", "alt": ["foot", "feed", "fit", "seat"], "g": "", "q": "", "vn": ""},
+{"w":"car","img":"../hinh/xe_o_to.webp","alt":["cars","ka","kar","carl"],"g":"","q":"","vn":""},
 {"w":"ball","img":"../hinh/qua_bong.webp","alt":["balls","bowl","bull","bol","paul"],"g":"","q":"","vn":""},
 {"w":"doll","img":"../hinh/bup_be.webp","alt":["dolls","dull","dahl","dole","tall"],"g":"","q":"","vn":""},
 {"w":"teddy","img":"../hinh/gau_bong.webp","alt":["teddies","teddy bear","tatty","eddie","teddi"],"g":"","q":"","vn":""},
@@ -116,10 +126,10 @@ window.KHO_TU = [{"w":"car","img":"../hinh/xe_o_to.webp","alt":["cars","ka","kar
 {"w":"face","img":"../hinh/mia_khuon_mat.webp","alt":["faces","fays","phase"],"g":"face","q":"","vn":""},
 {"w":"shoulders","img":"../hinh/ben_cham_vai.webp","alt":["shoulder","soldiers","shoulders"],"g":"body2","q":"","vn":""},
 {"w":"toes","img":"../hinh/ben_ngon_chan.webp","alt":["toe","tows","tose","toast"],"g":"body2","q":"","vn":""},
-{"w":"teeth","img":"../hinh/ben_danh_rang.webp","alt":["tooth","teach","tease","teef"],"g":"body2","q":"","vn":""},
-{"w":"hair","img":"../hinh/mia_chai_toc.webp","alt":["hare","here","her","hairs"],"g":"body2","q":"","vn":""},
-{"w":"long","img":"../hinh/mia_toc_dai.webp","alt":["lung","along","lon"],"g":"body2","q":"","vn":""},
-{"w":"short","img":"../hinh/ben_toc_ngan.webp","alt":["shot","shirt","shorts"],"g":"body2","q":"","vn":""},
+{"w":"teeth","img":"../hinh/sach_teeth.webp","alt":["tooth","teach","tease","teef"],"g":"body2","q":"","vn":""},
+{"w":"hair","img":"../hinh/sach_hair.webp","alt":["hare","here","her","hairs"],"g":"body2","q":"","vn":""},
+{"w":"long","img":"../hinh/sach_long.webp","alt":["lung","along","lon"],"g":"body2","q":"","vn":""},
+{"w":"short","img":"../hinh/sach_short.webp","alt":["shot","shirt","shorts"],"g":"body2","q":"","vn":""},
 {"w":"hungry","img":"../ghep_van_cau/hinh/mia_doi_bung.webp","alt":["hungary","hungry","angry"],"g":"","q":"","vn":""},
 {"w":"thirsty","img":"../ghep_van_cau/hinh/ben_khat.webp","alt":["thirty","thirsty","first","dirty","thursday"],"g":"","q":"","vn":""},
 {"w":"apple","img":"../ghep_van_cau/hinh/qua_tao.webp","alt":["apples","apel","happy"],"g":"","q":"","vn":""},

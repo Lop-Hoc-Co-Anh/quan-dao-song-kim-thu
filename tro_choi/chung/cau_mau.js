@@ -18,6 +18,7 @@
   function of(word, unit) {
     const w = String(word || '').trim(), k = w.toLowerCase(); if (!k || NOT.has(k)) return null;
     if (k === 'three years old') return { q: 'How old are you?', a: "I'm three years old." };
+    if (k === 'up' || k === 'down') return { q: 'Up or down?', a: (k === 'up' ? 'Up' : 'Down') + '!' };
     if (k === 'clap') return { q: 'Can you clap?', a: 'Yes, I can clap!' };
     const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
     const food = /food|fruit/i.test(unit || '');
