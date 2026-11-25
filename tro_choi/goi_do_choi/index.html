@@ -25,6 +25,10 @@
 @keyframes hop { 50% { transform: translateY(-14px); } }
 .shadow { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(40, 20, 5, .45), rgba(40, 20, 5, 0) 70%); pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .glow, .eyes i, .shelfToy.hop img { animation: none; } }
+/* thẻ hiện ra to, đè lên chỗ hình mờ (hình trong thẻ lớn hơn hình mờ) */
+#card { width: 620px; padding: 14px 22px 12px; }
+#card img { height: 400px; max-width: 576px; }
+#card .w { font-size: 92px; }
 </style>
 </head>
 <body>
@@ -66,7 +70,7 @@ TroChoi.run({
   story: 'Trong hang tối có các bạn đồ chơi đang trốn. Một cái bóng lăn ra, cả lớp đoán xem là đồ chơi gì. Bé gọi đúng tên thì đèn bật sáng, bạn đồ chơi nhảy lên kệ.',
   doneSmall: 'Kệ đồ chơi đã đầy', doneTitle: 'Gọi được hết rồi!',
   words: WORDS, defaultWords: ['car', 'ball', 'doll', 'teddy', 'train'], guessFirst: true,
-  cardPos: { x: 800, y: 150 }, micPos: { x: 800, y: 700 },
+  cardPos: { x: 800, y: 175 }, micPos: { x: 800, y: 700 },
   buildScene(api) {
     api.scene.innerHTML = `<img class="bg" src="../hinh/nen_hang.jpg" alt=""><div class="dark" id="dark"></div>
       <div class="glow" style="left:268px;top:96px"></div><div class="glow" style="left:1104px;top:96px;animation-delay:-1.2s"></div>
