@@ -212,7 +212,6 @@ body.app .tv { width: min(100vw, 177.78vh); border-radius: 0; box-shadow: none; 
         <button class="btn" id="bView">Toàn cảnh <kbd>Z</kbd></button>
         <button class="btn" id="bTour">Bay quanh đảo <kbd>T</kbd></button>
         <button class="btn" id="bAlbum">Bạn thú <kbd>B</kbd></button>
-        <button class="btn" id="bChant" title="Bài chant theo unit">Chant ♪ <kbd>C</kbd></button>
         <button class="btn" id="bPhieu" title="Phiếu ghi nhận của cô">Phiếu <kbd>P</kbd></button>
         <button class="btn" id="bWorld">Quần đảo <kbd>W</kbd></button>
         <button class="btn quit" id="bQuit">Thoát <kbd>Q</kbd></button>
@@ -309,7 +308,7 @@ const STORY = {
   'Assessment': 'Sắp tới hải đăng rồi! Hai thuyền cùng chèo về đích, mỗi bạn nói to một từ để thuyền tiến lên.',
   'Consolidation': 'Chuyến thuyền cuối cùng! Nói to từng từ để hai thuyền cập bến hải đăng, gom những viên đá cuối.',
 };
-const STEPS = i => [['Hát chào', 'Hello song (phím C)', 2], ['Pip kể chuyện', 'Thử thách hôm nay là gì? (nút 🔊 Pip kể)', 2], ['Học từ', 'Xem hình, nghe mẫu, cả lớp nói theo', 6], ['Trò chơi', GNAME[gameOf(i)] || 'Trò chơi', 10], ['Chant + chào', 'Chant theo unit, Goodbye song', 4]];
+const STEPS = i => [['Pip kể chuyện', 'Thử thách hôm nay là gì? (nút 🔊 Pip kể)', 2], ['Học từ', 'Xem hình, nghe mẫu, cả lớp nói theo', 6], ['Trò chơi', GNAME[gameOf(i)] || 'Trò chơi', 10]];
 const FRIENDS = PLACES.filter(p => p.friend);
 let PPCT = null, PPCT_LOI = false, cur = 0, pos = 0, stars = 0, helped = new Set(), busy = false, lit = false; // lớp mới: bắt đầu từ tiết 1
 let view = 'follow', tour = null;
@@ -768,7 +767,7 @@ function openChant() {
     { label: 'Goodbye', sub: 'Hát chào cuối giờ', fn: () => Chant.song('Goodbye song', BYE()) },
   ]);
 }
-$('bChant').onclick = openChant;
+// mục Hát và chant đã bỏ (cô không dùng)
 function openPhieu() { save(); location.href = `../phieu/index.html?dao=${STORE_KEY}&tiet=${cur + 1}`; }
 $('bPhieu').onclick = openPhieu;
 const openFinale = () => { if (LOCAL) { save(); location.href = '../ai_cuoi/index.html'; } else toast('Đêm hội hải đăng chạy trên máy dạy: mở bằng file "Mo Dao Song Kim.bat".'); };
@@ -924,7 +923,6 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'w' || e.key === 'W') { if (twice('w', 'Bấm W lần nữa để về bản đồ quần đảo')) goWorld(false); }
   else if (e.key === 'v' || e.key === 'V') openFinale();
   else if (e.key === 'p' || e.key === 'P') openPhieu();
-  else if (e.key === 'c' || e.key === 'C') openChant();
   else if (e.key === 'f' || e.key === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); else document.exitFullscreen().catch(() => {}); }
 });
 

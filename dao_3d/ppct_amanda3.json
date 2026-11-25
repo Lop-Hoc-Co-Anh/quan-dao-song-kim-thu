@@ -58,8 +58,8 @@
   "buoi": "1",
   "unit": "Unit 1 Home",
   "nd": "Ôn Unit 1",
-  "tu": "Rooms + numbers 7–10",
-  "cau": "Where’s Alfie? – In the …",
+  "tu": "dad, mummy, brother, sister, grandad, granny",
+  "cau": "Who's this? – This …",
   "hd": "Story; review"
  },
  {
@@ -67,8 +67,8 @@
   "buoi": "2",
   "unit": "Unit 1 Home",
   "nd": "Ôn tập – thực hành ôn unit 1",
-  "tu": "Rooms + numbers 7–10",
-  "cau": "Where’s Alfie? – In the …",
+  "tu": "dad, mummy, brother, sister, grandad, granny",
+  "cau": "Who's this? – This …",
   "hd": "Story; review; pair/group practice"
  },
  {
@@ -77,7 +77,7 @@
   "unit": "Unit 2 Toys",
   "nd": "Đồ chơi",
   "tu": "seesaw, slide, springer, swing, up, down",
-  "cau": "What’s this? – It’s a … / Up or down?",
+  "cau": "What's this? – It's …",
   "hd": "Toy game"
  },
  {
@@ -86,7 +86,7 @@
   "unit": "Unit 2 Toys",
   "nd": "Ôn tập – thực hành đồ chơi",
   "tu": "seesaw, slide, springer, swing, up, down",
-  "cau": "What’s this? – It’s a … / Up or down?",
+  "cau": "What's this? – It's …",
   "hd": "Toy game; pair/group practice"
  },
  {
@@ -94,8 +94,8 @@
   "buoi": "1",
   "unit": "Unit 2 Toys",
   "nd": "Màu sắc và đồ chơi",
-  "tu": "toy vocabulary + colours",
-  "cau": "What colour is it?",
+  "tu": "ball, car, doll, teddy",
+  "cau": "What's this? – It's …",
   "hd": "Matching; coloring"
  },
  {
@@ -103,8 +103,8 @@
   "buoi": "2",
   "unit": "Unit 2 Toys",
   "nd": "Ôn tập – thực hành màu sắc và đồ chơi",
-  "tu": "toy vocabulary + colours",
-  "cau": "What colour is it?",
+  "tu": "ball, car, doll, teddy",
+  "cau": "What's this? – It's …",
   "hd": "Matching; coloring; pair/group practice"
  },
  {
@@ -202,8 +202,8 @@
   "buoi": "1",
   "unit": "Unit 3 Body",
   "nd": "Củng cố Unit 3",
-  "tu": "Body + adjectives",
-  "cau": "What is this?",
+  "tu": "ears, eyes, mouth, nose, arms, hands, head, legs",
+  "cau": "What are these? – These …",
   "hd": "Review"
  },
  {
@@ -211,8 +211,8 @@
   "buoi": "2",
   "unit": "Unit 3 Body",
   "nd": "Ôn tập – thực hành củng cố unit 3",
-  "tu": "Body + adjectives",
-  "cau": "What is this?",
+  "tu": "ears, eyes, mouth, nose, arms, hands, head, legs",
+  "cau": "What are these? – These …",
   "hd": "Review; pair/group practice"
  },
  {
@@ -238,8 +238,8 @@
   "buoi": "1",
   "unit": "Unit 4 Clothes",
   "nd": "Màu sắc quần áo",
-  "tu": "clothes + colours",
-  "cau": "What colour is the …?",
+  "tu": "coat, dress, hat, jumper, shoes, trousers",
+  "cau": "What's this? – It's …",
   "hd": "Color game"
  },
  {
@@ -247,8 +247,8 @@
   "buoi": "2",
   "unit": "Unit 4 Clothes",
   "nd": "Ôn tập – thực hành màu sắc quần áo",
-  "tu": "clothes + colours",
-  "cau": "What colour is the …?",
+  "tu": "coat, dress, hat, jumper, shoes, trousers",
+  "cau": "What's this? – It's …",
   "hd": "Color game; pair/group practice"
  },
  {
@@ -328,8 +328,8 @@
   "buoi": "1",
   "unit": "Unit 5 Animals",
   "nd": "To – nhỏ và cảm xúc",
-  "tu": "big, little, happy, sad",
-  "cau": "Is it big/little?",
+  "tu": "cat, dog, fish, mouse, cow, horse, pig, sheep",
+  "cau": "What animal is this? – It's …",
   "hd": "Sorting; mime"
  },
  {
@@ -337,8 +337,8 @@
   "buoi": "2",
   "unit": "Unit 5 Animals",
   "nd": "Ôn tập – thực hành to – nhỏ và cảm xúc",
-  "tu": "big, little, happy, sad",
-  "cau": "Is it big/little?",
+  "tu": "cat, dog, fish, mouse, cow, horse, pig, sheep",
+  "cau": "What animal is this? – It's …",
   "hd": "Sorting; mime; pair/group practice"
  },
  {
@@ -383,7 +383,7 @@
   "unit": "Unit 6 Food",
   "nd": "Trái cây",
   "tu": "apple, banana, orange, pear",
-  "cau": "What’s this?",
+  "cau": "What's this? – It's …",
   "hd": "Fruit game"
  },
  {
@@ -392,7 +392,7 @@
   "unit": "Unit 6 Food",
   "nd": "Ôn tập – thực hành trái cây",
   "tu": "apple, banana, orange, pear",
-  "cau": "What’s this?",
+  "cau": "What's this? – It's …",
   "hd": "Fruit game; pair/group practice"
  },
  {
