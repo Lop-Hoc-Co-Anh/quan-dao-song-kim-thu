@@ -27,6 +27,8 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #0E1A2E; fon
 .cd kbd { position: absolute; top: 12px; left: 16px; font: 800 22px 'Baloo 2'; color: var(--soft); }
 .cd b { font: 800 34px 'Baloo 2'; margin-top: 6px; visibility: hidden; }
 .cd.ok { transform: scale(1.1) rotate(-3deg); box-shadow: 0 0 0 10px #FFD23F, 0 10px 0 rgba(31, 45, 74, .22); } .cd.ok b { visibility: visible; }
+.big { position: absolute; z-index: 5; background: var(--paper); border-radius: 40px; box-shadow: 0 0 0 12px #FFD23F, 0 18px 40px rgba(31, 45, 74, .35); display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
+.big img { width: 82%; height: 74%; object-fit: contain; } .big b { font: 800 72px/1.1 'Baloo 2'; margin-top: 8px; } .grid.mo .cd { opacity: .25; transition: opacity .5s; } /* chọn đúng: thẻ xoay vòng, to dần phủ các hình còn lại */
 .cd.no { animation: shake .4s; } @keyframes shake { 25% { transform: translateX(-12px); } 75% { transform: translateX(12px); } }
 .keys { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; gap: 12px; justify-content: center; }
 .k { font: 800 20px 'Baloo 2'; border: 0; border-radius: 16px; padding: 10px 18px; background: var(--paper); cursor: pointer; box-shadow: 0 5px 0 rgba(31, 45, 74, .2); }
@@ -60,8 +62,10 @@ let words = [...new Set((QS.get('tu') || '').split(',').map(x => x.trim().toLowe
 if (words.length < 3) words = words.concat(KHO_TU.filter(W => ['car', 'ball', 'doll', 'teddy', 'cat', 'dog'].includes(W.w) && !words.includes(W))).slice(0, 4);
 const ROUNDS = Math.min(8, words.length * 2);
 // câu hỏi nghe hiểu theo nhóm từ
+const TEN = /^(amanda|george|alfie|kelly|pip|ben|mia)$/i, hoa = w => TEN.test(w) ? w.charAt(0).toUpperCase() + w.slice(1) : w; // tên riêng viết hoa, không có "the"
 function ask(W) {
-  const S = CauMau.of(W.w, UNIT) || { q: '' }, w = W.w;
+  const S = CauMau.of(W.w, UNIT) || { q: '' }, w = hoa(W.w);
+  if (TEN.test(w)) return `Where's ${w}?`;
   if (/^who/i.test(S.q)) return `Where's ${/^(mummy|daddy|granny|grandad|grandma|grandpa)$/i.test(w) ? w : 'the ' + w}?`;
   if (/colour/i.test(S.q)) return `Find ${w}!`;
   if (/how many/i.test(S.q)) return `Find ${w}!`;
@@ -78,14 +82,24 @@ function next() {
   if (round >= ROUNDS) { $('done').hidden = false; say('Great listening, everyone!'); return; }
   if (!order.length) order = shuffle(words.slice());
   target = order.pop(); opts = shuffle([target].concat(shuffle(words.filter(W => W !== target)).slice(0, 3)));
+  document.querySelectorAll('.big').forEach(b => b.remove()); $('grid').classList.remove('mo');
   $('prog').textContent = `${round + 1} / ${ROUNDS}`; $('askT').textContent = ask(target); locked = false;
-  $('grid').innerHTML = opts.map((W, i) => `<button class="cd" data-i="${i}"><kbd>${i + 1}</kbd><img src="${img(W)}" alt="${W.w}"><b>${W.w}</b></button>`).join('');
+  $('grid').innerHTML = opts.map((W, i) => `<button class="cd" data-i="${i}"><kbd>${i + 1}</kbd><img src="${img(W)}" alt="${W.w}"><b>${hoa(W.w)}</b></button>`).join('');
   $('grid').querySelectorAll('.cd').forEach(b => b.onclick = () => pick(+b.dataset.i));
   setTimeout(() => say(ask(target)), 400);
 }
+function phongTo(el, W) { // thẻ đúng xoay một vòng và to dần, phủ kín các hình còn lại
+  const k = stage.getBoundingClientRect().width / 1600, r = el.getBoundingClientRect(), s0 = stage.getBoundingClientRect();
+  const x = (r.left - s0.left) / k, y = (r.top - s0.top) / k, w = r.width / k, h = r.height / k;
+  const big = document.createElement('div'); big.className = 'big'; big.innerHTML = `<img src="${img(W)}" alt=""><b>${hoa(W.w)}</b>`;
+  const W1 = 1360, H1 = 600, X1 = 800 - W1 / 2, Y1 = 222;
+  Object.assign(big.style, { left: X1 + 'px', top: Y1 + 'px', width: W1 + 'px', height: H1 + 'px' }); stage.appendChild(big); $('grid').classList.add('mo'); el.style.visibility = 'hidden';
+  const sx = w / W1, sy = h / H1, dx = x + w / 2 - (X1 + W1 / 2), dy = y + h / 2 - (Y1 + H1 / 2);
+  big.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy}) rotate(0deg)` }, { offset: .55, transform: `translate(${dx * .4}px, ${dy * .4}px) scale(${(sx + 1) / 2.4}) rotate(300deg)` }, { transform: 'translate(0, 0) scale(1) rotate(360deg)' }], { duration: 1300, easing: 'cubic-bezier(.3, .8, .3, 1)', fill: 'both' });
+}
 async function pick(i) {
   if (locked) return; const W = opts[i], el = $('grid').children[i];
-  if (W === target) { locked = true; el.classList.add('ok'); const S = CauMau.of(W.w, UNIT); await say('Yes! ' + (S ? S.a : W.w)); round++; setTimeout(next, 900); }
+  if (W === target) { locked = true; el.classList.add('ok'); phongTo(el, W); const S = CauMau.of(W.w, UNIT); await Promise.all([say('Yes! ' + (S ? S.a : hoa(W.w))), new Promise(r => setTimeout(r, 1900))]); round++; setTimeout(next, 900); }
   else { el.classList.remove('no'); void el.offsetWidth; el.classList.add('no'); say('Listen again! ' + ask(target)); }
 }
 let qAt = -1e9, hintT = 0;
