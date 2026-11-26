@@ -37,10 +37,17 @@
   function stopFile() { tok++; if (src) { try { src.stop(); } catch (e) {} src = null; } if (cur) { const u = cur; cur = null; speaking = false; u._fire('end'); } }
   function nativeSpeak(u) {
     if (!NS || !NU) { setTimeout(() => u._fire('end'), 0); return; }
+    if (u._slow) { const parts = split(u.text); if (parts.length > 1) return nativeSeq(u, parts); } // đọc chậm: từng cụm, nghỉ giữa các cụm
     const n = new NU(u.text); n.lang = u.lang || 'en-US'; n.rate = u.rate; n.pitch = u.pitch; n.volume = u.volume;
     if (u.voice && window.SpeechSynthesisVoice && u.voice instanceof window.SpeechSynthesisVoice) n.voice = u.voice;
     ['start', 'end', 'error', 'boundary'].forEach(t => n['on' + t] = () => u._fire(t)); NS.speak(n);
   }
+  let seqTok = 0;
+  function nativeSeq(u, parts) { const my = ++seqTok; let i = 0; u._fire('start');
+    const next = () => { if (my !== seqTok) return; if (i >= parts.length) return u._fire('end'); const n = new NU(parts[i++]); n.lang = u.lang || 'en-US'; n.rate = u.rate; n.pitch = 1; n.volume = u.volume;
+      if (u.voice && window.SpeechSynthesisVoice && u.voice instanceof window.SpeechSynthesisVoice) n.voice = u.voice;
+      n.onend = n.onerror = () => setTimeout(next, 420); NS.speak(n); };
+    next(); }
   async function fileSpeak(u) {
     stopFile(); const my = tok; cur = u; speaking = true; await idxP;
     const keys = split(u.text).map(slug).filter(k => IDX.has(k));
@@ -49,15 +56,15 @@
     for (let i = 0; i < keys.length; i++) {
       if (my !== tok) return; if (keys[i + 1]) load(keys[i + 1]);
       const b = await load(keys[i]); if (my !== tok) return; if (!b) continue;
-      await new Promise(res => { const a = ctx(); const s = src = a.createBufferSource(); s.buffer = b; const sl = u._slow ? .8 : 1; s.playbackRate.value = sl; const g = a.createGain(); g.gain.value = u.volume == null ? 1 : u.volume; s.connect(g).connect(a.destination); s.onended = res; s.start(); setTimeout(res, b.duration * 1000 / sl + 400); });
-      if (my !== tok) return; await new Promise(r => setTimeout(r, u._slow ? 380 : 90));
+      await new Promise(res => { const a = ctx(); const s = src = a.createBufferSource(); s.buffer = b; const sl = u._slow ? .88 : 1; s.playbackRate.value = sl; const g = a.createGain(); g.gain.value = u.volume == null ? 1 : u.volume; s.connect(g).connect(a.destination); s.onended = res; s.start(); setTimeout(res, b.duration * 1000 / sl + 400); });
+      if (my !== tok) return; await new Promise(r => setTimeout(r, u._slow ? 450 : 90));
     }
     if (my !== tok) return; src = null; cur = null; speaking = false; u._fire('end');
   }
   const FAKE_VOICE = { name: 'Song Kim (giọng làm sẵn)', lang: 'en-US', localService: true, default: false, voiceURI: 'songkim' };
   const SS = {
-    speak(u) { if (!(u instanceof U)) { const x = new U(u && u.text); Object.assign(x, u || {}); u = x; } const vi = u.lang && !/^en/i.test(u.lang); if (!vi && (u._forceSlow || cham()) && !u._slow) { u._slow = true; u.rate = Math.max(.5, (u.rate || 1) * .62); } if (!vi && fileMode()) fileSpeak(u); else { stopFile(); nativeSpeak(u); } },
-    cancel() { stopFile(); if (NS) NS.cancel(); },
+    speak(u) { if (!(u instanceof U)) { const x = new U(u && u.text); Object.assign(x, u || {}); u = x; } const vi = u.lang && !/^en/i.test(u.lang); if (!vi && (u._forceSlow || cham()) && !u._slow) { u._slow = true; u.rate = Math.max(.6, (u.rate || 1) * .82); u.pitch = 1; } if (!vi && fileMode()) fileSpeak(u); else { stopFile(); nativeSpeak(u); } },
+    cancel() { stopFile(); seqTok++; if (NS) NS.cancel(); },
     pause() { if (NS) NS.pause(); }, resume() { if (NS) NS.resume(); },
     getVoices() { const v = NS ? NS.getVoices() : []; return fileMode() ? [FAKE_VOICE].concat(v) : v; },
     get speaking() { return speaking || (!!NS && NS.speaking); }, get pending() { return !!NS && NS.pending; }, get paused() { return !!NS && NS.paused; },
@@ -74,5 +81,5 @@
   function nut(where, cls) { const b = document.createElement('button'); b.type = 'button'; b.dataset.amCham = '1'; if (cls) b.className = cls; b.title = 'Đọc tiếng Anh chậm lại cho các bạn nhỏ nghe kịp'; ve(b); b.onclick = e => { e.stopPropagation(); setCham(!cham()); }; if (where) where.appendChild(b); return b; }
   // đọc chậm một lần (dù chế độ đang tắt)
   function docCham(t) { try { SS.cancel(); const u = new U(t); u.lang = 'en-US'; u.rate = .85; u._forceSlow = true; SS.speak(u); } catch (e) {} }
-  window.AmSongKim = { fileMode, split, slug, base: BASE, cham, setCham, nut, docCham, he: () => cham() ? 1.8 : 1 };
+  window.AmSongKim = { fileMode, split, slug, base: BASE, cham, setCham, nut, docCham, he: () => cham() ? 1.5 : 1 };
 })();
