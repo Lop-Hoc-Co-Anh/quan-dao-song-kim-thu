@@ -116,3 +116,4 @@ button:focus-visible, .wpick:focus-within { outline: 4px solid #2E6FD8; outline-
 .vd em { position: absolute; bottom: 24px; font: 700 18px var(--body); color: #8A5A00; font-style: normal; opacity: .7; }
 .chip.conLuot { font-size: 18px; opacity: .85; }
 .keys { transition: opacity .4s; } .keys.an { opacity: 0; pointer-events: none; }
+#turnName { font-size: 40px; } /* tên kèm ký hiệu riêng của bé, to cho bé nhận ra */

@@ -24,6 +24,7 @@
 .vuiBadge .e { font-size: 44px; line-height: 1.1; } .vuiBadge b { display: block; font: 800 22px/1.1 'Baloo 2', sans-serif; color: #1F2D4A; }
 .vuiBadge small { display: block; font: 700 14px/1.2 'Nunito', sans-serif; color: #745000; margin-top: 2px; }
 .vuiBadge img { height: 40px; margin-top: 4px; }
+.vuiBadges.nho .vuiBadge { width: 118px; padding: 6px 4px 8px; } .vuiBadges.nho .vuiBadge .e { font-size: 34px; } .vuiBadges.nho .vuiBadge b { font-size: 18px; } .vuiBadges.nho .vuiBadge img { height: 30px; } /* lớp đông: lưới nhỏ, hiện hết một lúc */
 @keyframes vuiIn { from { transform: scale(.2) rotate(-12deg); opacity: 0; } }
 .vuiKq { font: 800 26px 'Baloo 2', sans-serif; margin: 6px 0 4px; }
 @media (prefers-reduced-motion: reduce) { .vuiStar, .vuiPlus, .vuiBadge { transition: none; animation: none; } }`;
@@ -84,7 +85,7 @@
   function huyHieu(kids, results, el) {
     if (!el) return; let h = '';
     if (active) h += `<div class="vuiKq">${TEAMS[0].icon} ${TEAMS[1].icon} Hai đội cùng góp được ${score[0]} sao cho cả lớp! Vỗ tay nào!</div>`; // không so tỉ số
-    h += `<div class="vuiBadges">${kids.map((k, i) => { const r = results[i] || {}, loai = r.ok && !(r.nhom > 1) ? 'noi' : r.nhom > 1 ? 'cung' : 'co', [e, t] = BADGE[loai][i % 3], W = r.word; return `<div class="vuiBadge" style="animation-delay:${Math.min(i * .05, .6).toFixed(2)}s"><div class="e">${e}</div><b>${esc(k)}</b><small>${t}</small>${W && W.img ? `<img src="${W.img}" alt="${esc(W.w)}">` : ''}</div>`; }).join('')}</div>`;
+    h += `<div class="vuiBadges${kids.length > 8 ? ' nho' : ''}">${kids.map((k, i) => { const r = results[i] || {}, loai = r.ok && !(r.nhom > 1) ? 'noi' : r.nhom > 1 ? 'cung' : 'co', [e, t] = BADGE[loai][i % 3], W = r.word; return `<div class="vuiBadge" style="animation-delay:${Math.min(i * .04, .4).toFixed(2)}s"><div class="e">${e}</div><b>${esc(k)}</b><small>${t}</small>${W && W.img ? `<img src="${W.img}" alt="${esc(W.w)}">` : ''}</div>`; }).join('')}</div>`;
     el.innerHTML = h; el.style.display = 'block';
   }
   window.Vui = { ganNut, batDau, luot, dung, huyHieu, an, get bat() { return on; } };

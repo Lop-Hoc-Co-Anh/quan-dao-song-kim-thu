@@ -1,4 +1,6 @@
-// Bài hát / chant trên đảo: trống giữ nhịp, cả lớp vỗ tay và nói theo.
+// Bài hát / chant trên đảo theo kiểu "Pip nói – cả lớp nói lại" (sửa 26-11-2026 theo hội đồng chuyên gia):
+// Pip nói một câu (không có trống chen vào), rồi trống gõ đúng 4 hoặc 8 nhịp, chấm sáng báo LƯỢT CẢ LỚP: cả lớp vỗ tay theo trống và nói lại câu đó.
+// Nhờ vậy câu nói không bao giờ lệch nhịp trống.
 // - Chant theo unit: "Ball, ball, ball! It's a ball!" (mỗi từ có hình, 1 vòng)
 // - Bài chào đầu giờ (Hello) và chào cuối giờ (Goodbye)
 // Dùng giọng cô nếu đã ghi (giong_co.js), không thì giọng máy. Mỗi lần mở có mã riêng nên mở lại không bị chạy chồng.
@@ -11,6 +13,9 @@
 .chOv .line { font: 800 9vh/1.1 'Baloo 2'; margin-top: 3vh; text-align: center; min-height: 10vh; padding: 0 4vw; text-shadow: 0 6px 0 rgba(0, 0, 0, .25); }
 .chOv .beats { display: flex; gap: 2vw; margin-top: 3vh; } .chOv .beats i { width: 3.4vh; height: 3.4vh; border-radius: 50%; background: rgba(255, 255, 255, .25); transition: background .08s, transform .08s; }
 .chOv .beats i.on { background: #FFD23F; transform: scale(1.4); }
+.chOv .who { font: 800 4.4vh 'Baloo 2'; margin-top: 1vh; padding: .6vh 2.4vw; border-radius: 99px; background: rgba(255, 255, 255, .16); }
+.chOv .who.lop { background: #FFD23F; color: #1F2D4A; }
+.chOv .line.lop { color: #FFE27A; }
 .chOv .tip { position: absolute; bottom: 20px; font: 700 18px 'Nunito'; opacity: .85; }
 .chOv button.x { position: absolute; top: 18px; right: 22px; font: 800 20px 'Baloo 2'; border: 0; border-radius: 14px; padding: 8px 16px; background: #fff; color: #1F2D4A; cursor: pointer; }
 .chMenu { display: flex; gap: 3vw; flex-wrap: wrap; justify-content: center; }
@@ -23,6 +28,26 @@
     if (my !== run) return Promise.resolve(false);
     if (window.GiongCo && GiongCo.has(t)) return GiongCo.play(t).then(() => my === run);
     return new Promise(res => { if (!window.speechSynthesis) return setTimeout(() => res(my === run), 900); speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; const v = speechSynthesis.getVoices().find(x => /^en/i.test(x.lang)); if (v) u.voice = v; u.rate = rate; u.pitch = 1.15; let d = 0; const f = () => { if (!d) { d = 1; res(my === run); } }; u.onend = f; u.onerror = f; setTimeout(f, 3500 * (window.AmSongKim ? AmSongKim.he() : 1)); speechSynthesis.speak(u); });
+  }
+  // trống gõ đúng n nhịp rồi dừng (lượt cả lớp nói). count: chỉ gõ nhẹ đếm 1-2-3-4 trước khi Pip nói
+  const NHIP = 600;
+  function nhip(n, my, count) {
+    return new Promise(res => { if (!ov || my !== run) return res(false); const beats = ov.querySelectorAll('.beats i'); let i = 0;
+      const tick = () => { if (my !== run || !ov) return res(false); if (i >= n) { beats.forEach(b => b.className = ''); return res(true); }
+        if (AC) { const t = AC.currentTime, o = AC.createOscillator(), g = AC.createGain();
+          if (count) { o.type = 'sine'; o.frequency.value = i % 4 === 0 ? 1320 : 990; g.gain.setValueAtTime(.08, t); g.gain.exponentialRampToValueAtTime(.001, t + .08); }
+          else if (i % 2 === 0) { o.type = 'sine'; o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(45, t + .18); g.gain.setValueAtTime(.5, t); g.gain.exponentialRampToValueAtTime(.001, t + .25); }
+          else { o.type = 'square'; o.frequency.value = 1800; g.gain.setValueAtTime(.05, t); g.gain.exponentialRampToValueAtTime(.001, t + .05); }
+          o.connect(g).connect(AC.destination); o.start(t); o.stop(t + .3); }
+        beats.forEach((b, k) => b.className = k === i % 4 ? 'on' : ''); const pic = ov.querySelector('.pic'); if (pic && !count && i % 2 === 0) { pic.classList.add('hit'); setTimeout(() => pic.classList.remove('hit'), 120); }
+        i++; beatT = setTimeout(tick, NHIP); };
+      tick(); });
+  }
+  const who = (t, lop) => { if (!ov) return; const e = ov.querySelector('.who'); e.textContent = t; e.className = 'who' + (lop ? ' lop' : ''); ov.querySelector('.line').classList.toggle('lop', !!lop); };
+  // một câu: Pip nói (trống im) -> trống 4/8 nhịp cho cả lớp nói lại
+  async function cau(t, my, rate) {
+    line(t); who('🦜 Pip nói'); if (!await say(t, my, rate)) return false;
+    who('👏 Cả lớp nói!', true); const n = t.split(/\s+/).length > 5 ? 8 : 4; return nhip(n, my);
   }
   function drum(my) {
     if (!AC) return; let n = 0; const beats = ov.querySelectorAll('.beats i');
@@ -40,7 +65,7 @@
     close(); const my = run;
     if (!document.getElementById('chCss')) { const st = document.createElement('style'); st.id = 'chCss'; st.textContent = css; document.head.appendChild(st); }
     ov = document.createElement('div'); ov.className = 'chOv';
-    ov.innerHTML = `<h3>♪ ${title} ♪</h3><button class="x">Đóng (Esc)</button><img class="pic" alt="" hidden><div class="line"></div><div class="beats"><i></i><i></i><i></i><i></i></div><div class="tip">${tip || 'Cả lớp vỗ tay theo nhịp trống và nói to theo nhé!'}</div>`;
+    ov.innerHTML = `<h3>♪ ${title} ♪</h3><button class="x">Đóng (Esc)</button><img class="pic" alt="" hidden><div class="line"></div><div class="who"></div><div class="beats"><i></i><i></i><i></i><i></i></div><div class="tip">${tip || 'Pip nói trước. Chấm vàng sáng là tới lượt cả lớp: vỗ tay theo trống và nói lại thật to!'}</div>`;
     document.body.appendChild(ov); ov.querySelector('button.x').onclick = close; addEventListener('keydown', onKey, true);
     return my;
   }
@@ -48,20 +73,20 @@
   const pic = src => { if (!ov) return; const p = ov.querySelector('.pic'); if (src) { p.hidden = false; p.src = src; } else p.hidden = true; };
   // chant theo unit. words: [{w, img}], answer(w) -> câu trả lời (VD "It's a ball.") hoặc null
   async function play(words, title, answer, opt = {}) {
-    const my = shell(title); try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} drum(my);
+    const my = shell(title); try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
     const list = words.filter(W => answer(W.w)).slice(0, opt.max || 6);
-    line("Let's chant!"); if (!await say("Let's chant!", my, .95) || !await wait(600, my)) return;
+    line("Let's chant!"); who(''); if (!await say("Let's chant!", my, .95)) return; line('1, 2, 3, 4!'); if (!await nhip(4, my, true)) return; // đếm nhịp vào bài
     for (let r = 0; r < (opt.rounds || 1); r++) for (const W of list) {
       pic(W.img); const w = W.w.charAt(0).toUpperCase() + W.w.slice(1), a = answer(W.w).replace(/\.$/, '!');
-      line(`${w}, ${W.w}, ${W.w}!`); if (!await say(`${w}! ${w}! ${w}!`, my, .95) || !await wait(450, my)) return;
-      line(a); if (!await say(a, my) || !await wait(900, my)) return;
+      if (!await cau(`${w}, ${W.w}, ${W.w}!`, my, .95)) return;
+      if (!await cau(a, my)) return;
     }
-    pic(''); line('Great job, everyone!'); if (await say('Great job, everyone!', my, .95)) await wait(1200, my); if (my === run) close();
+    pic(''); line('Great job, everyone!'); who(''); if (await say('Great job, everyone!', my, .95)) await wait(1200, my); if (my === run) close();
   }
   // bài hát chào: lines = [{t, img}]
   async function song(title, lines) {
-    const my = shell(title, 'Cả lớp vẫy tay, vỗ tay và hát theo nhé!'); try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} drum(my);
-    for (const L of lines) { pic(L.img || ''); line(L.t); if (!await say(L.t, my, .9) || !await wait(L.wait || 700, my)) return; }
+    const my = shell(title, 'Pip hát trước. Chấm vàng sáng là tới lượt cả lớp: vẫy tay, vỗ tay và hát lại!'); try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+    for (const L of lines) { pic(L.img || ''); if (!await cau(L.t, my, .9)) return; }
     if (my === run) { await wait(800, my); if (my === run) close(); }
   }
   // bảng chọn: items = [{label, sub, fn}]
