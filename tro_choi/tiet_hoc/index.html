@@ -34,6 +34,7 @@
 /* chuyển trang: trang mới nằm trên, trang cũ nằm dưới rồi bị xoá sau hiệu ứng */
 .pg{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#9FDFFF 0%,#D9F4FF 62%,#9BDB6A 62%,#7CC653 100%);z-index:1;will-change:transform,opacity,clip-path}
 .pg.cu{z-index:0;pointer-events:none}
+.pg{backface-visibility:hidden;transform-style:preserve-3d}
 .s{perspective:2400px}
 @media print{
   @page{size:A4;margin:0}
@@ -200,21 +201,37 @@
   // ---------- hiệu ứng chuyển trang: mỗi lần một kiểu, mượt, không chói ----------
   const diu = () => { try { return localStorage.getItem('songkim_diu') === '1'; } catch (e) { return false; } };
   const itMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const KIEU = [ // [trang mới vào, trang cũ ra], d = 1 tiến, -1 lùi
-    d => [[{ transform: `translateX(${100 * d}%)` }, { transform: 'translateX(0)' }], [{ transform: 'translateX(0)' }, { transform: `translateX(${-35 * d}%)`, opacity: .4 }]], // trượt ngang
-    d => [[{ transform: 'scale(.55)', opacity: 0 }, { transform: 'scale(1.03)', opacity: 1, offset: .7 }, { transform: 'scale(1)', opacity: 1 }], [{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(1.25)', opacity: 0 }]], // phóng to nảy
-    d => [[{ transform: `rotateY(${80 * d}deg)`, opacity: 0, transformOrigin: d > 0 ? '100% 50%' : '0 50%' }, { transform: 'rotateY(0)', opacity: 1, transformOrigin: d > 0 ? '100% 50%' : '0 50%' }], [{ opacity: 1 }, { opacity: .3 }]], // lật như trang sách
-    d => [[{ clipPath: 'circle(0% at 50% 55%)' }, { clipPath: 'circle(80% at 50% 55%)' }], null], // vòng tròn mở ra
-    d => [[{ transform: 'translateY(100%)' }, { transform: 'translateY(-4%)', offset: .75 }, { transform: 'translateY(0)' }], [{ transform: 'translateY(0)' }, { transform: 'translateY(-20%)', opacity: .5 }]], // trồi lên nảy nhẹ
-    d => [[{ transform: `rotate(${-10 * d}deg) scale(.4)`, opacity: 0 }, { transform: 'rotate(0) scale(1)', opacity: 1 }], [{ transform: 'rotate(0) scale(1)', opacity: 1 }, { transform: `rotate(${10 * d}deg) scale(.5)`, opacity: 0 }]], // xoay vào
-    d => [[{ clipPath: d > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], null], // kéo rèm
-    d => [[{ clipPath: 'polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)' }, { clipPath: 'polygon(-20% -20%, 120% -20%, 120% 120%, -20% 120%)' }], null], // hình thoi nở ra
+  // Kiểu điện ảnh – hoạt hình: chậm (1,3 giây), mượt, có chiều sâu; xong thì từng thẻ, chữ trên trang mới nảy vào lần lượt
+  const EM = 'cubic-bezier(.65, .05, .36, 1)';
+  const KIEU = [ // mỗi kiểu trả về { vao, ra, tre } ; d = 1 tiến, -1 lùi ; tre: trang mới chờ (lật hai nửa)
+    d => ({ ten: 'đẩy song song', vao: [{ transform: `translateX(${100 * d}%)`, filter: 'brightness(1.15)' }, { transform: 'translateX(0)', filter: 'brightness(1)' }],
+            ra: [{ transform: 'translateX(0) scale(1)', filter: 'brightness(1)' }, { transform: `translateX(${-38 * d}%) scale(.9)`, filter: 'brightness(.5)' }] }),
+    d => ({ ten: 'nhòe điện ảnh', vao: [{ opacity: 0, filter: 'blur(24px) saturate(1.4)', transform: 'scale(1.12)' }, { opacity: 1, filter: 'blur(0) saturate(1)', transform: 'scale(1)' }],
+            ra: [{ opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }, { opacity: 0, filter: 'blur(16px)', transform: 'scale(.94)' }] }),
+    d => ({ ten: 'xuyên qua', vao: [{ opacity: 0, filter: 'blur(12px)', transform: 'scale(.62)' }, { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }],
+            ra: [{ opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }, { opacity: 0, filter: 'blur(14px)', transform: 'scale(1.9)' }] }),
+    d => ({ ten: 'lật 3D', tre: .5, vao: [{ transform: `rotateY(${90 * d}deg) translateZ(-260px)`, filter: 'brightness(.55)' }, { transform: 'rotateY(0) translateZ(0)', filter: 'brightness(1)' }],
+            ra: [{ transform: 'rotateY(0) translateZ(0)', filter: 'brightness(1)' }, { transform: `rotateY(${-90 * d}deg) translateZ(-260px)`, filter: 'brightness(.55)' }] }),
+    d => ({ ten: 'mống mắt', vao: [{ clipPath: 'circle(0% at 50% 55%)', filter: 'brightness(1.35)' }, { clipPath: 'circle(85% at 50% 55%)', filter: 'brightness(1)' }],
+            ra: [{ transform: 'scale(1)', filter: 'brightness(1)' }, { transform: 'scale(1.12)', filter: 'brightness(.45)' }] }),
+    d => ({ ten: 'rèm sân khấu', vao: [{ clipPath: 'inset(0 50% 0 50%)', transform: 'scale(1.06)' }, { clipPath: 'inset(0 0% 0 0%)', transform: 'scale(1)' }],
+            ra: [{ filter: 'brightness(1)', transform: 'scale(1)' }, { filter: 'brightness(.4)', transform: 'scale(.96)' }] }),
+    d => ({ ten: 'trồi hoạt hình', vao: [{ transform: `translateY(112%) rotate(${5 * d}deg)` }, { transform: `translateY(-3%) rotate(${-1 * d}deg)`, offset: .7 }, { transform: `translateY(1%) rotate(${.4 * d}deg)`, offset: .86 }, { transform: 'translateY(0) rotate(0)' }],
+            ra: [{ transform: 'translateY(0) scale(1)', filter: 'brightness(1)' }, { transform: 'translateY(-14%) scale(.94)', filter: 'brightness(.5)' }] }),
+    d => ({ ten: 'cửa chéo', vao: d > 0 ? [{ clipPath: 'polygon(0 0, 0 0, 0 0, 0 0)' }, { clipPath: 'polygon(0 0, 230% 0, 230% 0, 0 230%)' }] : [{ clipPath: 'polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%)' }, { clipPath: 'polygon(100% 100%, -130% 100%, -130% 100%, 100% -130%)' }],
+            ra: [{ filter: 'brightness(1)' }, { filter: 'brightness(.45)' }] }),
   ];
+  function nayVao(pg, tre) { // từng thẻ, chữ, nút trên trang nảy vào lần lượt như phim hoạt hình
+    if (itMotion) return; const els = [...pg.querySelectorAll('.t, .sub, .the, .bub, .so, .hole, .play, .note')].slice(0, 16);
+    els.forEach((e, i) => { const de = tre + i * 95;
+      e.animate([{ transform: 'translateY(52px) scale(.8)' }, { transform: 'translateY(-8px) scale(1.05)', offset: .62 }, { transform: 'translateY(2px) scale(.99)', offset: .82 }, { transform: 'translateY(0) scale(1)' }], { duration: 760, delay: de, easing: 'cubic-bezier(.3, .6, .35, 1)', composite: 'add', fill: 'backwards' });
+      e.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, delay: de, fill: 'backwards' }); });
+  }
   let kieuTruoc = -1, AC = null;
-  function vut() { // tiếng vút nhẹ khi chuyển trang (chế độ dịu thì im)
-    if (diu()) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const a = AC, t = a.currentTime, n = a.createBufferSource(), b = a.createBuffer(1, a.sampleRate * .35, a.sampleRate), x = b.getChannelData(0);
-      for (let i = 0; i < x.length; i++) x[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / x.length); n.buffer = b; const f = a.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(500, t); f.frequency.exponentialRampToValueAtTime(2600, t + .3);
-      const g = a.createGain(); g.gain.value = .07; n.connect(f).connect(g).connect(a.destination); n.start(t); } catch (e) {}
+  function vut() { // tiếng gió vút êm khi chuyển trang (chế độ dịu thì im)
+    if (diu()) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const a = AC, t = a.currentTime, n = a.createBufferSource(), b = a.createBuffer(1, a.sampleRate * .9, a.sampleRate), x = b.getChannelData(0);
+      for (let i = 0; i < x.length; i++) x[i] = (Math.random() * 2 - 1) * Math.pow(Math.sin(Math.PI * i / x.length), 2); n.buffer = b; const f = a.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = .9; f.frequency.setValueAtTime(320, t); f.frequency.exponentialRampToValueAtTime(1700, t + .55); f.frequency.exponentialRampToValueAtTime(900, t + .85);
+      const g = a.createGain(); g.gain.value = .055; n.connect(f).connect(g).connect(a.destination); n.start(t); } catch (e) {}
   }
   function show(i) {
     const truoc = k, moi = Math.max(0, Math.min(T.length - 1, i)), coHieuUng = $('s').querySelector('.pg') && moi !== truoc && !itMotion;
@@ -231,13 +248,16 @@
       else b.textContent = 'Cô chưa ghi – cô đọc trên màn hình'; });
     $('s').querySelectorAll('[data-sach]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const q = new URLSearchParams(location.search); q.set('loai', 'ke'); q.set('den', 'truyen'); q.delete('trang'); location.search = q.toString(); });
     $('s').querySelectorAll('[data-tro]').forEach(b => b.onclick = ev => { ev.stopPropagation(); location.href = tro; });
+    const pg = $('s').querySelector('.pg');
     if (coHieuUng) {
-      const pg = $('s').querySelector('.pg'), d = moi > truoc ? 1 : -1; let n; do { n = Math.random() * KIEU.length | 0; } while (n === kieuTruoc && KIEU.length > 1); kieuTruoc = n;
-      const [vao, ra] = KIEU[n](d), op = { duration: 700, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' };
+      const d = moi > truoc ? 1 : -1; let n; if (diu()) n = 1; else { do { n = Math.random() * KIEU.length | 0; } while (n === kieuTruoc && KIEU.length > 1); } kieuTruoc = n;
+      const K = KIEU[n](d), DUR = 1300, tre = K.tre ? DUR * K.tre : 0;
       cu.classList.add('cu'); $('s').appendChild(cu); // trang cũ nằm sau trang mới trong DOM (id trùng thì lấy trang mới) nhưng hiện ở dưới
-      pg.animate(vao, op).finished.then(() => { cu.remove(); pg.getAnimations().forEach(a => a.cancel()); }).catch(() => cu.remove());
-      if (ra) cu.animate(ra, op); vut();
-    }
+      const vao = pg.animate(K.vao, { duration: K.tre ? DUR - tre : DUR, delay: tre, easing: EM, fill: 'both' });
+      if (K.ra) cu.animate(K.ra, { duration: K.tre ? tre : DUR, easing: EM, fill: 'both' });
+      vao.finished.then(() => { cu.remove(); vao.cancel(); }).catch(() => cu.remove());
+      nayVao(pg, tre + DUR * .45); vut();
+    } else if (pg && !$('s').dataset.daNay) { $('s').dataset.daNay = 1; nayVao(pg, 250); } // trang đầu tiên: các thẻ cũng nảy vào
   }
   function fit() { const z = Math.min(innerWidth / 1920, innerHeight / 1080); const s = $('s'); s.style.transform = `scale(${z})`; s.style.left = (innerWidth - 1920 * z) / 2 + 'px'; s.style.top = (innerHeight - 1080 * z) / 2 + 'px'; }
   addEventListener('resize', fit); fit();
