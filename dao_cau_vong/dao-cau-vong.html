@@ -272,6 +272,7 @@ body.app .tv { width: min(100vw, 177.78vh); border-radius: 0; box-shadow: none; 
 <script src="../tro_choi/chung/loi_ke.js"></script>
 <script src="../tro_choi/chung/chant.js"></script>
 <script src="../tro_choi/chung/bai_hat.js"></script>
+<script src="../tro_choi/chung/nghi_mat.js"></script>
 <script>
 const F = 1600 / 1672; // toạ độ ảnh bản đồ -> toạ độ thế giới
 const P = (x, y) => ({ x: x * F, y: y * F });
@@ -523,6 +524,7 @@ function walk(to) {
 }
 function placeOf(i) { let p = PLACES[0]; PLACES.forEach(q => { if (q.at <= i) p = q; }); return p; }
 function openLesson() {
+  window.NghiMat && NghiMat.batDau(); // đồng hồ chiếu của cô đếm lại từ đầu tiết
   if (!PPCT && PPCT_LOI) return toast('Chưa có dữ liệu các tiết học. Hãy mở đảo bằng file .bat.');
   const r = PPCT ? PPCT[cur] : null; if (!r || busy) return;
   const p = placeOf(cur); aim(p.cx, p.cy, 2.7, 22); setPose('chi');
@@ -769,9 +771,15 @@ $('lSimon').onclick = () => { // trò vận động Pip says (Simon says), xong 
   if (!PPCT) return; save(); pipThoi(); const dao = { daohatmam: 'dao_hat_mam', daocauvong: 'dao_cau_vong' }[STORE_KEY] || 'dao_3d';
   location.href = `../tro_choi/pip_says/index.html?dao=${dao}&unit=${encodeURIComponent(unitOf(cur))}&tu=${encodeURIComponent(gameWords(cur).join(','))}`;
 };
+function tuOn(i) { // 1–2 từ của unit học trước (ôn xoắn ốc), lấy đúng từ trong PPCT
+  if (!PPCT) return []; const u = unitOf(i), bo = /review|festival|assessment|consolidation|ôn|lễ/i, now = new Set(gameWords(i).map(w => w.toLowerCase()));
+  let j = i - 1; while (j >= 0 && (unitOf(j) === u || bo.test(unitOf(j)))) j--; if (j < 0) return [];
+  const pu = unitOf(j), ws = []; PPCT.forEach((r, k) => { if (r.unit === pu) gameWords0(k).forEach(w => { if (!now.has(w.toLowerCase()) && !ws.includes(w)) ws.push(w); }); });
+  return ws.sort(() => Math.random() - .5).slice(0, 2);
+}
 $('lWarm').onclick = () => { // trò nghe hiểu khởi động (không chấm điểm), xong quay lại đúng tiết này
   if (!PPCT) return; save(); const dao = { daohatmam: 'dao_hat_mam', daocauvong: 'dao_cau_vong' }[STORE_KEY] || 'dao_3d';
-  location.href = `../tro_choi/nghe_cham/index.html?dao=${dao}&unit=${encodeURIComponent(unitOf(cur))}&tu=${encodeURIComponent(gameWords(cur).join(','))}`;
+  location.href = `../tro_choi/nghe_cham/index.html?dao=${dao}&unit=${encodeURIComponent(unitOf(cur))}&tu=${encodeURIComponent(gameWords(cur).join(','))}&on=${encodeURIComponent(tuOn(cur).join(','))}`;
 };
 if (window.AmSongKim) AmSongKim.nut($('lCham'), 'btn');
 $('lChieu').onclick = () => { // bài chiếu của tiết (tro_choi/tiet_hoc): thẻ to, trò cả lớp, chant, in thẻ, in phiếu
@@ -900,6 +908,7 @@ function twice(k, msg) { const now = performance.now(); if (twiceK === k && now 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { if (tour) stopTour(); return closeAll(); }
   if (!$('ovCer').hidden && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); return closeAll(); }
+  if (!$('ovLesson').hidden && e.key === 'PageDown') { e.preventDefault(); const f = $('lStart').onclick; return f && f.call($('lStart')); } // bút trình chiếu: Xuất phát
   if (anyOpen()) return;
   if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); walk(cur + 1); }
   else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); lit = false; litK = 0; walk(cur - 1); }
