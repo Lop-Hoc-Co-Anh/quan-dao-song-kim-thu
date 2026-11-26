@@ -20,10 +20,11 @@
   <div id="scene"></div>
   <div class="say" id="say" hidden></div>
   <div class="hud"><div class="chip">${esc(G.title)} <small id="hudSub">· ${esc(G.unit)}</small></div><div class="spacer"></div>
-    <span id="chamSlot"></span><div class="chip"><img src="${G.icon}" alt=""><b id="prog">0 / 0</b><small>${esc(G.progressLabel || '')}</small></div></div>
+    <span id="chamSlot"></span><div class="chip conLuot" id="conLuot" hidden></div><div class="chip"><img src="${G.icon}" alt=""><b id="prog">0 / 0</b><small>${esc(G.progressLabel || '')}</small></div></div>
   <div class="stt" id="stt" hidden></div>
   <div class="hint" id="hint" hidden></div>
-  <div class="turn" id="turn" hidden><small>Lượt của</small><span id="turnName"></span></div>
+  <div class="turn" id="turn" hidden><small id="turnLbl">Lượt của</small><span id="turnName"></span></div>
+  <div class="vd" id="vd" hidden><small id="vdLbl">Đứng lên vận động nào!</small><div class="vdE" id="vdE"></div><b id="vdT"></b><em>Enter: vào chơi tiếp</em></div>
   <div class="card" id="card" hidden><img id="cardImg" src="" alt=""><div class="w" id="cardWord"></div><div class="cauLine" id="cardCau" hidden></div></div>
   <div class="chorus" id="chorus" hidden><small>CẢ LỚP CÙNG ĐỌC</small><b id="chWord"></b><i id="chCmd"></i><div class="chDots"><span id="chD0"></span><span id="chD1"></span></div><em>Enter: bỏ qua</em></div>
   <div class="shy" id="shy" hidden></div>
@@ -36,7 +37,7 @@
     <button class="k" id="kRepeat">Đọc mẫu lại<kbd>R</kbd></button>
     <button class="k" id="kListen">Nghe lại<kbd>Space</kbd></button>
     <button class="k go" id="kOk">Đúng rồi<kbd>Enter</kbd></button>
-    <button class="k" id="kSkip">Bỏ qua lượt<kbd>S</kbd></button>
+    <button class="k" id="kSkip" title="Bé chưa nói được: cả lớp cùng nói giúp bạn, bạn vẫn được phần">Cả lớp giúp<kbd>S</kbd></button>
     <button class="k" id="kSetup">Cài đặt<kbd>Esc</kbd></button>
     <button class="k" id="kPeek" title="Cô xem máy nghe được gì">Máy nghe được<kbd>H</kbd></button>
     <button class="k" id="kFull">Toàn màn hình<kbd>F</kbd></button>
@@ -48,18 +49,20 @@
       <p>${G.story}</p>
       <div class="grid2">
         <div><label class="t" for="names">Danh sách các bé (mỗi dòng một tên)</label><textarea id="names" spellcheck="false"></textarea>
-          <div class="nameTip">Bé nhút nhát: thêm dấu <b>*</b> sau tên (VD: Bé Na *). Có thể dùng biệt danh.</div></div>
+          <div class="nameTip">Bé nhút nhát: thêm dấu <b>*</b> sau tên (VD: Bé Na *). Máy tự cho bé nói chung với một bạn và cô chấm, màn hình không hiện gì riêng.</div></div>
         <div><label class="t">Chọn từ cho tiết này</label><div class="words" id="wordPick"></div>
           <div class="opts">
             <label><input type="checkbox" id="optSpeak"> Máy đọc mẫu từ</label>
             <label><input type="checkbox" id="optAuto"> Đọc mẫu xong tự bật nghe</label>
-            <label><input type="checkbox" id="optMic"> Máy nghe để chấm</label>
+            <label><input type="checkbox" id="optMic"> Máy nghe để chấm <small>(lớp nhỏ nên để cô chấm)</small></label>
             <label><input type="checkbox" id="optShuffle"> Đảo thứ tự các bé</label>
             <label><input type="checkbox" id="optChorus"> Cả lớp đọc lại 2 lần sau mỗi lượt</label>
             <label id="lblCau"><input type="checkbox" id="optCau"> Đáp cả câu <small id="cauHint"></small></label>
+            <label title="Đứng lên làm theo Pip trước khi chơi và giữa hai hiệp"><input type="checkbox" id="optVd"> Vận động giữa giờ</label>
+            <label title="Ít âm thanh, ít hiệu ứng: hợp lớp nhỏ, bé nhạy cảm"><input type="checkbox" id="optDiu"> Chế độ dịu</label>
             <label id="lblDoi" hidden><input type="checkbox" id="optDoi"> Hai bé hỏi – đáp</label>
-            <label>Mỗi lượt <select id="selNhom"><option value="1">1 bé</option><option value="2">2 bé</option><option value="3">3 bé</option><option value="4">4 bé</option></select></label>
-            <label title="Máy ưu tiên các bé ít được gọi trong 7 ngày qua">Gọi <select id="selMax"><option value="0">tất cả các bé</option><option value="6">6 bé</option><option value="8">8 bé</option><option value="10">10 bé</option><option value="12">12 bé</option></select></label>
+            <label>Mỗi lượt <select id="selNhom"><option value="0">tự chọn theo sĩ số</option><option value="1">1 bé</option><option value="2">2 bé</option><option value="3">3 bé</option><option value="4">4 bé</option></select></label>
+            <label title="Máy ưu tiên các bé ít được gọi trong 7 ngày qua">Gọi <select id="selMax"><option value="-1">tự chọn (tối đa 16 bé)</option><option value="0">tất cả các bé</option><option value="6">6 bé</option><option value="8">8 bé</option><option value="10">10 bé</option><option value="12">12 bé</option></select></label>
           </div></div>
       </div>
       <div class="row"><span class="note" id="micNote">Máy nghe dùng micro của máy tính và cần có mạng. Nếu máy nghe nhầm, cô bấm Enter để công nhận bé đọc đúng.</span>
@@ -87,13 +90,14 @@
 
   // ---------- âm thanh ----------
   let AC = null;
+  const DIU_K = 'songkim_diu', diu = () => { try { const v = localStorage.getItem(DIU_K); return v == null ? QS.get('dao') === 'dao_hat_mam' : v === '1'; } catch (e) { return false; } }; window.SK_DIU = diu;
   const ac = () => { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); return AC; };
-  function tone(f, t0, d, type = 'triangle', v = .18) { const a = ac(), o = a.createOscillator(), g = a.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, a.currentTime + t0); g.gain.linearRampToValueAtTime(v, a.currentTime + t0 + .01); g.gain.exponentialRampToValueAtTime(.001, a.currentTime + t0 + d); o.connect(g).connect(a.destination); o.start(a.currentTime + t0); o.stop(a.currentTime + t0 + d + .05); }
+  function tone(f, t0, d, type = 'triangle', v = .18) { if (diu()) v *= .35; const a = ac(), o = a.createOscillator(), g = a.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, a.currentTime + t0); g.gain.linearRampToValueAtTime(v, a.currentTime + t0 + .01); g.gain.exponentialRampToValueAtTime(.001, a.currentTime + t0 + d); o.connect(g).connect(a.destination); o.start(a.currentTime + t0); o.stop(a.currentTime + t0 + d + .05); }
   const sfx = {
     good() { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .08, .35)); },
     thunk() { tone(140, 0, .18, 'square', .12); tone(90, .03, .2, 'sine', .2); },
     try() { tone(587, 0, .22, 'sine', .14); tone(784, .14, .3, 'sine', .14); }, // khuyến khích, không phải tiếng thua
-    fanfare() { [[523, 0], [659, .15], [784, .3], [1047, .5], [784, .7], [1047, .85]].forEach(([f, t]) => { tone(f, t, .4, 'square', .08); tone(f / 2, t, .4, 'triangle', .12); }); },
+    fanfare() { if (diu()) return; [[523, 0], [659, .15], [784, .3], [1047, .5], [784, .7], [1047, .85]].forEach(([f, t]) => { tone(f, t, .4, 'square', .08); tone(f / 2, t, .4, 'triangle', .12); }); },
     pop() { tone(880, 0, .12, 'sine', .15); },
     rustle() { const a = ac(), n = a.createBufferSource(), b = a.createBuffer(1, a.sampleRate * .5, a.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length) * .5; n.buffer = b; const f = a.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 2500; const g = a.createGain(); g.gain.value = .25; n.connect(f).connect(g).connect(a.destination); n.start(); },
     boing() { const a = ac(), o = a.createOscillator(), g = a.createGain(); o.type = 'triangle'; o.frequency.setValueAtTime(220, a.currentTime); o.frequency.exponentialRampToValueAtTime(660, a.currentTime + .18); o.frequency.exponentialRampToValueAtTime(330, a.currentTime + .35); g.gain.setValueAtTime(.22, a.currentTime); g.gain.exponentialRampToValueAtTime(.001, a.currentTime + .45); o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime + .5); },
@@ -110,8 +114,9 @@
     scaffold(G);
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     const KEY = 'trochoi_' + G.id;
-    let cfg = { words: G.defaultWords.slice(), speak: true, auto: true, mic: true, shuffle: false, chorus: true, cau: false, doi: false, nhom: QS.get('dao') === 'dao_hat_mam' ? 2 : 1, max: 0 };
-    try { Object.assign(cfg, JSON.parse(localStorage.getItem(KEY) || 'null') || {}); } catch (e) {}
+    const NHO = /^(dao_hat_mam|dao_cau_vong)$/.test(QS.get('dao') || ''); // lớp nhỏ: cô chấm bằng Enter, máy nghe là tuỳ chọn
+    let cfg = { words: G.defaultWords.slice(), speak: true, auto: true, mic: !NHO, shuffle: false, chorus: true, cau: (QS.get('dao') || 'dao_3d') === 'dao_3d' && /\?/.test(QS.get('cau') || ''), doi: false, nhom: 0, max: -1, vandong: true, v: 2 };
+    try { const o = JSON.parse(localStorage.getItem(KEY) || 'null') || {}; if ((o.v || 1) < 2) ['mic', 'nhom', 'max', 'cau'].forEach(k => delete o[k]); Object.assign(cfg, o); cfg.v = 2; } catch (e) {} // v2: mặc định theo góp ý hội đồng chuyên gia 26-11-2026
     let names = 'Bé An\nBé Bin\nBé Na\nBé Tôm\nBé Su\nBé Bơ\nBé Mít\nBé Cốm';
     try { names = localStorage.getItem('trochoi_names') || localStorage.getItem('ghepvancau') && JSON.parse(localStorage.getItem('ghepvancau')).names || names; } catch (e) {}
     const baseWords = cfg.words.slice(); // lựa chọn riêng của cô; từ của tiết trên đảo chỉ dùng cho lần chơi này
@@ -140,7 +145,7 @@
       sprite(id, img, x, y, h, cls = '') { let e = $('s_' + id); if (!e) { e = document.createElement('img'); e.id = 's_' + id; e.alt = ''; api.scene.appendChild(e); } e.className = 'spr ' + cls; e.src = img; Object.assign(e.style, { left: x + 'px', top: y + 'px', height: h + 'px' }); return e; },
       pose(id, img) { const e = $('s_' + id); if (e) e.src = img; },
       say(t, x, y) { const s = $('say'); if (!t) { s.hidden = true; return; } s.hidden = false; s.textContent = t; if (x != null) { s.style.left = x + 'px'; s.style.top = y + 'px'; } },
-      speak(text, rate = .85) { if (cfg.speak && window.GiongCo && GiongCo.has(text)) { try { speechSynthesis.cancel(); } catch (e) {} return GiongCo.play(text).then(() => {}); } // giọng cô đã ghi
+      speak(text, rate = .85) { if (!text) return Promise.resolve(); if (cfg.speak && window.GiongCo && GiongCo.has(text)) { try { speechSynthesis.cancel(); } catch (e) {} return GiongCo.play(text).then(() => {}); } // giọng cô đã ghi
         return new Promise(res => { if (!cfg.speak || !('speechSynthesis' in window) || !hasEnVoice()) return res(); speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.voice = VOICE; u.rate = rate; u.pitch = 1.1; let d = false; const f = () => { if (!d) { d = true; res(); } }; u.onend = f; u.onerror = f; setTimeout(f, Math.min(4500, 1500 + text.length * 110) * (window.AmSongKim ? AmSongKim.he() : 1)); speechSynthesis.speak(u); }); },
       wait: ms => new Promise(r => setTimeout(r, ms)),
       sparkle, confetti, progress() { const [a, b] = G.progress ? G.progress(api) : [results.filter(r => r.ok).length, kids.length]; $('prog').textContent = `${a} / ${b}`; },
@@ -182,16 +187,17 @@
       if (state !== 'turn') return;
       if (askPh) return askTurn();
       stopListen(); $('micBtn').classList.remove('ok', 'no'); lastHeard = '';
+      if (shyOf[turnIdx]) { heard('CÔ CHẤM', 'Các bạn nói xong, cô bấm Enter.'); return; }
       if (!cfg.mic || !SR || !window.MayNghe) { heard('CÔ CHẤM', SR ? 'Máy nghe đang tắt. Bé đọc đúng thì cô bấm Enter.' : 'Máy này chưa nghe được. Bé đọc đúng thì cô bấm Enter.'); return; }
       const me = cur;
       MayNghe.start({ word: cur.word, others: G.words.map(W => W.w), ms: cfg.cau ? 11000 : DAO === 'dao_hat_mam' ? 6000 : 8000,
-        onStart: () => { $('micBtn').classList.add('on'); heard('MÁY ĐANG NGHE', 'Bé đọc to nhé…'); showPeek(); },
+        onStart: () => { $('micBtn').classList.add('on'); heard('PIP ĐANG NGHE', 'Pip đang chờ nghe bạn đây…'); showPeek(); },
         onHeard: txt => { if (cur !== me) return; lastHeard = txt; if (navigator.onLine) status(''); showPeek(); },
         onMatch: () => { if (cur === me && state === 'turn') correct(); },
         onError: k => { $('micBtn').classList.remove('on'); const net = k === 'network';
           status(net ? 'Mất mạng · máy nghe tạm nghỉ, cô chấm bằng Enter' : 'Chưa có micro · bấm biểu tượng micro trên thanh địa chỉ để cho phép', 'bad');
           heard('CÔ CHẤM', net ? 'Máy nghe cần có mạng. Bé đọc đúng thì cô bấm Enter.' : 'Máy chưa dùng được micro. Bé đọc đúng thì cô bấm Enter.'); },
-        onFail: async () => { if (cur !== me || state !== 'turn') return; $('micBtn').classList.remove('on'); sfx.try();
+        onFail: async () => { if (cur !== me || state !== 'turn') return; $('micBtn').classList.remove('on'); retried = true; // không có tiếng báo; Pip mời cả lớp nói cùng
           heard('CẢ LỚP CÙNG ĐỌC', 'Let’s say it together!'); showPeek();
           await api.speak("Let's say it together! " + cur.word.w, .9); if (cur !== me || state !== 'turn') return;
           heard('ĐỌC LẠI NÀO', 'Bé đọc lại (phím cách) hoặc cô bấm Enter.'); showPeek(); } });
@@ -211,19 +217,21 @@
     async function nextTurn() {
       stopListen(); askPh = false;
       if (turnIdx >= kids.length) return finish();
-      const W = words[turnIdx % words.length]; cur = { kid: kids[turnIdx], word: W, i: turnIdx }; state = 'intro'; daHien = false;
+      if (cfg.vandong && !giuaHiep && kids.length >= 6 && turnIdx === Math.ceil(kids.length / 2)) { giuaHiep = true; const my = runId; await vanDong('Giải lao giữa hiệp: đứng lên nào!'); if (my !== runId) return; }
+      const W = words[turnIdx % words.length]; cur = { kid: kids[turnIdx], word: W, i: turnIdx }; state = 'intro'; daHien = false; retried = false;
+      $('conLuot').hidden = false; $('conLuot').textContent = `còn ${kids.length - turnIdx} lượt`;
       goiMark(members[turnIdx]);
       const pair = pairOn() ? `${nextName[turnIdx]} hỏi · ${kids[turnIdx]} đáp` : '';
       $('turnName').textContent = pair || cur.kid; window.Vui && Vui.luot(turnIdx);
-      const shy = shyOf[turnIdx]; $('shy').hidden = !shy;
-      if (shy) $('shy').innerHTML = `Bạn chọn cách nào cũng được: nói to, nói cùng bạn, hay chỉ vào hình!`; $('turn').hidden = false; $('micRow').hidden = false; $('micBtn').classList.remove('ok', 'no');
-      if (G.guessFirst) { api.hideCard(); heard('ĐOÁN XEM', 'Cả lớp đoán xem nào…'); }
+      $('shy').hidden = true; $('turnLbl').hidden = false; $('turn').hidden = false; $('micRow').hidden = false; $('micBtn').classList.remove('ok', 'no'); // bé nhút nhát: không hiện gì riêng (đã ghép chung lượt với bạn)
+      if (G.guessFirst) { api.hideCard(); heard('ĐOÁN XEM', 'Cả lớp đoán xem nào…'); $('turnLbl').hidden = true; $('turnName').textContent = 'Cả lớp đoán!'; } // tên bé hiện sau khi cô cho hiện hình
       const me = cur; if (G.onTurn) await G.onTurn(api, cur); if (cur !== me || state !== 'intro') return;
       if (G.guessFirst) { state = 'doan'; heard('ĐOÁN XEM', 'Đoán xong, cô bấm Enter hoặc chạm vào hình để hiện.'); return; } // chờ cô cho hiện hình
       state = 'turn'; model();
     }
     async function reveal() { // cô bấm Hiện hình: hình rõ ra, hiện thẻ chữ, đọc mẫu
       if (state !== 'doan') return; const me = cur; $('hienHinh').hidden = true; state = 'intro'; daHien = true;
+      $('turnLbl').hidden = false; $('turnName').textContent = pairOn() ? `${nextName[turnIdx]} hỏi · ${cur.kid} đáp` : cur.kid;
       if (G.onReveal) await G.onReveal(api, cur); if (cur !== me || state !== 'intro') return;
       $('micRow').hidden = false; state = 'turn'; model();
     }
@@ -232,20 +240,31 @@
     async function chorus(W, my) {
       if (!cfg.chorus || my !== runId || state !== 'anim') return;
       state = 'chorus'; $('shy').hidden = true; const box = $('chorus'), S = cfg.cau ? sentence(W) : null, txt = S ? S.a : W.w;
-      $('chWord').textContent = txt; $('chCmd').textContent = W.cmd || '👏 Vỗ tay và nói theo!'; $('chD0').className = $('chD1').className = ''; $('chD1').hidden = LAN < 2;
+      const doi2 = S && LAN > 1; // có câu hỏi – đáp: nửa lớp hỏi, nửa lớp đáp, rồi đổi vai
+      $('chWord').textContent = doi2 ? `${S.q} – ${S.a}` : txt; $('chCmd').textContent = doi2 ? '👈 Bên trái hỏi · bên phải đáp 👉' : W.cmd || '👏 Vỗ tay và nói theo!'; $('chD0').className = $('chD1').className = ''; $('chD1').hidden = LAN < 2;
+      const cho = t => Math.min(3600, 1100 + String(t).length * 75); // thời gian cả lớp nói theo: câu dài chờ lâu hơn
       box.hidden = false; let skipped = false; const skipP = new Promise(r => chorusSkip = () => { skipped = true; r(); });
       const step = async () => {
         if (!invited) { invited = true; await api.speak('Everyone, say it with me!', .95); if (skipped) return; }
         for (let k = 0; k < LAN && !skipped; k++) {
           $('chD' + k).className = 'on'; sfx.pop();
-          await api.speak(txt, .85); if (skipped) return;
-          await api.wait(1700); // cả lớp đọc theo
+          if (doi2) { $('chCmd').textContent = k ? '👉 Đổi vai: bên phải hỏi · bên trái đáp 👈' : '👈 Bên trái hỏi · bên phải đáp 👉';
+            await api.speak(S.q, .85); if (skipped) return; await api.wait(cho(S.q)); if (skipped) return; await api.speak(S.a, .85); if (skipped) return; await api.wait(cho(S.a)); }
+          else { await api.speak(txt, .85); if (skipped) return; await api.wait(cho(txt)); } // cả lớp đọc theo
           $('chD' + k).className = 'done';
         }
       };
       await Promise.race([step(), skipP]); chorusSkip = null; box.hidden = true; hush();
     }
     function hush() { try { speechSynthesis.cancel(); } catch (e) {} window.GiongCo && GiongCo.stop(); }
+    let retried = false, giuaHiep = false, vdSkip = null;
+    const VD = [['🙌', 'Hands up!'], ['👏', 'Clap your hands!'], ['🦘', 'Jump, jump, jump!'], ['🔄', 'Turn around!'], ['👃', 'Touch your nose!'], ['🦶', 'Stamp your feet!'], ['🙆', 'Touch your head!'], ['🐸', 'Hop like a frog!']];
+    async function vanDong(lbl) { // 20–30 giây: Pip nói lệnh, cả lớp đứng lên làm theo; Enter để vào chơi luôn
+      const prev = state; state = 'vandong'; $('vd').hidden = false; $('vdLbl').textContent = lbl; let skipped = false; const sk = new Promise(r => vdSkip = () => { skipped = true; r(); });
+      const list = [['🧍', 'Stand up!']].concat(VD.slice().sort(() => Math.random() - .5).slice(0, 3), [['🪑', 'Sit down, please!']]);
+      const run = async () => { for (const [e, t] of list) { if (skipped) return; $('vdE').textContent = e; $('vdT').textContent = t; await api.speak(t, .9); if (skipped) return; await api.wait(t.startsWith('Sit') ? 1500 : 3200); } };
+      await Promise.race([run(), sk]); vdSkip = null; hush(); $('vd').hidden = true; if (state === 'vandong') state = prev;
+    }
     let daHien = false; // trò đoán hình: chưa cho hiện hình thì Enter / Space chưa tính, tránh bỏ qua bước đoán
     const choDoan = () => G.guessFirst && state === 'intro' && !daHien;
     async function correct() {
@@ -253,24 +272,32 @@
       if (state === 'turn' && askPh) return answerTurn(); // Enter lúc bạn đang hỏi: sang lượt bạn đáp
       if (state !== 'turn' && state !== 'intro') return; state = 'anim'; stopListen(); const my = runId;
       $('micBtn').classList.remove('no'); $('micBtn').classList.add('ok'); heard('ĐÚNG RỒI!', cur.word.w);
-      sfx.good(); window.Vui && Vui.dung(turnIdx); const praise = ['Great job!', 'Well done!', 'Super!', 'Excellent!', 'Good job!'][turnIdx % 5]; api.speak(praise, .95);
+      const grp = (members[turnIdx] || []).length > 1, praise = retried ? 'You tried again! Well done!' : grp ? ['You said it together!', 'Great teamwork!'][turnIdx % 2] : ['You said it!', 'Loud and clear!', 'Great job!', 'Well done!'][turnIdx % 4];
+      api.speak(praise, .95); setTimeout(() => { if (my === runId) sfx.good(); }, 650); window.Vui && Vui.dung(turnIdx); // khen bằng lời trước, tiếng vui theo sau
       results[turnIdx] = { kid: cur.kid, word: cur.word, ok: true };
       if (G.onCorrect) await G.onCorrect(api, cur, praise); if (my !== runId || state !== 'anim') return; api.progress();
       await api.wait(500); await chorus(cur.word, my); if (my !== runId || (state !== 'anim' && state !== 'chorus')) return; turnIdx++; nextTurn();
     }
-    async function skip() {
-      if (state === 'doan') { $('hienHinh').hidden = true; state = 'intro'; }
-      if (state !== 'turn' && state !== 'intro') return; stopListen(); askPh = false; state = 'anim'; const my = runId;
-      results[turnIdx] = { kid: cur.kid, word: cur.word, ok: false };
-      if (G.onSkip) await G.onSkip(api, cur); if (my !== runId || state !== 'anim') return; api.progress(); await chorus(cur.word, my); if (my !== runId || (state !== 'anim' && state !== 'chorus')) return; turnIdx++; nextTurn();
+    async function skip() { // bé chưa nói được: cả lớp cùng nói giúp, món đồ vẫn được thu về và treo tên bé như mọi bạn
+      const wasDoan = state === 'doan'; if (wasDoan) { $('hienHinh').hidden = true; state = 'intro'; }
+      if (state !== 'turn' && state !== 'intro') return; const help = !(G.guessFirst && state === 'intro' && !daHien && !wasDoan);
+      stopListen(); askPh = false; state = 'anim'; const my = runId;
+      results[turnIdx] = { kid: cur.kid, word: cur.word, ok: false, giup: help };
+      if (help) { heard('CẢ LỚP GIÚP BẠN', cur.word.w); $('turnLbl').hidden = false; $('turnName').textContent = cur.kid;
+        if (wasDoan && G.onReveal) await G.onReveal(api, cur); if (my !== runId || state !== 'anim') return;
+        api.speak('Everyone, help your friend!', .95); window.Vui && Vui.dung(turnIdx);
+        const say0 = api.say, kid = cur.kid; api.say = (t, x, y) => say0(t ? `Cả lớp cùng giúp ${kid}! Cảm ơn cả lớp!` : t, x, y);
+        try { if (G.onCorrect) await G.onCorrect(api, cur, 'Thank you, everyone!'); } finally { api.say = say0; } }
+      else if (G.onSkip) await G.onSkip(api, cur);
+      if (my !== runId || state !== 'anim') return; api.progress(); await chorus(cur.word, my); if (my !== runId || (state !== 'anim' && state !== 'chorus')) return; turnIdx++; nextTurn();
     }
     async function finish() {
-      const my0 = runId; state = 'finish'; ['turn', 'card', 'micRow', 'shy', 'chorus', 'hienHinh'].forEach(i => $(i).hidden = true); stopListen();
+      const my0 = runId; state = 'finish'; ['turn', 'card', 'micRow', 'shy', 'chorus', 'hienHinh', 'conLuot'].forEach(i => $(i).hidden = true); stopListen();
       try { const K = 'songkim_vinhdanh', v = JSON.parse(localStorage.getItem(K) || '{}'); kids.forEach((k, i) => (members[i] || [k]).forEach(n => { const r = v[n] || (v[n] = { dung: 0, luot: 0 }); r.luot++; if (results[i] && results[i].ok) r.dung++; })); localStorage.setItem(K, JSON.stringify(v)); } catch (e) {} // ghi cho bảng vinh danh
       sfx.fanfare(); api.speak("Hooray! Well done, everyone!", .95);
       if (G.onFinish) await G.onFinish(api); if (my0 !== runId || state !== 'finish') return;
-      confetti(); sfx.fanfare();
-      if (window.Vui) Vui.huyHieu(kids, kids.map((k, i) => results[i] || { word: words[i % words.length] }), $('doneNames')); // mọi bé đều có huy hiệu, không đánh dấu bé bỏ lượt
+      if (!diu()) confetti();
+      if (window.Vui) Vui.huyHieu(kids, kids.map((k, i) => Object.assign({ word: words[i % words.length] }, results[i] || {}, { nhom: (members[i] || []).length })), $('doneNames')); // mọi bé đều có huy hiệu, không đánh dấu bé bỏ lượt
       else $('doneNames').innerHTML = kids.map(k => `<span>${esc(k)}</span>`).join('');
       const my = runId; setTimeout(() => { if (my !== runId || state !== 'finish') return; $('ovDone').hidden = false; $('bNext').focus(); state = 'done'; }, 800);
     }
@@ -279,17 +306,19 @@
       names = $('names').value; saveCfg();
       let roster = names.split('\n').map(s => s.trim()).filter(Boolean).map(s => ({ name: s.replace(/\s*\*+\s*$/, '').trim(), shy: /\*\s*$/.test(s) })).filter(k => k.name);
       if (!roster.length) { $('names').focus(); return; }
-      const lim = +cfg.max > 0 ? +cfg.max : Infinity;
+      const lim = +cfg.max === -1 ? 16 : +cfg.max > 0 ? +cfg.max : Infinity;
       if (roster.length > lim) { const idx = roster.map((k, i) => [goiCount(k.name), i]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(0, lim).map(x => x[1]).sort((a, b) => a - b); roster = idx.map(i => roster[i]); } // ưu tiên bé ít được gọi
       if (cfg.shuffle) for (let i = roster.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [roster[i], roster[j]] = [roster[j], roster[i]]; }
-      const n = Math.max(1, +cfg.nhom || 1), groups = []; for (let i = 0; i < roster.length; i += n) groups.push(roster.slice(i, i + n));
+      const n = +cfg.nhom > 0 ? +cfg.nhom : (roster.length > 8 || DAO === 'dao_hat_mam' ? 2 : 1), groups = []; for (let i = 0; i < roster.length; i += n) groups.push(roster.slice(i, i + n)); // tự chọn: lớp đông thì 2 bé một lượt cho cả lớp đỡ chờ
       if (groups.length > 1 && groups[groups.length - 1].length === 1 && n > 1) groups[groups.length - 2].push(...groups.pop()); // không để bé lẻ một mình
-      kids = groups.map(g => g.map(k => k.name).join(' · ')); members = groups.map(g => g.map(k => k.name)); shyOf = groups.map(g => g.length === 1 && g[0].shy);
+      for (let i = 0; i < groups.length; i++) if (groups[i].length === 1 && groups[i][0].shy && groups.length > 1) { const a = i + 1 < groups.length ? i : i - 1; groups.splice(a, 2, groups[a].concat(groups[a + 1])); } // bé nhút nhát nói chung với một bạn
+      kids = groups.map(g => g.map(k => k.name).join(' · ')); members = groups.map(g => g.map(k => k.name)); shyOf = groups.map(g => g.some(k => k.shy));
       nextName = kids.map((k, i) => kids[(i + 1) % kids.length]);
       words = G.words.filter(W => cfg.words.includes(W.w)); if (words.length < 2) words = G.words.filter(W => G.defaultWords.includes(W.w));
       turnIdx = 0; results = [];
       $('ovSetup').hidden = true; $('ovDone').hidden = true; $('keys').hidden = false;
-      ac(); window.Vui && Vui.batDau(kids.length); if (G.onStart) G.onStart(api); api.progress(); nextTurn();
+      ac(); window.Vui && Vui.batDau(kids.length); if (G.onStart) G.onStart(api); api.progress(); giuaHiep = false;
+      const my = runId; (cfg.vandong && kids.length >= 3 ? vanDong('Trước khi chơi: đứng lên vận động nào!') : Promise.resolve()).then(() => { if (my === runId) nextTurn(); });
     }
     function goIsland(res) { stopListen(); hush(); location.href = `${ISLAND}?ve=thu_thach&ket_qua=${res}`; }
     function quit() {
@@ -299,15 +328,16 @@
       if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
       fetch('/quit', { method: 'POST' }).catch(() => {}); setTimeout(() => { try { window.close(); } catch (e) {} }, 400);
     }
-    function openSetup() { $('hienHinh').hidden = true; window.Vui && Vui.an(); stopListen(); hush(); runId++; state = 'setup'; $('chorus').hidden = true; buildSetup(); $('ovDone').hidden = true; $('ovSetup').hidden = false; $('bStart').focus(); }
+    function openSetup() { $('hienHinh').hidden = true; $('vd').hidden = true; $('conLuot').hidden = true; vdSkip && vdSkip(); window.Vui && Vui.an(); stopListen(); hush(); runId++; state = 'setup'; $('chorus').hidden = true; buildSetup(); $('ovDone').hidden = true; $('ovSetup').hidden = false; $('bStart').focus(); }
     function buildSetup() {
       $('names').value = names;
       $('wordPick').innerHTML = G.words.map(W => `<label class="wpick ${cfg.words.includes(W.w) ? 'on' : ''}"><input type="checkbox" value="${W.w}" ${cfg.words.includes(W.w) ? 'checked' : ''}><img src="${W.img}" alt=""><span>${W.w}</span></label>`).join('');
       $('wordPick').querySelectorAll('input').forEach(inp => inp.onchange = () => { inp.parentElement.classList.toggle('on', inp.checked); cfg.words = [...$('wordPick').querySelectorAll('input:checked')].map(i => i.value); saveCfg(); });
-      [['selNhom', 'nhom'], ['selMax', 'max']].forEach(([id, k]) => { $(id).value = String(cfg[k] || (k === 'nhom' ? 1 : 0)); $(id).onchange = () => { cfg[k] = +$(id).value; saveCfg(); }; });
+      [['selNhom', 'nhom'], ['selMax', 'max']].forEach(([id, k]) => { $(id).value = String(cfg[k] == null ? (k === 'nhom' ? 0 : -1) : cfg[k]); $(id).onchange = () => { cfg[k] = +$(id).value; saveCfg(); }; });
       $('cauHint').textContent = CAU && /\?/.test(CAU) ? '(' + CAU.split('/')[0].trim().slice(0, 40) + ')' : '';
       $('lblDoi').hidden = DAO === 'dao_hat_mam'; // Amanda 2–3: hai bé hỏi đáp nhau (Hạt Mầm 3–4 tuổi còn nhỏ)
-      [['optSpeak', 'speak'], ['optAuto', 'auto'], ['optMic', 'mic'], ['optShuffle', 'shuffle'], ['optChorus', 'chorus'], ['optCau', 'cau'], ['optDoi', 'doi']].forEach(([id, k]) => { $(id).checked = cfg[k]; $(id).onchange = () => { cfg[k] = $(id).checked; saveCfg(); }; });
+      [['optSpeak', 'speak'], ['optAuto', 'auto'], ['optMic', 'mic'], ['optShuffle', 'shuffle'], ['optChorus', 'chorus'], ['optCau', 'cau'], ['optDoi', 'doi'], ['optVd', 'vandong']].forEach(([id, k]) => { $(id).checked = cfg[k]; $(id).onchange = () => { cfg[k] = $(id).checked; saveCfg(); }; });
+      $('optDiu').checked = diu(); $('optDiu').onchange = () => { try { localStorage.setItem(DIU_K, $('optDiu').checked ? '1' : '0'); } catch (e) {} };
       window.Vui && Vui.ganNut();
       if (!SR) { $('micNote').textContent = 'Trình duyệt này chưa có máy nghe. Hãy mở bằng Chrome hoặc Edge. Tạm thời cô bấm Enter khi bé đọc đúng.'; $('micNote').classList.add('warn'); }
     }
@@ -322,21 +352,24 @@
     document.addEventListener('keydown', e => {
       if (e.target.tagName === 'TEXTAREA') return;
       if (e.key === 'q' || e.key === 'Q') { if (state === 'bye') return; const now = performance.now(); if (now - (window.__qAt || -1e9) < 1800) return quit(); window.__qAt = now; return hint(FROM_ISLAND ? 'Bấm Q lần nữa để về đảo' : 'Bấm Q lần nữa để thoát'); }
-      if (e.key === 'h' || e.key === 'H') { peek = !peek; if (peek) showPeek(); else if (state === 'turn') heard('MÁY ĐANG NGHE', 'Bé đọc to nhé…'); return; }
+      if (e.key === 'h' || e.key === 'H') { peek = !peek; if (peek) showPeek(); else if (state === 'turn') heard('PIP ĐANG NGHE', 'Pip đang chờ nghe bạn đây…'); return; }
       if (state === 'bye') return;
       if (e.key === 'f' || e.key === 'F') return $('kFull').onclick();
       if (state === 'setup') { if (e.key === 'Enter') start(); return; }
-      if (state === 'done') { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); FROM_ISLAND ? goIsland('xong') : start(); } if (e.key === 'Escape') openSetup(); return; }
+      if (state === 'done') { if (e.key === 'Enter' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); FROM_ISLAND ? goIsland('xong') : start(); } if (e.key === 'Escape') openSetup(); return; }
       if (state === 'chorus' && e.key === 'Escape') { chorusSkip && chorusSkip(); return openSetup(); }
-      if (state === 'chorus') { if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') { e.preventDefault(); chorusSkip && chorusSkip(); } return; }
+      if (state === 'vandong') { if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); vdSkip && vdSkip(); } if (e.key === 'Escape') { vdSkip && vdSkip(); openSetup(); } return; }
+      if (state === 'chorus') { if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); chorusSkip && chorusSkip(); } return; }
       if (e.key === 'Escape') return openSetup();
       if (state === 'doan') { if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); reveal(); } else if (e.key === 's' || e.key === 'S') { $('hienHinh').hidden = true; state = 'intro'; skip(); } return; }
       if (state !== 'turn' && state !== 'intro') return;
       if (e.key === 'Enter' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); correct(); }
       else if (e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); if (choDoan()) return; if (state === 'intro') { state = 'turn'; model(); } else listen(); }
-      else if (e.key === 'r' || e.key === 'R' || e.key === 'ArrowUp') { if (state === 'turn') { stopListen(); model(); } }
+      else if (e.key === 'r' || e.key === 'R' || e.key === 'ArrowUp' || e.key === 'PageUp') { if (state === 'turn') { stopListen(); model(); } }
       else if (e.key === 's' || e.key === 'S') skip();
     });
+    { const kb = $('keys'); let t = 0; const wake = () => { kb.classList.remove('an'); clearTimeout(t); t = setTimeout(() => kb.classList.add('an'), 3000); }; ['mousemove', 'pointerdown', 'keydown'].forEach(ev => addEventListener(ev, wake, { passive: true })); wake(); } // phím của cô tự ẩn
+    if (!document.querySelector('script[src*="nghi_mat.js"]')) { const sc = document.createElement('script'); sc.src = '../chung/nghi_mat.js'; document.head.appendChild(sc); } // màn đen nghỉ mắt + đồng hồ chiếu của cô
     buildSetup();
     window.__tro = { api, cfg, correct, skip, sentence, get state() { return state; }, get kids() { return kids; }, get members() { return members; } };
   } };
