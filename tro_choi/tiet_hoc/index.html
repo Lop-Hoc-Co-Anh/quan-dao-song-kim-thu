@@ -65,6 +65,7 @@
 <script src="../chung/truyen_sach.js"></script>
 <script src="../chung/cau_sach2.js"></script>
 <script src="../chung/chant.js"></script>
+<script src="../chung/nghi_mat.js"></script>
 <script>
 (function () {
   const Q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
@@ -189,11 +190,13 @@
   // ---------- trình chiếu ----------
   let k = 0;
   const ve = () => { location.href = ISLAND + '?ve=bai_chieu'; };
-  const doc = w => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .85; speechSynthesis.speak(u); } catch (e) {} };
+  const doc = w => { try { speechSynthesis.cancel(); window.GiongCo && GiongCo.stop(); } catch (e) {} if (window.GiongCo && GiongCo.has(w)) return GiongCo.play(w); try { const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .85; speechSynthesis.speak(u); } catch (e) {} }; // giọng cô đã ghi → âm làm sẵn (am.js) → giọng máy
+  let docLan = { w: '', t: 0 };
+  const docThe = w => { const lan2 = docLan.w === w && Date.now() - docLan.t < 6000; docLan = { w: lan2 ? '' : w, t: Date.now() }; if (lan2) { const [q, a] = qa(w); doc(q + ' ' + a); } else doc(w); }; // bấm thẻ lần 1: đọc từ; lần 2: đọc câu hỏi – đáp
   function show(i) {
     k = Math.max(0, Math.min(T.length - 1, i)); window.Chant && Chant.close();
     $('s').innerHTML = T[k](); $('dem').textContent = `${k + 1} / ${T.length} · ${unit} · ${TEN_LOAI}`;
-    $('s').querySelectorAll('[data-noi]').forEach(e => e.onclick = ev => { ev.stopPropagation(); doc(e.dataset.noi); });
+    $('s').querySelectorAll('[data-noi]').forEach(e => e.onclick = ev => { ev.stopPropagation(); docThe(e.dataset.noi); });
     $('s').querySelectorAll('[data-hat]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const h = b.dataset.hat;
       if (h === 'hello') Chant.song('Hello song', HELLO); else if (h === 'bye') Chant.song('Goodbye song', BYE);
       else Chant.play(W, `${chuDe} chant`, w => qa(w)[1], { max: 8 }); });
