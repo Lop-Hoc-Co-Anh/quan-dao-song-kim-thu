@@ -49,7 +49,7 @@
       <p>${G.story}</p>
       <div class="grid2">
         <div><label class="t" for="names">Danh sách các bé (mỗi dòng một tên)</label><textarea id="names" spellcheck="false"></textarea>
-          <div class="nameTip">Bé nhút nhát: thêm dấu <b>*</b> sau tên (VD: Bé Na *). Máy tự cho bé nói chung với một bạn và cô chấm, màn hình không hiện gì riêng.</div></div>
+          <div class="nameTip">Bé nhút nhát: thêm dấu <b>*</b> sau tên (VD: Bé Na *). Máy tự cho bé nói chung với một bạn và cô chấm, màn hình không hiện gì riêng.<br>Mỗi bé có <b>ký hiệu riêng</b> (🐰 🐻 …) hiện cạnh tên, máy tự gán và nhớ. Muốn chọn ký hiệu khác thì gõ ngay sau tên, VD: Bé An 🐰 (trùng ký hiệu tủ đồ của bé càng tốt).</div></div>
         <div><label class="t">Chọn từ cho tiết này</label><div class="words" id="wordPick"></div>
           <div class="opts">
             <label><input type="checkbox" id="optSpeak"> Máy đọc mẫu từ</label>
@@ -135,6 +135,13 @@
     const CAU = (QS.get('cau') || '').trim(), DAO = QS.get('dao') || 'dao_3d';
     const NOART = /^(red|yellow|blue|green|orange|brown|purple|pink|black|white|grey|gray|one|two|three|four|five|six|seven|eight|nine|ten|long|short|big|little|fast|slow|happy|sad)$/i;
     function sentence(W) { const S = window.CauMau && CauMau.of(W.w, QS.get('unit') || G.unit); return S && W.q && /^who/i.test(W.q) && !/^who/i.test(S.q) ? null : S; }
+    // ---- ký hiệu riêng từng bé (bé chưa biết chữ vẫn nhận ra lượt mình): cô ghi biểu tượng sau tên, không có thì máy tự gán và nhớ ----
+    const KY = ['🐰', '🐻', '🐱', '🐶', '🐼', '🦊', '🐯', '🦁', '🐸', '🐵', '🐷', '🐮', '🐔', '🐧', '🐢', '🐙', '🦋', '🐝', '🐞', '🦄', '🐳', '🐬', '🦒', '🐘', '🦓', '🐹', '🐨', '🦉', '🍓', '🍎', '🌻', '⭐', '🚗', '⚽', '🎈', '🌈', '🍉', '🚀', '🎵', '🧸'];
+    const EMO = /\p{Extended_Pictographic}/u;
+    function kyHieu(name) { const m = name.match(EMO); if (m) return m[0];
+      try { const map = JSON.parse(localStorage.getItem('songkim_kyhieu') || '{}'); if (map[name]) return map[name]; const dung = new Set(Object.values(map));
+        let h = 0; for (const c of name) h = (h * 31 + c.codePointAt(0)) >>> 0; let e = KY[h % KY.length]; for (let i = 0; dung.has(e) && i < KY.length; i++) e = KY[(h + i) % KY.length];
+        map[name] = e; localStorage.setItem('songkim_kyhieu', JSON.stringify(map)); return e; } catch (e) { return KY[name.length % KY.length]; } }
     // ---- gọi công bằng: đếm số lần mỗi bé được gọi trong 7 ngày ----
     const K_GOI = 'songkim_goi', DAY = 864e5;
     const goiCount = n => { try { const g = JSON.parse(localStorage.getItem(K_GOI) || '{}'); return (g[n] || []).filter(t => Date.now() - t < 7 * DAY).length; } catch (e) { return 0; } };
@@ -241,7 +248,7 @@
       if (!cfg.chorus || my !== runId || state !== 'anim') return;
       state = 'chorus'; $('shy').hidden = true; const box = $('chorus'), S = cfg.cau ? sentence(W) : null, txt = S ? S.a : W.w;
       const doi2 = S && LAN > 1; // có câu hỏi – đáp: nửa lớp hỏi, nửa lớp đáp, rồi đổi vai
-      $('chWord').textContent = doi2 ? `${S.q} – ${S.a}` : txt; $('chCmd').textContent = doi2 ? '👈 Bên trái hỏi · bên phải đáp 👉' : W.cmd || '👏 Vỗ tay và nói theo!'; $('chD0').className = $('chD1').className = ''; $('chD1').hidden = LAN < 2;
+      $('chWord').textContent = doi2 ? `${S.q} – ${S.a}` : txt; $('chCmd').textContent = doi2 ? '👈 Bên trái hỏi · bên phải đáp 👉' : W.cmd || (window.DongTac && DongTac.of(W.w)) || '👏 Vỗ tay và nói theo!'; // nói kèm động tác của từ $('chD0').className = $('chD1').className = ''; $('chD1').hidden = LAN < 2;
       const cho = t => Math.min(3600, 1100 + String(t).length * 75); // thời gian cả lớp nói theo: câu dài chờ lâu hơn
       box.hidden = false; let skipped = false; const skipP = new Promise(r => chorusSkip = () => { skipped = true; r(); });
       const step = async () => {
@@ -304,7 +311,7 @@
     function start() {
       runId++; invited = false; hush();
       names = $('names').value; saveCfg();
-      let roster = names.split('\n').map(s => s.trim()).filter(Boolean).map(s => ({ name: s.replace(/\s*\*+\s*$/, '').trim(), shy: /\*\s*$/.test(s) })).filter(k => k.name);
+      let roster = names.split('\n').map(s => s.trim()).filter(Boolean).map(s => ({ name: s.replace(/\s*\*+\s*$/, '').trim(), shy: /\*\s*$/.test(s) })).filter(k => k.name).map(k => { const ky = kyHieu(k.name); return { ...k, ky, name: k.name.replace(new RegExp(EMO.source, 'gu'), '').replace(/\s+/g, ' ').trim() || k.name }; });
       if (!roster.length) { $('names').focus(); return; }
       const lim = +cfg.max === -1 ? 16 : +cfg.max > 0 ? +cfg.max : Infinity;
       if (roster.length > lim) { const idx = roster.map((k, i) => [goiCount(k.name), i]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(0, lim).map(x => x[1]).sort((a, b) => a - b); roster = idx.map(i => roster[i]); } // ưu tiên bé ít được gọi
@@ -312,7 +319,7 @@
       const n = +cfg.nhom > 0 ? +cfg.nhom : (roster.length > 8 || DAO === 'dao_hat_mam' ? 2 : 1), groups = []; for (let i = 0; i < roster.length; i += n) groups.push(roster.slice(i, i + n)); // tự chọn: lớp đông thì 2 bé một lượt cho cả lớp đỡ chờ
       if (groups.length > 1 && groups[groups.length - 1].length === 1 && n > 1) groups[groups.length - 2].push(...groups.pop()); // không để bé lẻ một mình
       for (let i = 0; i < groups.length; i++) if (groups[i].length === 1 && groups[i][0].shy && groups.length > 1) { const a = i + 1 < groups.length ? i : i - 1; groups.splice(a, 2, groups[a].concat(groups[a + 1])); } // bé nhút nhát nói chung với một bạn
-      kids = groups.map(g => g.map(k => k.name).join(' · ')); members = groups.map(g => g.map(k => k.name)); shyOf = groups.map(g => g.some(k => k.shy));
+      kids = groups.map(g => g.map(k => `${k.ky} ${k.name}`).join(' · ')); // tên hiện kèm ký hiệu riêng members = groups.map(g => g.map(k => k.name)); shyOf = groups.map(g => g.some(k => k.shy));
       nextName = kids.map((k, i) => kids[(i + 1) % kids.length]);
       words = G.words.filter(W => cfg.words.includes(W.w)); if (words.length < 2) words = G.words.filter(W => G.defaultWords.includes(W.w));
       turnIdx = 0; results = [];
@@ -369,6 +376,7 @@
       else if (e.key === 's' || e.key === 'S') skip();
     });
     { const kb = $('keys'); let t = 0; const wake = () => { kb.classList.remove('an'); clearTimeout(t); t = setTimeout(() => kb.classList.add('an'), 3000); }; ['mousemove', 'pointerdown', 'keydown'].forEach(ev => addEventListener(ev, wake, { passive: true })); wake(); } // phím của cô tự ẩn
+    if (!window.DongTac) { const sc = document.createElement('script'); sc.src = '../chung/dong_tac.js'; document.head.appendChild(sc); } // động tác gợi ý cho từng từ
     if (!document.querySelector('script[src*="nghi_mat.js"]')) { const sc = document.createElement('script'); sc.src = '../chung/nghi_mat.js'; document.head.appendChild(sc); } // màn đen nghỉ mắt + đồng hồ chiếu của cô
     buildSetup();
     window.__tro = { api, cfg, correct, skip, sentence, get state() { return state; }, get kids() { return kids; }, get members() { return members; } };
