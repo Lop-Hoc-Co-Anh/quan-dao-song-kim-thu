@@ -8,7 +8,8 @@
   const bd = () => { try { let t = +sessionStorage.getItem(K); if (!t || now() - t > 3 * 3600e3) { t = now(); sessionStorage.setItem(K, t); } return t; } catch (e) { return now(); } };
   let nhacRoi = false; try { nhacRoi = sessionStorage.getItem(K + '_nhac') === String(bd()); } catch (e) {}
   const css = document.createElement('style');
-  css.textContent = `#nmDen { position: fixed; inset: 0; background: #000; z-index: 2147483000; display: flex; align-items: flex-end; justify-content: center; cursor: none; }
+  css.textContent = `#nmDen[hidden], #nmGio[hidden] { display: none !important; }
+#nmDen { position: fixed; inset: 0; background: #000; z-index: 2147483000; display: flex; align-items: flex-end; justify-content: center; cursor: none; }
 #nmDen span { color: #333; font: 700 14px/1 Arial, sans-serif; padding: 18px; }
 #nmGio { position: fixed; left: 8px; bottom: 6px; z-index: 2147482000; font: 700 12px/1 Arial, sans-serif; color: #fff; background: rgba(31, 45, 74, .35); padding: 4px 8px; border-radius: 8px; pointer-events: none; opacity: .55; }
 #nmGio.qua { background: rgba(224, 120, 0, .75); opacity: .9; }
