@@ -31,6 +31,10 @@
 #nav{position:fixed;bottom:10px;right:12px;display:flex;gap:8px;z-index:20;opacity:.5}
 #nav button{border:0;border-radius:50%;width:54px;height:54px;font-size:28px;background:#fff;cursor:pointer}
 #in{display:none}
+/* chuyển trang: trang mới nằm trên, trang cũ nằm dưới rồi bị xoá sau hiệu ứng */
+.pg{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#9FDFFF 0%,#D9F4FF 62%,#9BDB6A 62%,#7CC653 100%);z-index:1;will-change:transform,opacity,clip-path}
+.pg.cu{z-index:0;pointer-events:none}
+.s{perspective:2400px}
 @media print{
   @page{size:A4;margin:0}
   html,body{background:#fff;overflow:visible;height:auto}
@@ -193,9 +197,30 @@
   const doc = w => { try { speechSynthesis.cancel(); window.GiongCo && GiongCo.stop(); } catch (e) {} if (window.GiongCo && GiongCo.has(w)) return GiongCo.play(w); try { const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .85; speechSynthesis.speak(u); } catch (e) {} }; // giọng cô đã ghi → âm làm sẵn (am.js) → giọng máy
   let docLan = { w: '', t: 0 };
   const docThe = w => { const lan2 = docLan.w === w && Date.now() - docLan.t < 6000; docLan = { w: lan2 ? '' : w, t: Date.now() }; if (lan2) { const [q, a] = qa(w); doc(q + ' ' + a); } else doc(w); }; // bấm thẻ lần 1: đọc từ; lần 2: đọc câu hỏi – đáp
+  // ---------- hiệu ứng chuyển trang: mỗi lần một kiểu, mượt, không chói ----------
+  const diu = () => { try { return localStorage.getItem('songkim_diu') === '1'; } catch (e) { return false; } };
+  const itMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const KIEU = [ // [trang mới vào, trang cũ ra], d = 1 tiến, -1 lùi
+    d => [[{ transform: `translateX(${100 * d}%)` }, { transform: 'translateX(0)' }], [{ transform: 'translateX(0)' }, { transform: `translateX(${-35 * d}%)`, opacity: .4 }]], // trượt ngang
+    d => [[{ transform: 'scale(.55)', opacity: 0 }, { transform: 'scale(1.03)', opacity: 1, offset: .7 }, { transform: 'scale(1)', opacity: 1 }], [{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(1.25)', opacity: 0 }]], // phóng to nảy
+    d => [[{ transform: `rotateY(${80 * d}deg)`, opacity: 0, transformOrigin: d > 0 ? '100% 50%' : '0 50%' }, { transform: 'rotateY(0)', opacity: 1, transformOrigin: d > 0 ? '100% 50%' : '0 50%' }], [{ opacity: 1 }, { opacity: .3 }]], // lật như trang sách
+    d => [[{ clipPath: 'circle(0% at 50% 55%)' }, { clipPath: 'circle(80% at 50% 55%)' }], null], // vòng tròn mở ra
+    d => [[{ transform: 'translateY(100%)' }, { transform: 'translateY(-4%)', offset: .75 }, { transform: 'translateY(0)' }], [{ transform: 'translateY(0)' }, { transform: 'translateY(-20%)', opacity: .5 }]], // trồi lên nảy nhẹ
+    d => [[{ transform: `rotate(${-10 * d}deg) scale(.4)`, opacity: 0 }, { transform: 'rotate(0) scale(1)', opacity: 1 }], [{ transform: 'rotate(0) scale(1)', opacity: 1 }, { transform: `rotate(${10 * d}deg) scale(.5)`, opacity: 0 }]], // xoay vào
+    d => [[{ clipPath: d > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], null], // kéo rèm
+    d => [[{ clipPath: 'polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)' }, { clipPath: 'polygon(-20% -20%, 120% -20%, 120% 120%, -20% 120%)' }], null], // hình thoi nở ra
+  ];
+  let kieuTruoc = -1, AC = null;
+  function vut() { // tiếng vút nhẹ khi chuyển trang (chế độ dịu thì im)
+    if (diu()) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const a = AC, t = a.currentTime, n = a.createBufferSource(), b = a.createBuffer(1, a.sampleRate * .35, a.sampleRate), x = b.getChannelData(0);
+      for (let i = 0; i < x.length; i++) x[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / x.length); n.buffer = b; const f = a.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(500, t); f.frequency.exponentialRampToValueAtTime(2600, t + .3);
+      const g = a.createGain(); g.gain.value = .07; n.connect(f).connect(g).connect(a.destination); n.start(t); } catch (e) {}
+  }
   function show(i) {
-    k = Math.max(0, Math.min(T.length - 1, i)); window.Chant && Chant.close();
-    $('s').innerHTML = T[k](); $('dem').textContent = `${k + 1} / ${T.length} · ${unit} · ${TEN_LOAI}`;
+    const truoc = k, moi = Math.max(0, Math.min(T.length - 1, i)), coHieuUng = $('s').querySelector('.pg') && moi !== truoc && !itMotion;
+    k = moi; window.Chant && Chant.close();
+    $('s').querySelectorAll('.pg.cu').forEach(e => e.remove()); const cu = $('s').querySelector('.pg'); if (cu) cu.remove();
+    $('s').innerHTML = `<div class="pg">${T[k]()}</div>`; $('dem').textContent = `${k + 1} / ${T.length} · ${unit} · ${TEN_LOAI}`;
     $('s').querySelectorAll('[data-noi]').forEach(e => e.onclick = ev => { ev.stopPropagation(); docThe(e.dataset.noi); });
     $('s').querySelectorAll('[data-hat]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const h = b.dataset.hat;
       if (h === 'hello') Chant.song('Hello song', HELLO); else if (h === 'bye') Chant.song('Goodbye song', BYE);
@@ -206,6 +231,13 @@
       else b.textContent = 'Cô chưa ghi – cô đọc trên màn hình'; });
     $('s').querySelectorAll('[data-sach]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const q = new URLSearchParams(location.search); q.set('loai', 'ke'); q.set('den', 'truyen'); q.delete('trang'); location.search = q.toString(); });
     $('s').querySelectorAll('[data-tro]').forEach(b => b.onclick = ev => { ev.stopPropagation(); location.href = tro; });
+    if (coHieuUng) {
+      const pg = $('s').querySelector('.pg'), d = moi > truoc ? 1 : -1; let n; do { n = Math.random() * KIEU.length | 0; } while (n === kieuTruoc && KIEU.length > 1); kieuTruoc = n;
+      const [vao, ra] = KIEU[n](d), op = { duration: 700, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' };
+      cu.classList.add('cu'); $('s').appendChild(cu); // trang cũ nằm sau trang mới trong DOM (id trùng thì lấy trang mới) nhưng hiện ở dưới
+      pg.animate(vao, op).finished.then(() => { cu.remove(); pg.getAnimations().forEach(a => a.cancel()); }).catch(() => cu.remove());
+      if (ra) cu.animate(ra, op); vut();
+    }
   }
   function fit() { const z = Math.min(innerWidth / 1920, innerHeight / 1080); const s = $('s'); s.style.transform = `scale(${z})`; s.style.left = (innerWidth - 1920 * z) / 2 + 'px'; s.style.top = (innerHeight - 1080 * z) / 2 + 'px'; }
   addEventListener('resize', fit); fit();
