@@ -52,6 +52,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #0E1A2E; fon
 <script src="../chung/kho_tu.js"></script>
 <script src="../chung/cau_mau.js"></script>
 <script src="../chung/giong_co.js"></script>
+<script src="../chung/nghi_mat.js"></script>
 <script>
 const $ = id => document.getElementById(id), QS = new URLSearchParams(location.search);
 const stage = $('stage'), fit = () => { const k = Math.min(innerWidth / 1600, innerHeight / 900); stage.style.transform = `translate(-50%, -50%) scale(${k})`; }; addEventListener('resize', fit); fit();
@@ -60,7 +61,8 @@ const UNIT = QS.get('unit') || ''; if (UNIT) $('sub').textContent = UNIT;
 const find = w => KHO_TU.find(W => [w, w.replace(/s$/, ''), w.split(' ')[0]].includes(W.w.toLowerCase()));
 let words = [...new Set((QS.get('tu') || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean))].map(find).filter(Boolean).filter(W => CauMau.of(W.w, UNIT));
 if (words.length < 3) words = words.concat(KHO_TU.filter(W => ['car', 'ball', 'doll', 'teddy', 'cat', 'dog'].includes(W.w) && !words.includes(W))).slice(0, 4);
-const ROUNDS = Math.min(8, words.length * 2);
+const ON = [...new Set((QS.get('on') || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean))].map(find).filter(W => W && !words.includes(W)).slice(0, 2); // từ unit trước để ôn
+const ROUNDS = Math.min(8, words.length * 2) + ON.length;
 // câu hỏi nghe hiểu theo nhóm từ
 const TEN = /^(amanda|george|alfie|kelly|pip|ben|mia)$/i, hoa = w => TEN.test(w) ? w.charAt(0).toUpperCase() + w.slice(1) : w; // tên riêng viết hoa, không có "the"
 function ask(W) {
@@ -81,7 +83,9 @@ function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.ra
 function next() {
   if (round >= ROUNDS) { $('done').hidden = false; say('Great listening, everyone!'); return; }
   if (!order.length) order = shuffle(words.slice());
-  target = order.pop(); opts = shuffle([target].concat(shuffle(words.filter(W => W !== target)).slice(0, 3)));
+  const on = ON.length && (round === 0 || round === 3) ? ON.shift() : null; // lượt 1 và lượt 4: gặp lại từ cũ
+  target = on || order.pop(); opts = shuffle([target].concat(shuffle(words.filter(W => W !== target)).slice(0, 3)));
+  $('sub').textContent = on ? 'Ôn từ cũ' : (UNIT || 'Khởi động');
   document.querySelectorAll('.big').forEach(b => b.remove()); $('grid').classList.remove('mo');
   $('prog').textContent = `${round + 1} / ${ROUNDS}`; $('askT').textContent = ask(target); locked = false;
   $('grid').innerHTML = opts.map((W, i) => `<button class="cd" data-i="${i}"><kbd>${i + 1}</kbd><img src="${img(W)}" alt="${W.w}"><b>${hoa(W.w)}</b></button>`).join('');
