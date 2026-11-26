@@ -228,7 +228,7 @@ body.app .tv { width: min(100vw, 177.78vh); border-radius: 0; box-shadow: none; 
           <div class="row">
             <span class="note">Mỗi từ học xong là một tấm ván lắp vào cầu. Trò chơi bên trong sẽ bàn tiếp.</span>
             <button class="btn" id="lClose">Đóng <kbd>Esc</kbd></button>
-            <span id="lCham"></span><button class="btn" id="lKe" title="Pip kể chuyện bằng giọng cô đã ghi">🔊 Pip kể</button><button class="btn" id="lSimon" title="Trò vận động: Pip says, cả lớp đứng lên làm theo">Vận động: Pip says</button><button class="btn" id="lWarm" title="Trò nghe hiểu khởi động: Pip hỏi, cả lớp chỉ hình">Khởi động: nghe – chạm</button><button class="btn" id="lChieu" title="Bài chiếu của tiết này theo cách dạy của cô Anh: hát chào, thẻ to, trò cả lớp, chant; in thẻ và phiếu">📽 Bài chiếu</button><button class="btn go" id="lStart">Xuất phát!</button>
+            <span id="lCham"></span><button class="btn" id="lKe" title="Pip kể chuyện bằng giọng cô đã ghi">🔊 Pip kể</button><button class="btn" id="lSimon" title="Trò vận động: Pip says, cả lớp đứng lên làm theo">Vận động: Pip says</button><button class="btn" id="lWarm" title="Trò nghe hiểu khởi động: Pip hỏi, cả lớp chỉ hình">Khởi động: nghe – chạm</button><button class="btn" id="lChieu" title="Bài chiếu của tiết này theo cách dạy của cô Anh: hát chào, thẻ to, trò cả lớp, chant; in thẻ và phiếu">📽 Bài chiếu</button><button class="btn" id="lCaTiet" title="Chạy lần lượt: Khởi động → Bài chiếu → Trò chơi; mỗi bước xong tự quay về đây, cô chỉ cần bấm Enter hoặc nút bút trình chiếu">▶ Chạy cả tiết</button><button class="btn go" id="lStart">Xuất phát!</button>
           </div>
         </div>
       </div>
@@ -522,7 +522,8 @@ function walk(to) {
 }
 function placeOf(i) { let p = PLACES[0]; PLACES.forEach(q => { if (q.at <= i) p = q; }); return p; }
 function openLesson() {
-  window.NghiMat && NghiMat.batDau(); // đồng hồ chiếu của cô đếm lại từ đầu tiết
+  if (!flowGet()) window.NghiMat && NghiMat.batDau(); // đồng hồ chiếu của cô đếm lại từ đầu tiết (đang chạy cả tiết thì đếm tiếp)
+  flowUi();
   if (!PPCT && PPCT_LOI) return toast('Chưa có dữ liệu các tiết học. Hãy mở đảo bằng file .bat.');
   const r = PPCT ? PPCT[cur] : null; if (!r || busy) return;
   const p = placeOf(cur); aim(p.cx, p.cy, 2.7, 22); setPose('chi');
@@ -789,7 +790,18 @@ $('lChieu').onclick = () => { // bài chiếu của tiết (tro_choi/tiet_hoc): 
   if (gn && LOCAL) { q.set('ten_tro', GNAME[gn] || 'Thử thách trên đảo'); q.set('tro', `../${gn}/index.html?tu_dao=1&dao=${dao}&ke=${encodeURIComponent(storyOf(cur))}&tiet=${cur + 1}&unit=${encodeURIComponent(unitOf(cur))}&tu=${encodeURIComponent(gameWords(cur).join(','))}&cau=${encodeURIComponent(r.cau || '')}`); }
   save(); location.href = '../tro_choi/tiet_hoc/index.html?' + q.toString();
 };
-$('lStart').onclick = () => {
+// ---- Chạy cả tiết bằng một phím: Khởi động → Bài chiếu → Trò chơi (góp ý hội đồng chuyên gia 26-11-2026) ----
+const FLOW_K = 'sk_flow', FLOW = [['lWarm', 'Khởi động: nghe – chạm'], ['lChieu', 'Bài chiếu'], ['lStart', 'Trò chơi']];
+function flowGet() { try { const f = JSON.parse(sessionStorage.getItem(FLOW_K) || 'null'); return f && f.k === STORE_KEY && f.cur === cur ? f : null; } catch (e) { return null; } }
+function flowSet(f) { try { f ? sessionStorage.setItem(FLOW_K, JSON.stringify(f)) : sessionStorage.removeItem(FLOW_K); } catch (e) {} }
+function flowUi() { const f = flowGet(), b = $('lStart');
+  if (f && f.i > 0 && f.i < FLOW.length) { b.textContent = `▶ Bước ${f.i + 1}/${FLOW.length}: ${FLOW[f.i][1]}`; b.dataset.flow = '1'; $('lCaTiet').hidden = true; }
+  else { b.textContent = 'Xuất phát!'; delete b.dataset.flow; $('lCaTiet').hidden = false; } }
+function flowRun(i) { const f = { k: STORE_KEY, cur, i }; flowSet(i < FLOW.length - 1 ? f : null); const id = FLOW[i][0]; if (id === 'lStart') return goGame(); const h = $(id).onclick; h && h.call($(id)); }
+$('lCaTiet').onclick = () => { if (window.NghiMat) NghiMat.batDau(); flowRun(0); };
+let goGame = () => {};
+$('lStart').onclick = () => { const f = flowGet(); if (f && $('lStart').dataset.flow) return flowRun(f.i); goGame(); };
+goGame = () => {
   const gn = gameOf(cur), g = gn ? `../tro_choi/${gn}/index.html` : null;
   if (!g) { closeAll(); toast('Trò chơi cho bài này đang làm. Tạm thời cô dạy theo các bước trên màn hình.'); return; }
   if (!LOCAL) { closeAll(); toast('Trò chơi chạy trên máy dạy: mở bằng file "Mo Dao Song Kim.bat".'); return; }
@@ -931,6 +943,8 @@ setTimeout(aimView, 1200); // mở đầu: toàn cảnh đảo rồi bay xuống
 try { if (!new URLSearchParams(location.search).get('ve') && cur === 0 && !localStorage.getItem(STORE_KEY + '_modau')) setTimeout(arrive, 1500); } catch (e) {}
 // quay về từ trò chơi: đúng chỗ đoàn đang đứng (vị trí lưu trong máy)
 { const Q = new URLSearchParams(location.search);
+  if (/^(khoi_dong|bai_chieu)$/.test(Q.get('ve') || '')) { try { const f = JSON.parse(sessionStorage.getItem(FLOW_K) || 'null'); if (f && f.k === STORE_KEY) { f.i++; flowSet(f); history.replaceState(null, '', location.pathname);
+    const mo = () => PPCT ? (cur === f.cur ? openLesson() : flowSet(null)) : setTimeout(mo, 300); setTimeout(mo, 1600); } } catch (e) {} } // chạy cả tiết: quay về là mở bước tiếp theo
   if (Q.get('ve') === 'thu_thach') { history.replaceState(null, '', location.pathname); const ok = Q.get('ket_qua') === 'xong';
     setTimeout(() => { if (ok) challengeWon(); else toast('Tiếp tục hành trình nào!'); }, 1700); } }
 fetch('ppct_amanda1.json').then(r => r.json()).then(d => { PPCT = d; hud(); }).catch(() => { PPCT_LOI = true; toast('Không tải được dữ liệu các tiết học. Hãy mở đảo bằng file .bat (không mở thẳng file html).'); });
