@@ -377,6 +377,8 @@
     });
     { const kb = $('keys'); let t = 0; const wake = () => { kb.classList.remove('an'); clearTimeout(t); t = setTimeout(() => kb.classList.add('an'), 3000); }; ['mousemove', 'pointerdown', 'keydown'].forEach(ev => addEventListener(ev, wake, { passive: true })); wake(); } // phím của cô tự ẩn
     if (!window.DongTac) { const sc = document.createElement('script'); sc.src = '../chung/dong_tac.js'; document.head.appendChild(sc); } // động tác gợi ý cho từng từ
+    try { const fl = JSON.parse(sessionStorage.getItem('sk_flow') || 'null'), bu = fl && ['chao', 'nghe', 'the', 'choi', 've'][fl.i]; // đang chạy cả tiết: hiện dải lịch tiết bằng hình
+      if (bu) { const sc = document.createElement('script'); sc.src = '../chung/lich_tiet.js'; sc.onload = () => setTimeout(() => window.LichTiet && LichTiet.hien(bu), 600); document.head.appendChild(sc); } } catch (e) {}
     if (!document.querySelector('script[src*="nghi_mat.js"]')) { const sc = document.createElement('script'); sc.src = '../chung/nghi_mat.js'; document.head.appendChild(sc); } // màn đen nghỉ mắt + đồng hồ chiếu của cô
     buildSetup();
     window.__tro = { api, cfg, correct, skip, sentence, get state() { return state; }, get kids() { return kids; }, get members() { return members; } };
