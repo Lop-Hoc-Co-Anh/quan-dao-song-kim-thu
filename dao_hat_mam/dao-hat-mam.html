@@ -228,7 +228,7 @@ body.app .tv { width: min(100vw, 177.78vh); border-radius: 0; box-shadow: none; 
           <div class="row">
             <span class="note">Mỗi từ học xong là một tấm ván lắp vào cầu. Trò chơi bên trong sẽ bàn tiếp.</span>
             <button class="btn" id="lClose">Đóng <kbd>Esc</kbd></button>
-            <span id="lCham"></span><button class="btn" id="lKe" title="Pip kể chuyện bằng giọng cô đã ghi">🔊 Pip kể</button><button class="btn" id="lSimon" title="Trò vận động: Pip says, cả lớp đứng lên làm theo">Vận động: Pip says</button><button class="btn" id="lWarm" title="Trò nghe hiểu khởi động: Pip hỏi, cả lớp chỉ hình">Khởi động: nghe – chạm</button><button class="btn" id="lChieu" title="Bài chiếu của tiết này theo cách dạy của cô Anh: hát chào, thẻ to, trò cả lớp, chant; in thẻ và phiếu">📽 Bài chiếu</button><button class="btn" id="lCaTiet" title="Chạy lần lượt: Khởi động → Bài chiếu → Trò chơi; mỗi bước xong tự quay về đây, cô chỉ cần bấm Enter hoặc nút bút trình chiếu">▶ Chạy cả tiết</button><button class="btn go" id="lStart">Xuất phát!</button>
+            <span id="lCham"></span><button class="btn" id="lKe" title="Pip kể chuyện bằng giọng cô đã ghi">🔊 Pip kể</button><button class="btn" id="lSimon" title="Trò vận động: Pip says, cả lớp đứng lên làm theo">Vận động: Pip says</button><button class="btn" id="lWarm" title="Trò nghe hiểu khởi động: Pip hỏi, cả lớp chỉ hình">Khởi động: nghe – chạm</button><button class="btn" id="lChieu" title="Bài chiếu của tiết này theo cách dạy của cô Anh: hát chào, thẻ to, trò cả lớp, chant; in thẻ và phiếu">📽 Bài chiếu</button><button class="btn" id="lCaTiet" title="Chạy lần lượt: Chào – nhớ lại → Khởi động → Bài chiếu → Trò chơi (nhận đá) → Tạm biệt; mỗi bước xong tự quay về đây, cô chỉ cần bấm Enter hoặc nút bút trình chiếu">▶ Chạy cả tiết</button><button class="btn go" id="lStart">Xuất phát!</button>
           </div>
         </div>
       </div>
@@ -273,6 +273,7 @@ body.app .tv { width: min(100vw, 177.78vh); border-radius: 0; box-shadow: none; 
 <script src="../tro_choi/chung/chant.js"></script>
 <script src="../tro_choi/chung/bai_hat.js"></script>
 <script src="../tro_choi/chung/nghi_mat.js"></script>
+<script src="../tro_choi/chung/lich_tiet.js"></script>
 <script>
 const F = 1600 / 1672; // toạ độ ảnh bản đồ -> toạ độ thế giới
 const P = (x, y) => ({ x: x * F, y: y * F });
@@ -673,7 +674,7 @@ function jumpTo(i) {
   toast(`Tới Tuần ${PPCT[i].tuan} · Tiết ${i + 1}: ${PPCT[i].unit}`);
 }
 $('hChip').onclick = openPick; $('pClose').onclick = () => { $('ovPick').hidden = true; };
-function closeAll() { if (!$('ovLesson').hidden) pipThoi(); ['ovLesson', 'ovAlbum', 'ovCer', 'ovPick'].forEach(i => $(i).hidden = true); if (!busy) { setPose('idle'); aimView(); } if (pendingWalk) { pendingWalk = false; setTimeout(() => walk(cur + 1), 450); } if (pendingFinale) { pendingFinale = false; setTimeout(openFinale, 500); } }
+function closeAll() { if (!$('ovLesson').hidden) pipThoi(); ['ovLesson', 'ovAlbum', 'ovCer', 'ovPick'].forEach(i => $(i).hidden = true); if (!busy) { setPose('idle'); aimView(); } if (pendingWalk) { pendingWalk = false; setTimeout(() => walk(cur + 1), 450); } if (pendingFinale) { pendingFinale = false; setTimeout(openFinale, 500); } if (pendingKet) { pendingKet = false; setTimeout(openLesson, 600); } }
 function setView(v) { view = v; $('bView').classList.toggle('on', v !== 'follow'); $('bView').firstChild.textContent = v === 'follow' ? 'Toàn cảnh ' : 'Theo đoàn '; aimView(); }
 function toggleView() { if (tour) stopTour(); setView(view === 'follow' ? 'overview' : 'follow'); }
 
@@ -737,7 +738,7 @@ const GAMES = {
   'Assessment': '../tro_choi/dua_thuyen/index.html',
   'Consolidation': '../tro_choi/dua_thuyen/index.html',
 };
-let pendingWalk = false, pendingFinale = false;
+let pendingWalk = false, pendingFinale = false, pendingKet = false;
 // bài chant theo unit: lấy các từ có hình của cả unit đang học
 function chantWords() {
   const u = unitOf(cur), base = new URL('../tro_choi/goi_do_choi/', location.href), seen = new Set(), list = [];
@@ -781,23 +782,29 @@ $('lWarm').onclick = () => { // trò nghe hiểu khởi động (không chấm �
   location.href = `../tro_choi/nghe_cham/index.html?dao=${dao}&unit=${encodeURIComponent(unitOf(cur))}&tu=${encodeURIComponent(gameWords(cur).join(','))}&on=${encodeURIComponent(tuOn(cur).join(','))}`;
 };
 if (window.AmSongKim) AmSongKim.nut($('lCham'), 'btn');
-$('lChieu').onclick = () => { // bài chiếu của tiết (tro_choi/tiet_hoc): thẻ to, trò cả lớp, chant, in thẻ, in phiếu
+function chieu(phan) { // bài chiếu của tiết (tro_choi/tiet_hoc): thẻ to, trò cả lớp, chant, in thẻ, in phiếu; phan: mo / hoc / ket khi chạy cả tiết
   if (!PPCT) return; const r = PPCT[cur], p = placeOf(cur), m = $('map'), dao = { daohatmam: 'dao_hat_mam', daocauvong: 'dao_cau_vong' }[STORE_KEY] || 'dao_3d';
   const W0 = 1600, H0 = W0 * (m.naturalHeight || 941) / (m.naturalWidth || 1672), gn = gameOf(cur), q = new URLSearchParams({
     dao, tiet: cur + 1, tuan: r.tuan, unit: r.unit, nd: r.nd, cau: r.cau || '', hd: r.hd || '', tu: gameWords(cur).join(','), ke: storyOf(cur), noi: p.name,
     ban: `../../${dao}/` + m.getAttribute('src'), x: (p.cx / W0).toFixed(3), y: (p.cy / H0).toFixed(3) });
   if (p.friend) { q.set('ban_than', `../../${dao}/hinh/${p.friend}.webp`); q.set('ten_ban', p.fname || ''); }
+  if (phan) q.set('phan', phan);
+  if (cur > 0) { const pt = placeOf(cur - 1); q.set('tr_tu', gameWords(cur - 1).join(',')); q.set('tr_noi', pt.name); if (pt.friend) { q.set('tr_ban', `../../${dao}/hinh/${pt.friend}.webp`); q.set('tr_ten', pt.fname || ''); } } // Pip nhớ lại – Hôm trước…
+  if (cur < 69) { const ps = placeOf(cur + 1); if (ps.friend) q.set('sau_ban', `../../${dao}/hinh/${ps.friend}.webp`); } // cái móc: bóng mờ bạn thú tiết sau
   if (gn && LOCAL) { q.set('ten_tro', GNAME[gn] || 'Thử thách trên đảo'); q.set('tro', `../${gn}/index.html?tu_dao=1&dao=${dao}&ke=${encodeURIComponent(storyOf(cur))}&tiet=${cur + 1}&unit=${encodeURIComponent(unitOf(cur))}&tu=${encodeURIComponent(gameWords(cur).join(','))}&cau=${encodeURIComponent(r.cau || '')}`); }
   save(); location.href = '../tro_choi/tiet_hoc/index.html?' + q.toString();
-};
+}
+$('lChieu').onclick = () => chieu('');
 // ---- Chạy cả tiết bằng một phím: Khởi động → Bài chiếu → Trò chơi (góp ý hội đồng chuyên gia 26-11-2026) ----
-const FLOW_K = 'sk_flow', FLOW = [['lWarm', 'Khởi động: nghe – chạm'], ['lChieu', 'Bài chiếu'], ['lStart', 'Trò chơi']];
+// Đợt A quy trình 27-11-2026: chào và nhớ lại trước, nhận đá sau trò chơi, chào tạm biệt cuối cùng
+const FLOW_K = 'sk_flow', FLOW = [['mo', 'Chào – Pip nhớ lại'], ['lWarm', 'Khởi động: nghe – chạm'], ['hoc', 'Bài chiếu'], ['lStart', 'Trò chơi'], ['ket', 'Hôm nay giúp ai – Tạm biệt']];
+const FLOW_LICH = ['chao', 'nghe', 'the', 'choi', 've']; // bước trong dải lịch tiết bằng hình
 function flowGet() { try { const f = JSON.parse(sessionStorage.getItem(FLOW_K) || 'null'); return f && f.k === STORE_KEY && f.cur === cur ? f : null; } catch (e) { return null; } }
 function flowSet(f) { try { f ? sessionStorage.setItem(FLOW_K, JSON.stringify(f)) : sessionStorage.removeItem(FLOW_K); } catch (e) {} }
 function flowUi() { const f = flowGet(), b = $('lStart');
-  if (f && f.i > 0 && f.i < FLOW.length) { b.textContent = `▶ Bước ${f.i + 1}/${FLOW.length}: ${FLOW[f.i][1]}`; b.dataset.flow = '1'; $('lCaTiet').hidden = true; }
+  if (f && f.i > 0 && f.i < FLOW.length) { b.textContent = `▶ Bước ${f.i + 1}/${FLOW.length}: ${FLOW[f.i][1]}`; b.dataset.flow = '1'; $('lCaTiet').hidden = true; if (window.LichTiet) setTimeout(() => LichTiet.hien(FLOW_LICH[f.i]), 700); }
   else { b.textContent = 'Xuất phát!'; delete b.dataset.flow; $('lCaTiet').hidden = false; } }
-function flowRun(i) { const f = { k: STORE_KEY, cur, i }; flowSet(i < FLOW.length - 1 ? f : null); const id = FLOW[i][0]; if (id === 'lStart') return goGame(); const h = $(id).onclick; h && h.call($(id)); }
+function flowRun(i) { const f = { k: STORE_KEY, cur, i }; flowSet(i < FLOW.length - 1 ? f : null); const id = FLOW[i][0]; if (id === 'lStart') return goGame(); if (!$(id)) return chieu(id); const h = $(id).onclick; h && h.call($(id)); }
 $('lCaTiet').onclick = () => { if (window.NghiMat) NghiMat.batDau(); flowRun(0); };
 let goGame = () => {};
 $('lStart').onclick = () => { const f = flowGet(); if (f && $('lStart').dataset.flow) return flowRun(f.i); goGame(); };
@@ -811,7 +818,8 @@ function challengeWon() {
   aimView(); setPose('reo'); stars += 3; hud(); save();
   $('cSmall').textContent = `Tiết ${cur + 1} · Vượt qua thử thách`; $('cTitle').textContent = 'Cả lớp vượt qua thử thách!'; $('cImg').src = 'hinh/giot_nuoc.webp';
   $('cSay').textContent = 'Nhận 1 giọt nước phát sáng tưới Cây Thần. Cô Anh và các bạn đi tiếp nào!';
-  $('ovCer').hidden = false; $('cClose').focus(); confetti(); pendingWalk = true;
+  const gp = window.LichTiet && LichTiet.giupPip(`${{ daohatmam: 'dao_hat_mam', daocauvong: 'dao_cau_vong' }[STORE_KEY] || 'dao_3d'}:${cur + 1}`); if (gp) $('cSay').textContent += ` ${gp.join(' và ')} mang phần thưởng về trại nhé!`; // bạn giúp Pip hôm nay
+  $('ovCer').hidden = false; $('cClose').focus(); confetti(); if (flowGet()) pendingKet = true; else pendingWalk = true;
 }
 // ---------- mở đầu: Cô Anh và các bạn đi thuyền tới đảo ----------
 const ARRIVE = { from: P(250, 965), to: P(660, 935) }; // từ ngoài khơi vào cập bến (toạ độ ảnh bản đồ)
@@ -946,6 +954,8 @@ try { if (!new URLSearchParams(location.search).get('ve') && cur === 0 && !local
   if (/^(khoi_dong|bai_chieu)$/.test(Q.get('ve') || '')) { try { const f = JSON.parse(sessionStorage.getItem(FLOW_K) || 'null'); if (f && f.k === STORE_KEY) { f.i++; flowSet(f); history.replaceState(null, '', location.pathname);
     const mo = () => PPCT ? (cur === f.cur ? openLesson() : flowSet(null)) : setTimeout(mo, 300); setTimeout(mo, 1600); } } catch (e) {} } // chạy cả tiết: quay về là mở bước tiếp theo
   if (Q.get('ve') === 'thu_thach') { history.replaceState(null, '', location.pathname); const ok = Q.get('ket_qua') === 'xong';
-    setTimeout(() => { if (ok) challengeWon(); else toast('Tiếp tục hành trình nào!'); }, 1700); } }
+    let fl = null; try { fl = JSON.parse(sessionStorage.getItem(FLOW_K) || 'null'); if (fl && fl.k === STORE_KEY && FLOW[fl.i] && FLOW[fl.i][0] === 'lStart') { fl.i++; flowSet(fl); } else fl = null; } catch (e) { fl = null; }
+    setTimeout(() => { if (ok) challengeWon(); else if (fl) { const mo = () => PPCT ? openLesson() : setTimeout(mo, 300); mo(); } else toast('Tiếp tục hành trình nào!'); }, 1700); } // chạy cả tiết: nhận đá xong mở bước Tạm biệt
+  if (Q.get('ve') === 'ket_tiet') { history.replaceState(null, '', location.pathname); flowSet(null); const di = () => PPCT ? walk(cur + 1) : setTimeout(di, 300); setTimeout(di, 1800); } } // tạm biệt xong: cả đoàn đi tới tiết sau
 fetch('ppct_amanda1.json').then(r => r.json()).then(d => { PPCT = d; hud(); }).catch(() => { PPCT_LOI = true; toast('Không tải được dữ liệu các tiết học. Hãy mở đảo bằng file .bat (không mở thẳng file html).'); });
 </script>
