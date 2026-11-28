@@ -32,6 +32,8 @@
 #nav button{border:0;border-radius:50%;width:54px;height:54px;font-size:28px;background:#fff;cursor:pointer}
 #in{display:none}
 [hidden]{display:none!important}
+.the.an b{color:transparent;text-shadow:none} .the.an b::after{content:"?";color:#E8743B;position:absolute;left:0;right:0} .the.an{position:relative;cursor:pointer} .the.an b{position:relative}
+.mobong{animation:moBong 2.6s .9s both} @keyframes moBong{0%{filter:brightness(0) drop-shadow(0 0 18px #FFE14D);transform:scale(.9)} 70%{filter:brightness(1.3) drop-shadow(0 0 30px #FFE14D);transform:scale(1.08)} 100%{filter:none;transform:scale(1)}}
 .tuke{position:absolute;left:470px;right:60px;top:240px;bottom:170px;overflow:hidden;display:flex;flex-wrap:wrap;gap:26px;justify-content:center;align-content:flex-start}
 .tuke b{background:#fff;border-radius:999px;padding:18px 44px;font-size:64px;color:#C2410C;box-shadow:0 10px 0 rgba(0,0,0,.12)}
 .loike{position:absolute;left:400px;right:50px;top:230px;bottom:150px;line-height:1.5;font-weight:400;overflow:auto;z-index:3}
@@ -76,6 +78,7 @@
 <script src="../chung/chant.js"></script>
 <script src="../chung/nghi_mat.js"></script>
 <script src="../chung/dong_tac.js"></script>
+<script src="../chung/lich_tiet.js"></script>
 <script>
 (function () {
   const Q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
@@ -103,23 +106,57 @@
   const the = (x, h, extra = '') => `<div class="the" data-noi="${esc(x.w)}" style="height:${h}px;width:${Math.round(h * .9)}px;${extra}"><img src="${esc(x.img)}" alt=""><b style="font-size:${Math.round(h * .13)}px;padding:${Math.round(h * .015)}px 0">${esc(x.w)}</b></div>`;
   const hang = (h, an) => `<div style="position:absolute;left:80px;right:80px;top:230px;bottom:110px;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:34px">${W.map((x, i) => i === an ? `<div class="hole" style="height:${h}px;width:${Math.round(h * .9)}px;font-size:${h * .6}px">?</div>` : the(x, h)).join('')}</div>`;
   const hH = W.length <= 3 ? 470 : W.length <= 4 ? 400 : W.length <= 6 ? 340 : 290;
-  const T = [];
-  // 1. mở đầu
-  T.push(() => `${deco}<div style="position:absolute;left:0;right:0;top:60px;text-align:center;font:700 40px Arial;color:#1F5F8B">${esc(TEN_DAO)}${tuan ? ` · Tuần ${esc(tuan)}` : ''}${tiet ? ` · Tiết ${esc(tiet)}` : ''}</div>
+  const T = []; let SEC = 'chao'; // mỗi trang thuộc một bước của tiết, để hiện dải lịch tiết bằng hình
+  const add = f => { f.sec = SEC; T.push(f); };
+  // Thứ tự theo góp ý hội đồng quy trình 27-11-2026: Hello → Hôm trước… → Bạn giúp Pip → (khởi động) → bí mật → Pip giao thử thách → học từ → trò cả lớp → chant
+  //   → (trò chơi trên đảo, nhận đá) → Hôm nay mình giúp được ai? → cái móc cho tiết sau → Goodbye. Giáo án giữ nguyên.
+  // phan: '' = cả bài (cô tự bấm), mo = chào + nhớ lại, hoc = phần học, ket = tạm biệt (khi "Chạy cả tiết")
+  const PHAN = Q.get('phan') || '', co = p => !PHAN || PHAN === p;
+  const trBan = Q.get('tr_ban') || '', trTen = Q.get('tr_ten') || '', trNoi = Q.get('tr_noi') || '', sauBan = Q.get('sau_ban') || '';
+  const trW = [...new Set((Q.get('tr_tu') || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean))].map(w => ({ w, img: (find(w) || {}).img })).filter(x => x.img).sort(() => Math.random() - .5).slice(0, 3);
+  const GIUP = window.LichTiet && LichTiet.giupPip(`${DAO}:${tiet}`); // bạn giúp Pip của tiết này
+  const giupTen = GIUP ? GIUP.join(' và ') : '';
+  const theAn = (x, h, extra = '') => the(x, h, extra).replace('class="the"', 'class="the an" title="Bấm để lật tên"'); // thẻ che tên: cả lớp gọi tên trước, bấm mới hiện
+  if (co('mo')) {
+    // 1. hát chào: mở tiết bằng lời chào cố định
+    add(() => `${deco}<div class="t">♪ Hello song ♪</div>
+    <img src="${CH('pip_reo')}" style="position:absolute;left:260px;top:330px;height:330px"><img src="${CH('co_anh_vay_tay')}" style="position:absolute;left:760px;top:250px;height:600px"><img src="${CH('ben_reo')}" style="position:absolute;right:420px;bottom:60px;height:360px"><img src="${CH('mia_reo')}" style="position:absolute;right:160px;bottom:60px;height:360px">
+    <button class="play" data-hat="hello" style="top:880px">▶ Hát cùng Pip</button>
+    <div class="note" style="right:auto">Cô bấm nút để hát cùng Pip, hoặc mở bài Hello song của cô.</div>`);
+    // 2. Pip nhớ lại – Hôm trước… (khoảng 30 giây, chỉ dùng từ đã học)
+    if (trW.length) add(() => `${deco}<div class="t" style="font-size:96px">Hôm trước…</div>
+    <div class="sub" style="top:170px">${trBan && trTen ? `Cả đoàn đã giúp bạn ${esc(trTen)}${trNoi ? ' ở ' + esc(trNoi) : ''}!` : trNoi ? `Cả đoàn đã tới ${esc(trNoi)}!` : 'Pip nhớ lại chuyến đi hôm trước'}</div>
+    <img src="${CH('pip_noi')}" style="position:absolute;left:40px;top:300px;height:340px">${trBan ? `<img src="${esc(trBan)}" style="position:absolute;left:70px;top:640px;height:330px">` : ''}
+    <div style="position:absolute;left:440px;right:60px;top:290px;display:flex;justify-content:center;gap:40px">${trW.map(x => theAn(x, 520)).join('')}</div>
+    <div class="note" style="left:440px">Cả lớp nhìn hình, gọi to tên thẻ. Cô bấm vào thẻ để lật tên và nghe đọc. Khen cả lớp: "Các con nhớ giỏi quá!"</div>`);
+    // 3. Bạn giúp Pip hôm nay (xoay vòng theo danh sách lớp; bé nhút nhát luôn làm cùng bạn)
+    add(() => `${deco}<div class="t" style="font-size:90px">Bạn giúp Pip hôm nay</div>
+    <img src="${CH('pip_reo')}" style="position:absolute;left:120px;top:250px;height:420px">
+    <div class="bub" style="position:absolute;left:560px;right:120px;top:230px;text-align:center;font-size:${giupTen.length > 22 ? 70 : 92}px;color:#C2410C">${giupTen ? esc(giupTen) : '🙋 ? 🙋'}</div>
+    <div style="position:absolute;left:560px;right:120px;top:470px;display:grid;grid-template-columns:1fr 1fr;gap:22px">
+      ${[['👉', 'Bấm bút chuyển trang'], ['🥁', 'Đếm 1-2-3-4 vào chant'], ['🤸', 'Làm mẫu động tác'], [`<img src="${TK[0]}" style="height:58px;vertical-align:middle">`, 'Mang phần thưởng về đảo']].map(([e, t]) => `<div class="bub" style="font-size:42px;padding:16px 26px;display:flex;align-items:center;gap:18px"><span style="font-size:60px">${e}</span>${t}</div>`).join('')}</div>
+    <div class="note">${giupTen ? 'Máy chọn lần lượt theo danh sách lớp (ai cũng tới lượt). Bé nhút nhát luôn có một bạn làm cùng.' : 'Cô chọn 1–2 bạn. Muốn máy tự xoay vòng: nhập danh sách lớp một lần trong ô Tên của bất kỳ trò chơi nào.'}</div>`);
+  }
+  if (co('hoc')) {
+    SEC = 'the';
+    // 4. mở đầu phần học: giữ bí mật, các thẻ còn úp
+    add(() => `${deco}<div style="position:absolute;left:0;right:0;top:60px;text-align:center;font:700 40px Arial;color:#1F5F8B">${esc(TEN_DAO)}${tuan ? ` · Tuần ${esc(tuan)}` : ''}${tiet ? ` · Tiết ${esc(tiet)}` : ''}</div>
     <div class="t" style="top:120px;font-size:120px">${esc(unit)}</div><div class="sub" style="top:290px;font-size:52px">${esc(TEN_LOAI)}${nd ? ' · ' + esc(nd) : ''}</div>
-    <div style="position:absolute;left:340px;right:340px;top:430px;display:flex;justify-content:center;flex-wrap:wrap;gap:22px">${W.map(x => the(x, W.length > 6 ? 200 : 240)).join('')}</div>
-    <img src="${CH('ben_reo')}" style="position:absolute;left:40px;bottom:20px;height:330px"><img src="${CH('mia_reo')}" style="position:absolute;right:40px;bottom:20px;height:330px">`);
-  // 2. trên đảo: Pip kể thử thách hôm nay
-  if (ban) T.push(() => `<img src="${esc(ban)}" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover">
+    <div style="position:absolute;left:340px;right:340px;top:430px;display:flex;justify-content:center;flex-wrap:wrap;gap:22px">${W.map(() => { const h = W.length > 6 ? 200 : 240; return `<div class="hole" style="height:${h}px;width:${Math.round(h * .9)}px;font-size:${h * .55}px">?</div>`; }).join('')}</div>
+    <img src="${CH('ben_reo')}" style="position:absolute;left:40px;bottom:20px;height:330px"><img src="${CH('mia_reo')}" style="position:absolute;right:40px;bottom:20px;height:330px">
+    <div class="note" style="left:400px;right:400px;text-align:center">Hôm nay có ${W.length} bí mật! Cả lớp đoán xem là gì nhé…</div>`);
+    // 5. trên đảo: Pip giao thử thách hôm nay (bạn thú hôm trước còn là bóng mờ thì giờ hiện rõ)
+    if (ban) add(() => `<img src="${esc(ban)}" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover">
     <div style="position:absolute;left:${bx * 1920 - 150}px;top:${by * 1080 - 150}px;width:300px;height:300px;border-radius:50%;border:12px solid #FFE14D;box-shadow:0 0 0 8px rgba(255,255,255,.7),0 0 60px #FFE14D"></div>
     ${noi ? `<div class="bub" style="position:absolute;left:${Math.min(1500, Math.max(20, bx * 1920 - 200))}px;top:${Math.max(20, by * 1080 - 250)}px;font-size:44px;color:#7A3FA0;padding:12px 30px">${esc(noi)}</div>` : ''}
-    ${ban_img ? `<img src="${esc(ban_img)}" style="position:absolute;left:${Math.min(1650, bx * 1920 + 170)}px;top:${Math.min(800, by * 1080 + 10)}px;height:240px">` : ''}
+    ${ban_img ? `<img class="mobong" src="${esc(ban_img)}" style="position:absolute;left:${Math.min(1650, bx * 1920 + 170)}px;top:${Math.min(800, by * 1080 + 10)}px;height:240px">` : ''}
     <div style="position:absolute;right:30px;top:30px;width:780px;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
       <img src="${CH('pip_noi')}" style="height:230px"><div class="bub" style="font-size:42px;line-height:1.35;color:#1F5F8B">${esc(ke || "Let's go!")}</div></div>`);
-  // 2b. truyện Pip kể bằng giọng cô (nếu unit này có truyện)
+  }
+  // 5b. truyện Pip kể bằng giọng cô (nếu unit này có truyện)
   const STORE = { dao_hat_mam: 'daohatmam', dao_cau_vong: 'daocauvong' }[DAO] || 'daosongkim3d';
   const TR = window.LOI_KE && LOI_KE.truyenOf && LOI_KE.truyenOf(STORE, unit);
-  if (TR) T.push(() => `${deco}<div class="t" style="font-size:80px">Pip kể chuyện</div><div class="sub" style="top:150px;font-size:40px">${esc(TR.ten.replace(/^Truyện:\s*/, ''))}</div>
+  if (TR && co('hoc')) add(() => `${deco}<div class="t" style="font-size:80px">Pip kể chuyện</div><div class="sub" style="top:150px;font-size:40px">${esc(TR.ten.replace(/^Truyện:\s*/, ''))}</div>
     <img src="${CH('pip_noi')}" style="position:absolute;left:40px;top:230px;height:380px">${ban_img ? `<img src="${esc(ban_img)}" style="position:absolute;left:50px;top:600px;height:330px">` : ''}
     ${(() => { const ds = [...new Set((TR.ke.match(/\*([^*]+)\*/g) || []).map(x => x.slice(1, -1)))].slice(0, 8), n = ds.join('').length, fs = n > 170 ? 34 : n > 120 ? 40 : n > 80 ? 48 : 60; return `<div class="tuke" style="gap:${fs > 48 ? 26 : 16}px">${ds.map(x => `<b style="font-size:${fs}px;padding:${Math.round(fs * .25)}px ${Math.round(fs * .6)}px">${esc(x)}</b>`).join('')}</div>`; })()}
     <div class="bub loike" hidden style="font-size:${TR.ke.length > 640 ? 33 : TR.ke.length > 480 ? 38 : 44}px">${esc(TR.ke).replace(/\*([^*]+)\*/g, '<b style="color:#C2410C">$1</b>')}</div>
@@ -127,19 +164,9 @@
     <button class="play" data-truyen="${esc(TR.ma)}" style="top:950px;font-size:40px;padding:14px 40px;${TS && loai !== 'ke' ? 'left:38%' : ''}">🔊 Nghe Pip kể (giọng cô)</button>
     ${TS && loai !== 'ke' ? `<button class="play" data-sach="1" style="top:950px;left:72%;font-size:40px;padding:14px 40px;background:#7A3FA0;box-shadow:0 10px 0 #52267A">📖 Truyện trong sách</button>` : ''}
     <div class="note" style="right:auto;left:40px;bottom:30px;width:330px;font-size:22px">Chữ đỏ là tiếng Anh: cả lớp nói theo.</div>`);
-  // 3. hát chào
-  T.push(() => `${deco}<div class="t">♪ Hello song ♪</div>
-    <img src="${CH('pip_reo')}" style="position:absolute;left:260px;top:330px;height:330px"><img src="${CH('co_anh_vay_tay')}" style="position:absolute;left:760px;top:250px;height:600px"><img src="${CH('ben_reo')}" style="position:absolute;right:420px;bottom:60px;height:360px"><img src="${CH('mia_reo')}" style="position:absolute;right:160px;bottom:60px;height:360px">
-    <button class="play" data-hat="hello" style="top:880px">▶ Hát cùng Pip</button>
-    <div class="note" style="right:auto">Cô bấm nút để hát cùng Pip, hoặc mở bài Hello song của cô.</div>`);
-  // 4. từ hôm nay (sơ đồ)
-  T.push(() => { const n = W.length, cx = 960, cy = 600, pos = W.map((x, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * 600, cy + Math.sin(a) * 330]; }), h = n > 6 ? 200 : 230;
-    return `${deco}<div class="t" style="font-size:80px">Today's words</div>
-    <svg style="position:absolute;left:0;top:0" width="1920" height="1080">${pos.map(([x, y]) => `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#3E8E2F" stroke-width="10" stroke-linecap="round"/>`).join('')}</svg>
-    <div style="position:absolute;left:${cx - 230}px;top:${cy - 95}px;width:460px;height:190px;border-radius:95px;background:#8BD34E;border:10px solid #fff;display:flex;align-items:center;justify-content:center;font-size:${chuDe.length > 9 ? 56 : 76}px;font-weight:700;color:#24410F;box-shadow:0 10px 0 rgba(0,0,0,.15);text-align:center">${esc(chuDe)}</div>
-    ${pos.map(([x, y], i) => the(W[i], h, `position:absolute;left:${x - h * .45}px;top:${y - h / 2}px`)).join('')}`; });
-  // 5. mỗi từ một trang thẻ to
-  W.forEach((x, i) => T.push(() => { const [q, a] = qa(x.w);
+  if (co('hoc')) {
+  // 6. mỗi từ một trang thẻ to (lật bí mật từng thẻ)
+  W.forEach((x, i) => add(() => { const [q, a] = qa(x.w);
     return `${deco}${the(x, 900, 'position:absolute;left:60px;top:90px')}
     <div class="bub" style="position:absolute;left:1000px;right:50px;top:250px;font-size:${q.length > 16 ? 50 : 62}px;text-align:center;color:#1F5F8B">${esc(q)}</div>
     <div class="bub" style="position:absolute;left:1000px;right:50px;top:440px;font-size:${a.length > 18 ? 50 : 62}px;text-align:center;color:#C2410C;background:#FFF4D8">${esc(a)}</div>
@@ -148,61 +175,88 @@
     <button class="play" data-cham="${esc(x.w)}" style="left:1240px;top:690px;transform:none;font-size:44px;padding:16px 36px;background:#3E8E2F;box-shadow:0 10px 0 #24611A">🐢 Đọc chậm</button>
     <div style="position:absolute;right:40px;top:40px;display:flex;gap:6px;background:rgba(255,255,255,.75);padding:8px 16px;border-radius:40px">${W.map((y, j) => `<img src="${TK[0]}" style="height:60px;${j > i ? 'opacity:.22;filter:grayscale(1)' : ''}">`).join('')}</div>
     <div class="note" style="right:auto;font-size:24px">Bấm vào thẻ để nghe đọc mẫu, nút 🐢 để nghe thật chậm. Cả lớp đọc 3 lần, rồi tổ – nhóm – cá nhân.</div>`; }));
-  // 6. trò chơi cả lớp
-  const missing = (vong, an) => T.push(() => `${deco}<div class="t" style="font-size:86px">What's missing?</div>${hang(hH, an)}
+  // 7. từ hôm nay (sơ đồ ôn lại cả bộ thẻ vừa lật)
+  add(() => { const n = W.length, cx = 960, cy = 600, pos = W.map((x, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * 600, cy + Math.sin(a) * 330]; }), h = n > 6 ? 200 : 230;
+    return `${deco}<div class="t" style="font-size:80px">Today's words</div>
+    <svg style="position:absolute;left:0;top:0" width="1920" height="1080">${pos.map(([x, y]) => `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#3E8E2F" stroke-width="10" stroke-linecap="round"/>`).join('')}</svg>
+    <div style="position:absolute;left:${cx - 230}px;top:${cy - 95}px;width:460px;height:190px;border-radius:95px;background:#8BD34E;border:10px solid #fff;display:flex;align-items:center;justify-content:center;font-size:${chuDe.length > 9 ? 56 : 76}px;font-weight:700;color:#24410F;box-shadow:0 10px 0 rgba(0,0,0,.15);text-align:center">${esc(chuDe)}</div>
+    ${pos.map(([x, y], i) => the(W[i], h, `position:absolute;left:${x - h * .45}px;top:${y - h / 2}px`)).join('')}`; });
+  // 8. trò chơi cả lớp (không chia đội thắng thua)
+  const missing = (vong, an) => add(() => `${deco}<div class="t" style="font-size:86px">What's missing?</div>${hang(hH, an)}
     <div class="note">${an == null ? `Vòng ${vong}: cả lớp đọc to các thẻ, rồi nhắm mắt lại… một thẻ sắp trốn!` : `Vòng ${vong}: thẻ nào trốn rồi? Cả lớp nói to tên nó!`}</div>`);
-  const cham = () => T.push(() => `${deco}<div class="t" style="font-size:86px">Look and touch!</div>${hang(hH)}
-    <div class="note">Chia 2 đội. Cô đọc một từ, mỗi đội một bạn chạy lên chạm đúng hình (hoặc đập thẻ trên bảng). Nhanh hơn được 1 sao cho đội.</div>`);
+  const cham = () => add(() => `${deco}<div class="t" style="font-size:86px">Look and touch!</div>${hang(hH)}
+    <div class="note">Cô đọc một từ, cả lớp cùng chỉ tay về đúng hình và nói to tên thẻ. Mời một bạn lên chạm thẻ trên bảng, cả lớp vỗ tay khen bạn.</div>`);
   if (W.length >= 2) {
     if (loai === 'moi') { missing(1, null); missing(1, 1 % W.length); missing(2, null); missing(2, W.length - 1); }
     else if (loai === 'on') { cham(); missing(1, null); missing(1, 2 % W.length); }
     else if (TS) { // tiết kể chuyện: 8 tranh truyện trong sách, mỗi tranh một câu
       truyenDau = T.length;
-      TS.anh.forEach((a, i) => T.push(() => `<div class="s0" style="position:absolute;inset:0;background:linear-gradient(180deg,#9FDFFF,#D9F4FF)"></div>
+      TS.anh.forEach((a, i) => add(() => `<div class="s0" style="position:absolute;inset:0;background:linear-gradient(180deg,#9FDFFF,#D9F4FF)"></div>
         <img src="${esc(a)}" style="position:absolute;left:50%;top:40px;transform:translateX(-50%);height:820px;border-radius:28px;box-shadow:0 14px 28px rgba(0,0,0,.25)">
         <div class="bub" style="position:absolute;left:160px;right:160px;bottom:36px;text-align:center;font-size:${(TS.cau[i] || '').length > 40 ? 54 : 64}px">${esc(TS.cau[i] || '')}</div>
         <div class="so">${i + 1}</div>`));
-      T.push(() => `${deco}<div class="t" style="font-size:86px">Let's act it out!</div><img src="${esc(TS.anh[7])}" style="position:absolute;left:50%;top:220px;transform:translateX(-50%);height:620px;border-radius:28px">
+      add(() => `${deco}<div class="t" style="font-size:86px">Let's act it out!</div><img src="${esc(TS.anh[7])}" style="position:absolute;left:50%;top:220px;transform:translateX(-50%);height:620px;border-radius:28px">
         <div class="note">Vài bạn lên đóng vai các nhân vật trong truyện, cả lớp nói câu tiếng Anh cùng bạn.</div>`);
       missing(1, null); missing(1, 1 % W.length);
     }
     else {
-      T.push(() => `${deco}<div class="t" style="font-size:86px">Story time</div>
+      add(() => `${deco}<div class="t" style="font-size:86px">Story time</div>
         <img src="${CH('pip_noi')}" style="position:absolute;left:80px;top:250px;height:400px">
         <div class="bub" style="position:absolute;left:520px;right:80px;top:260px;font-size:46px;line-height:1.4;color:#1F5F8B">${esc(ke || 'Pip kể chuyện cho cả lớp.')}</div>
         <div style="position:absolute;left:520px;right:80px;top:640px;display:flex;justify-content:center;gap:24px">${W.map(x => the(x, 300)).join('')}</div>
         <div class="note">Cô kể theo sách (hoặc bấm nút 🔊 Pip kể trên đảo). Chỉ từng thẻ khi nhân vật nhắc tới, cả lớp nói to tên đồ vật.</div>`);
-      T.push(() => `${deco}<div class="t" style="font-size:86px">Let's act it out!</div>${hang(hH)}
+      add(() => `${deco}<div class="t" style="font-size:86px">Let's act it out!</div>${hang(hH)}
         <div class="note">Vài bạn lên đóng vai, mỗi bạn cầm một thẻ. Cả lớp hỏi "${esc(qa(W[0].w)[0])}", bạn cầm thẻ trả lời và làm động tác.</div>`);
       missing(1, null); missing(1, 1 % W.length);
     }
   }
-  if (tro) T.push(() => `${deco}<div class="t" style="font-size:86px">${esc(ten_tro)}</div>
+  if (tro && !PHAN) { SEC = 'choi'; add(() => `${deco}<div class="t" style="font-size:86px">${esc(ten_tro)}</div>
     <img src="${CH('pip_reo')}" style="position:absolute;left:300px;top:300px;height:380px"><img src="${CH('ben_reo')}" style="position:absolute;left:760px;top:260px;height:480px"><img src="${CH('mia_reo')}" style="position:absolute;left:1120px;top:260px;height:480px">
     <button class="play" data-tro="1" style="top:800px">▶ Vào thử thách trên đảo</button>
-    <div class="note" style="right:auto">Không bắt buộc: lớp nhỏ hoặc hết giờ thì cô bấm sang trang sau.</div>`);
-  // 7. chant
-  T.push(() => `${deco}<div class="t" style="font-size:86px">Let's chant!</div>
+    <div class="note" style="right:auto">Không bắt buộc: lớp nhỏ hoặc hết giờ thì cô bấm sang trang sau.</div>`); }
+  // 9. chant (bạn giúp Pip đếm nhịp)
+  SEC = 'chant';
+  add(() => `${deco}<div class="t" style="font-size:86px">Let's chant!</div>
     <div style="position:absolute;left:120px;right:120px;top:210px;display:grid;grid-template-columns:${W.length > 4 ? '1fr 1fr' : '1fr'};gap:22px 50px">
     ${W.map(x => { const a = qa(x.w)[1].replace(/\.$/, '!'), w = x.w.charAt(0).toUpperCase() + x.w.slice(1); return `<div class="bub" style="display:flex;align-items:center;gap:24px;font-size:${W.length > 6 ? 38 : 44}px;padding:10px 24px"><img src="${esc(x.img)}" style="height:${W.length > 6 ? 90 : 110}px;width:120px;object-fit:contain">${esc(w)}, ${esc(x.w)}! ${esc(a)}</div>`; }).join('')}</div>
+    ${giupTen ? `<div class="bub" style="position:absolute;left:40px;top:930px;font-size:34px;padding:12px 24px;background:#FFE58A">🥁 ${esc(giupTen)} đếm 1-2-3-4!</div>` : ''}
     <button class="play" data-hat="chant" style="top:930px;font-size:40px;padding:14px 40px">▶ Chant cùng Pip</button>`);
-  if (loai === 'on') T.push(() => `${deco}<div class="t" style="font-size:86px">Worksheet time!</div><div style="position:absolute;left:0;right:0;top:300px;text-align:center;font-size:260px">✏️🖍️</div>
+  if (loai === 'on') add(() => `${deco}<div class="t" style="font-size:86px">Worksheet time!</div><div style="position:absolute;left:0;right:0;top:300px;text-align:center;font-size:260px">✏️🖍️</div>
     <div class="note">Cô phát phiếu (nút 🖨 In phiếu ở góc trên): khoanh tròn hình đúng, nối từ với hình.</div>`);
-  // 8. khen thưởng theo đảo
-  T.push(() => `${deco}<div class="t" style="font-size:96px">Well done, everyone!</div>
+  }
+  if (co('ket')) {
+    SEC = 've';
+    // 10. khen thưởng theo đảo: chỉ khi cô bấm cả bài (chạy cả tiết thì lớp đã nhận đá trên đảo sau trò chơi)
+    if (!PHAN) add(() => `${deco}<div class="t" style="font-size:96px">Well done, everyone!</div>
     <div class="sub" style="top:175px">Cả lớp nhận ${esc(TK[1])}!</div>
     <img src="${TK[0]}" style="position:absolute;left:220px;top:360px;height:380px">
     ${ban_img ? `<img src="${esc(ban_img)}" style="position:absolute;left:780px;top:430px;height:430px">` : ''}
     <img src="${CH('co_anh_khen')}" style="position:absolute;right:300px;bottom:30px;height:560px"><img src="${CH('pip_reo')}" style="position:absolute;right:80px;top:330px;height:260px">
-    <div class="note">Cô dán một ngôi sao lên bản đồ hành trình của lớp. Về đảo bấm "Tiết tiếp" để cả đoàn đi tiếp.</div>`);
-  // 9. chào
-  T.push(() => `${deco}<div class="t" style="top:150px;font-size:130px">Goodbye!</div><div class="sub" style="top:320px;font-size:60px">See you next time!</div>
+    <div class="note">${giupTen ? `${esc(giupTen)} mang phần thưởng về đảo. ` : ''}Cô dán một ngôi sao lên bản đồ hành trình của lớp. Về đảo bấm "Tiết tiếp" để cả đoàn đi tiếp.</div>`);
+    // 11. Hôm nay mình giúp được ai? (cả lớp gọi to 2–3 thẻ của tiết)
+    if (W.length) add(() => `${deco}<div class="t" style="font-size:86px">Who did we help today?</div>
+    <div class="sub" style="top:150px">Hôm nay mình giúp được ai?</div>
+    <img src="${ban_img ? esc(ban_img) : CH('pip_reo')}" style="position:absolute;left:90px;top:300px;height:440px"><div style="position:absolute;left:150px;top:250px;font-size:90px">💖</div>
+    <div style="position:absolute;left:560px;right:60px;top:280px;display:flex;justify-content:center;gap:36px">${W.slice(0, 3).map(x => theAn(x, W.length > 2 ? 470 : 520)).join('')}</div>
+    <div class="note">Cả lớp gọi to tên từng thẻ rồi cô bấm để lật. "Hôm nay các con đã giúp ${ban_img && ten_ban ? 'bạn ' + esc(ten_ban) : 'Pip'} rồi!"</div>`);
+    // 12. cái móc: Pip thì thầm về tiết sau (không lộ từ mới, không hứa quà)
+    add(() => `<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 55%,#3B5B86 0%,#1B2C4B 55%,#0E1A30 100%)"></div>
+    ${[...Array(28)].map((_, i) => `<div style="position:absolute;left:${(i * 137) % 1900}px;top:${(i * 89) % 520}px;width:${4 + i % 4}px;height:${4 + i % 4}px;border-radius:50%;background:#FFF6C8;opacity:${.4 + (i % 5) / 8}"></div>`).join('')}
+    <div class="t" style="font-size:84px;color:#FFF6C8;text-shadow:0 6px 0 #7A3FA0">Psst… Next time!</div>
+    <div class="sub" style="top:160px;color:#FFE58A">Lần sau ai đang cần mình giúp nhỉ?</div>
+    <div style="position:absolute;left:760px;top:330px;width:400px;height:560px;display:flex;align-items:flex-end;justify-content:center">${sauBan ? `<img src="${esc(sauBan)}" style="max-height:480px;max-width:400px;filter:brightness(0) drop-shadow(0 0 26px #FFE58A);opacity:.9">` : `<div style="font-size:420px;color:#0B1324;text-shadow:0 0 30px #FFE58A">?</div>`}</div>
+    <img src="${CH('pip_noi')}" style="position:absolute;left:260px;top:520px;height:330px">
+    <div class="bub" style="position:absolute;left:1220px;right:120px;top:500px;font-size:44px;color:#7A3FA0;text-align:center">${sauBan && sauBan === ban_img ? 'Bạn ấy còn cần mình giúp nữa… Lần sau cả đoàn quay lại nhé!' : 'Có một bạn đang trốn… Lần sau mình sẽ gặp bạn ấy!'}</div>
+    <div class="note" style="background:rgba(255,255,255,.75)">Pip thì thầm, cô nói nhỏ lại để các bé tò mò. Không nói trước từ mới, không hứa quà.</div>`);
+    // 13. chào tạm biệt: đóng tiết bằng lời chào cố định
+    add(() => `${deco}<div class="t" style="top:150px;font-size:130px">Goodbye!</div><div class="sub" style="top:320px;font-size:60px">See you next time!</div>
     <img src="${CH('ben_reo')}" style="position:absolute;left:420px;bottom:40px;height:520px"><img src="${CH('mia_reo')}" style="position:absolute;right:420px;bottom:40px;height:520px"><img src="${CH('pip_bay')}" style="position:absolute;left:880px;top:430px;height:260px">
     <button class="play" data-hat="bye" style="top:920px;font-size:40px;padding:14px 40px">▶ Goodbye song</button>`);
+  }
 
   // ---------- trình chiếu ----------
   let k = 0;
-  const ve = () => { location.href = ISLAND + '?ve=bai_chieu'; };
+  const ve = () => { location.href = ISLAND + (PHAN === 'ket' ? '?ve=ket_tiet' : '?ve=bai_chieu'); }; // tạm biệt xong: về đảo, cả đoàn đi tới tiết sau
   const doc = w => { try { speechSynthesis.cancel(); window.GiongCo && GiongCo.stop(); } catch (e) {} if (window.GiongCo && GiongCo.has(w)) return GiongCo.play(w); try { const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .85; speechSynthesis.speak(u); } catch (e) {} }; // giọng cô đã ghi → âm làm sẵn (am.js) → giọng máy
   let docLan = { w: '', t: 0 };
   const docThe = w => { const lan2 = docLan.w === w && Date.now() - docLan.t < 6000; docLan = { w: lan2 ? '' : w, t: Date.now() }; if (lan2) { const [q, a] = qa(w); doc(q + ' ' + a); } else doc(w); }; // bấm thẻ lần 1: đọc từ; lần 2: đọc câu hỏi – đáp
@@ -235,7 +289,7 @@
       e.animate([{ transform: 'translateY(52px) scale(.8)' }, { transform: 'translateY(-8px) scale(1.05)', offset: .62 }, { transform: 'translateY(2px) scale(.99)', offset: .82 }, { transform: 'translateY(0) scale(1)' }], { duration: 760, delay: de, easing: 'cubic-bezier(.3, .6, .35, 1)', composite: 'add', fill: 'backwards' });
       e.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, delay: de, fill: 'backwards' }); });
   }
-  let kieuTruoc = -1, AC = null;
+  let kieuTruoc = -1, AC = null, secTruoc = '';
   function vut() { // tiếng gió vút êm khi chuyển trang (chế độ dịu thì im)
     if (diu()) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const a = AC, t = a.currentTime, n = a.createBufferSource(), b = a.createBuffer(1, a.sampleRate * .9, a.sampleRate), x = b.getChannelData(0);
       for (let i = 0; i < x.length; i++) x[i] = (Math.random() * 2 - 1) * Math.pow(Math.sin(Math.PI * i / x.length), 2); n.buffer = b; const f = a.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = .9; f.frequency.setValueAtTime(320, t); f.frequency.exponentialRampToValueAtTime(1700, t + .55); f.frequency.exponentialRampToValueAtTime(900, t + .85);
@@ -246,7 +300,7 @@
     k = moi; window.Chant && Chant.close();
     $('s').querySelectorAll('.pg.cu').forEach(e => e.remove()); const cu = $('s').querySelector('.pg'); if (cu) cu.remove();
     $('s').innerHTML = `<div class="pg">${T[k]()}</div>`; $('dem').textContent = `${k + 1} / ${T.length} · ${unit} · ${TEN_LOAI}`;
-    $('s').querySelectorAll('[data-noi]').forEach(e => e.onclick = ev => { ev.stopPropagation(); docThe(e.dataset.noi); });
+    $('s').querySelectorAll('[data-noi]').forEach(e => e.onclick = ev => { ev.stopPropagation(); if (e.classList.contains('an')) { e.classList.remove('an'); doc(e.dataset.noi); return; } docThe(e.dataset.noi); }); // thẻ che tên: bấm lần đầu lật tên
     $('s').querySelectorAll('[data-hat]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const h = b.dataset.hat;
       if (h === 'hello') Chant.song('Hello song', HELLO); else if (h === 'bye') Chant.song('Goodbye song', BYE);
       else Chant.play(W, `${chuDe} chant`, w => qa(w)[1], { max: 8 }); });
@@ -258,6 +312,7 @@
     $('s').querySelectorAll('[data-sach]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const q = new URLSearchParams(location.search); q.set('loai', 'ke'); q.set('den', 'truyen'); q.delete('trang'); location.search = q.toString(); });
     $('s').querySelectorAll('[data-tro]').forEach(b => b.onclick = ev => { ev.stopPropagation(); location.href = tro; });
     const pg = $('s').querySelector('.pg');
+    if (T[k].sec && T[k].sec !== secTruoc && window.LichTiet) setTimeout(() => LichTiet.hien(T[k].sec), coHieuUng ? 900 : 300); secTruoc = T[k].sec; // sang bước mới của tiết: hiện dải lịch tiết
     if (coHieuUng) {
       const d = moi > truoc ? 1 : -1; let n; if (diu()) n = 1; else { do { n = Math.random() * KIEU.length | 0; } while (n === kieuTruoc && KIEU.length > 1); } kieuTruoc = n;
       const K = KIEU[n](d), DUR = 1300, tre = K.tre ? DUR * K.tre : 0;
